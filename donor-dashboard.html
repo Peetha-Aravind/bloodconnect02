@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donor Dashboard - BloodConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-art"></div>
+  <div class="bg-grid"></div>
+
+  <nav>
+    <div class="logo">Blood<span>Connect</span></div>
+    <div class="nav-right">
+      <div class="user-chip">
+        <img id="dd-avatar" src="" alt=""/>
+        <span id="dd-name"></span>
+      </div>
+      <button class="btn-logout" id="btn-signout">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="dash-body">
+    <h2 class="dash-title">Donor Dashboard</h2>
+    <p class="dash-sub" id="dd-subtitle">Loading dynamic donor updates...</p>
+
+    <div class="dash-grid">
+      <div class="stat-card">
+        <div class="stat-card-num" id="dd-total">0</div>
+        <div class="stat-card-label">Total Donations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="dd-pending-count" style="color:var(--amber)">0</div>
+        <div class="stat-card-label">Pending Requests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="dd-blood-type" style="color:var(--white)">—</div>
+        <div class="stat-card-label">Your Blood Type</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num" id="dd-location-stat" style="font-size:28px; color:var(--white)">—</div>
+        <div class="stat-card-label">Your Location</div>
+      </div>
+    </div>
+
+    <div class="section-title">Incoming Requests</div>
+    <div id="dd-requests">
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <p>No requests yet. When someone needs your blood, it'll appear here.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="loading-box">
+      <div class="spinner" style="width:36px;height:36px;border-width:3px"></div>
+      <p id="loading-msg">Please wait...</p>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+  <script type="module">
+    import { auth, onAuthStateChanged, db, doc, getDoc, collection, query, where, onSnapshot, updateDoc, fbSignOut } from "./firebase-config.js";
+    import { showLoading, hideLoading, toast } from "./utils.js";
+
+    let requestsUnsub = null;
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) { window.location.href = 'login-donor.html'; return; }
+      
+      const snap = await getDoc(doc(db, 'donors', user.uid));
+      if(!snap.exists()) { window.location.href = 'onboarding.html'; return; }
+      
+      const profile = snap.data();
+      document.getElementById('dd-avatar').src = user.photoURL || '';
+      document.getElementById('dd-name').textContent = profile.name;
+      document.getElementById('dd-subtitle').textContent = `Welcome back, ${profile.name}! Location: ${profile.location}`;
+      document.getElementById('dd-blood-type').textContent = profile.bloodGroup;
+      document.getElementById('dd-location-stat').textContent = profile.location;
+      document.getElementById('dd-total').textContent = profile.totalDonations || 0;
+
+      // Listen for updates
+      const q = query(collection(db, 'requests'), where('donorId', '==', user.uid));
+      requestsUnsub = onSnapshot(q, querySnap => {
+        const requests = querySnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderRequests(requests);
+      });
+    });
+
+    function renderRequests(requests) {
+      const container = document.getElementById('dd-requests');
+      document.getElementById('dd-pending-count').textContent = requests.filter(r => r.status === 'pending').length;
+
+      if (!requests.length) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No requests yet.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = requests.map(r => {
+        const isPending  = r.status === 'pending';
+        const isApproved = r.status === 'approved';
+        return `
+          <div class="request-card ${isApproved ? 'approved-card' : ''}">
+            <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap">
+              <div class="blood-badge">${r.bloodGroup}</div>
+              <div class="request-info">
+                <div class="requester">${r.finderName || 'Anonymous'}</div>
+                <div class="req-meta">📍 ${r.location} &nbsp;·&nbsp; 📧 ${r.finderEmail || ''}</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+              ${isPending ? `
+                <span class="status-pill pill-pending">⏳ Pending</span>
+                <button class="btn btn-green btn-sm btn-approve" data-id="${r.id}">Approve Request</button>
+              ` : isApproved ? `
+                <span class="status-pill pill-approved">✓ Approved</span>
+                <span style="color:var(--muted);font-size:13px">Waiting for donation...</span>
+              ` : `
+                <span class="status-pill pill-done">✓ Donated</span>
+              `}
+            </div>
+          </div>`;
+      }).join('');
+
+      document.querySelectorAll('.btn-approve').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          showLoading('Approving request…');
+          try {
+            await updateDoc(doc(db, 'requests', id), { status: 'approved' });
+            hideLoading();
+            toast('Request approved!', 'success');
+          } catch(err) {
+            hideLoading();
+            toast(err.message, 'error');
+          }
+        });
+      });
+    }
+
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+      if (requestsUnsub) requestsUnsub();
+      await fbSignOut(auth);
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
