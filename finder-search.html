@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emergency Search - BloodConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-art"></div>
+  <div class="bg-grid"></div>
+
+  <nav>
+    <div class="logo">Blood<span>Connect</span></div>
+    <div class="nav-right">
+      <div class="user-chip">
+        <img id="fs-avatar" src="" alt=""/>
+        <span id="fs-email-display"></span>
+      </div>
+      <button class="btn-logout" id="btn-signout">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="finder-body">
+    <h2 class="dash-title">Find Emergency Blood</h2>
+    <p class="dash-sub">Search available donors by location and blood type.</p>
+
+    <div class="search-controls">
+      <div class="form-group">
+        <label>Location</label>
+        <select id="fs-location">
+          <option value="">All Locations</option>
+          <option>Vijayawada</option><option>Hyderabad</option><option>Visakhapatnam</option>
+          <option>Guntur</option><option>Tirupati</option><option>Nellore</option>
+          <option>Kurnool</option><option>Rajahmundry</option><option>Kakinada</option>
+          <option>Warangal</option><option>Chennai</option><option>Bengaluru</option>
+          <option>Mumbai</option><option>Delhi</option><option>Kolkata</option>
+          <option>Pune</option><option>Ahmedabad</option><option>Jaipur</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Blood Group</label>
+        <select id="fs-blood">
+          <option value="">All Types</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-sm" id="btn-search" style="margin-bottom:0; height:46px; align-self:flex-end">
+        Search
+      </button>
+    </div>
+
+    <div class="section-title" id="fs-result-label">Available Donors</div>
+    <div id="fs-donors">
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <p>Select a location and blood group to find available donors.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="loading-box">
+      <div class="spinner" style="width:36px;height:36px;border-width:3px"></div>
+      <p id="loading-msg">Please wait...</p>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+  <script type="module">
+    import { auth, onAuthStateChanged, db, collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, serverTimestamp, fbSignOut } from "./firebase-config.js";
+    import { showLoading, hideLoading, toast } from "./utils.js";
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, user => {
+      if (!user) { window.location.href = 'login-finder.html'; return; }
+      currentUser = user;
+      document.getElementById('fs-avatar').src = user.photoURL || '';
+      document.getElementById('fs-email-display').textContent = user.displayName || user.email;
+      searchDonors();
+    });
+
+    async function searchDonors() {
+      const loc = document.getElementById('fs-location').value;
+      const blood = document.getElementById('fs-blood').value;
+      const container = document.getElementById('fs-donors');
+      const label = document.getElementById('fs-result-label');
+
+      if (!loc && !blood) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Select location / blood group to find donors.</p></div>`;
+        label.textContent = 'Available Donors';
+        return;
+      }
+
+      showLoading('Searching donors…');
+      try {
+        let q = collection(db, 'donors');
+        if (loc && blood) q = query(q, where('location', '==', loc), where('bloodGroup', '==', blood));
+        else if (loc) q = query(q, where('location', '==', loc));
+        else q = query(q, where('bloodGroup', '==', blood));
+
+        const snap = await getDocs(q);
+        const donors = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(d => d.uid !== currentUser.uid);
+        hideLoading();
+
+        label.textContent = `Found ${donors.length} donor${donors.length !== 1 ? 's' : ''}`;
+
+        if (!donors.length) {
+          container.innerHTML = `<div class="empty-state"><div class="empty-icon">😔</div><p>No donors found.</p></div>`;
+          return;
+        }
+
+        const reqSnap = await getDocs(query(collection(db, 'requests'), where('finderId', '==', currentUser.uid)));
+        const myRequests = {};
+        reqSnap.docs.forEach(d => { myRequests[d.data().donorId] = { id: d.id, ...d.data() }; });
+
+        container.innerHTML = donors.map(donor => {
+          const existing = myRequests[donor.uid];
+          const status = existing ? existing.status : null;
+          const showContact = status === 'approved' || status === 'donated';
+          return `
+            <div class="donor-card">
+              <div>
+                <div class="donor-info">
+                  <div class="donor-name">${donor.name}</div>
+                  <div class="donor-meta">📍 ${donor.location} &nbsp;·&nbsp; 🩸 ${donor.bloodGroup} &nbsp;·&nbsp; ✅ ${donor.totalDonations || 0} donations</div>
+                </div>
+                ${showContact ? `
+                  <div class="donor-contact" style="margin-top:12px">
+                    <div class="contact-label">MOBILE NUMBER</div>
+                    <div class="contact-num">📞 ${donor.mobile}</div>
+                    <div class="contact-label" style="margin-top:4px">EMAIL</div>
+                    <div style="font-size:13px; color:var(--text)">${donor.email}</div>
+                  </div>` : ''}
+              </div>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+                <div class="blood-badge">${donor.bloodGroup}</div>
+                ${!existing ? `<button class="btn btn-primary btn-sm action-req" data-uid="${donor.uid}" data-bg="${donor.bloodGroup}" data-loc="${donor.location}">Request Blood</button>` : 
+                  status === 'pending' ? `<span class="status-pill pill-pending">⏳ Request Sent</span>` :
+                  status === 'approved' ? `<button class="btn btn-green btn-sm action-done" data-id="${existing.id}" data-uid="${donor.uid}">Mark as Donated ✓</button>` :
+                  `<span class="status-pill pill-done">✓ Donated — Thank you!</span>`}
+              </div>
+            </div>`;
+        }).join('');
+
+        setupListeners();
+      } catch (e) {
+        hideLoading();
+        toast('Search failed: ' + e.message, 'error');
+      }
+    }
+
+    function setupListeners() {
+      document.querySelectorAll('.action-req').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          showLoading('Sending request…');
+          try {
+            await addDoc(collection(db, 'requests'), {
+              donorId: e.target.getAttribute('data-uid'),
+              finderId: currentUser.uid,
+              finderName: currentUser.displayName || 'Anonymous',
+              finderEmail: currentUser.email || '',
+              bloodGroup: e.target.getAttribute('data-bg'),
+              location: e.target.getAttribute('data-loc'),
+              status: 'pending',
+              createdAt: serverTimestamp()
+            });
+            hideLoading();
+            toast('Request sent to donor!', 'success');
+            searchDonors();
+          } catch(err) { hideLoading(); toast(err.message, 'error'); }
+        });
+      });
+
+      document.querySelectorAll('.action-done').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          showLoading('Marking donation…');
+          const rId = e.target.getAttribute('data-id');
+          const dId = e.target.getAttribute('data-uid');
+          try {
+            await updateDoc(doc(db, 'requests', rId), { status: 'donated' });
+            const dSnap = await getDoc(doc(db, 'donors', dId));
+            if (dSnap.exists()) {
+              await updateDoc(doc(db, 'donors', dId), { totalDonations: (dSnap.data().totalDonations || 0) + 1 });
+            }
+            hideLoading();
+            toast('🎉 Marked as donated!', 'success');
+            searchDonors();
+          } catch(err) { hideLoading(); toast(err.message, 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('btn-search').addEventListener('click', searchDonors);
+    document.getElementById('fs-location').addEventListener('change', searchDonors);
+    document.getElementById('fs-blood').addEventListener('change', searchDonors);
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+      await fbSignOut(auth);
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
