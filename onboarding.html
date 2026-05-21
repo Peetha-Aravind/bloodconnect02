@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Complete Profile - BloodConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-art"></div>
+  <div class="bg-grid"></div>
+
+  <nav>
+    <div class="logo">Blood<span>Connect</span></div>
+    <div class="nav-right">
+      <div class="user-chip">
+        <img id="ob-avatar" src="https://via.placeholder.com/28" alt=""/>
+        <span id="ob-email">Loading...</span>
+      </div>
+    </div>
+  </nav>
+
+  <div style="display:flex; align-items:center; justify-content:center; padding:40px 20px;">
+    <div class="onboard-box">
+      <div class="onboard-step">STEP 01 / 01 — DONOR PROFILE</div>
+      <h2 class="onboard-title">Complete Your<br/>Profile</h2>
+      <div class="card">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="ob-name" placeholder="Your full name"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Location / City</label>
+            <select id="ob-location">
+              <option value="">Select city</option>
+              <option>Vijayawada</option><option>Hyderabad</option><option>Visakhapatnam</option>
+              <option>Guntur</option><option>Tirupati</option><option>Nellore</option>
+              <option>Kurnool</option><option>Rajahmundry</option><option>Kakinada</option>
+              <option>Warangal</option><option>Chennai</option><option>Bengaluru</option>
+              <option>Mumbai</option><option>Delhi</option><option>Kolkata</option>
+              <option>Pune</option><option>Ahmedabad</option><option>Jaipur</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Blood Group</label>
+            <select id="ob-blood">
+              <option value="">Select type</option>
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="ob-mobile" placeholder="+91 XXXXX XXXXX"/>
+        </div>
+        <button class="btn btn-primary" style="width:100%; margin-top:8px" id="btn-save">
+          Save & Go to Dashboard →
+        </button>
+      </div>
+      <button class="back-link" style="background:none; border:none;" id="btn-signout">← Sign out</button>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="loading-box">
+      <div class="spinner" style="width:36px;height:36px;border-width:3px"></div>
+      <p id="loading-msg">Please wait...</p>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+  <script type="module">
+    import { auth, onAuthStateChanged, db, setDoc, doc, serverTimestamp, fbSignOut } from "./firebase-config.js";
+    import { showLoading, hideLoading, toast } from "./utils.js";
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = 'login-donor.html';
+        return;
+      }
+      currentUser = user;
+      document.getElementById('ob-avatar').src = user.photoURL || 'https://via.placeholder.com/28';
+      document.getElementById('ob-email').textContent = user.displayName || user.email;
+    });
+
+    document.getElementById('btn-save').addEventListener('click', async () => {
+      const name   = document.getElementById('ob-name').value.trim();
+      const loc    = document.getElementById('ob-location').value;
+      const blood  = document.getElementById('ob-blood').value;
+      const mobile = document.getElementById('ob-mobile').value.trim();
+      
+      if (!name || !loc || !blood || !mobile) { toast('Please fill in all fields.', 'error'); return; }
+      
+      showLoading('Saving your profile…');
+      try {
+        const profile = {
+          uid: currentUser.uid,
+          name, location: loc, bloodGroup: blood, mobile,
+          email: currentUser.email,
+          photoURL: currentUser.photoURL || '',
+          totalDonations: 0,
+          createdAt: serverTimestamp()
+        };
+        await setDoc(doc(db, 'donors', currentUser.uid), profile);
+        hideLoading();
+        window.location.href = 'donor-dashboard.html';
+      } catch (e) {
+        hideLoading();
+        toast('Error saving profile: ' + e.message, 'error');
+      }
+    });
+
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+      await fbSignOut(auth);
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
