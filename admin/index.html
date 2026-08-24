@@ -14,15 +14,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* ... (keep all existing CSS unchanged) ... */
         :root {
-            /* BloodConnect Brand Colors */
             --accent:       #e11d48;
             --accent-dark:  #be123c;
             --accent-light: #fb7185;
             --accent-glow:  rgba(225, 29, 72, 0.14);
             
             --bg:           #ffffff;
-            --surface:      #fff1f2; /* Light red tint for surface */
+            --surface:      #fff1f2;
             --pure-white:   #ffffff;
             --input-bg:     #fff5f6;
             
@@ -52,7 +52,6 @@
             padding: 2rem 1.25rem 3rem;
         }
 
-        /* ── PAGE CONTAINER — flat on mobile ── */
         .page-container {
             width: 100%;
             max-width: 1060px;
@@ -71,10 +70,8 @@
             to   { opacity:1; transform:translateY(0); }
         }
 
-        /* ── LEFT PANEL (desktop only) ── */
         .info-panel { display: none; }
 
-        /* ── RIGHT PANEL ── */
         .form-panel-wrapper {
             flex-grow: 1;
             display: flex;
@@ -84,7 +81,6 @@
             justify-content: center;
         }
 
-        /* ── MOBILE LOGO ── */
         .mobile-logo-area {
             display: flex;
             flex-direction: column;
@@ -116,7 +112,6 @@
             letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px;
         }
 
-        /* ── FORM CONTENT ── */
         .form-content { width: 100%; max-width: 400px; }
         .form-header { text-align: center; margin-bottom: 2rem; }
         .form-header h2 {
@@ -127,7 +122,6 @@
         }
         .form-header p { color: var(--text-light); font-size: 0.88rem; }
 
-        /* ── INPUTS ── */
         .input-group { margin-bottom: 1.2rem; }
         .input-group label {
             display: block; font-size: 0.8rem; font-weight: 600;
@@ -135,7 +129,6 @@
         }
         .input-wrapper { position: relative; }
 
-        /* FontAwesome icon — left */
         .input-wrapper .field-icon {
             position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
             width: 20px; height: 20px;
@@ -145,7 +138,6 @@
             transition: color 0.2s;
         }
 
-        /* eye toggle — right */
         .input-wrapper .eye-toggle {
             position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
             width: 22px; height: 22px;
@@ -177,7 +169,6 @@
             box-shadow: 0 0 0 4px var(--accent-glow);
         }
 
-        /* ── SUBMIT BUTTON ── */
         .btn-submit {
             width: 100%; padding: 0.95rem 1rem;
             font-size: 0.97rem; font-weight: 700;
@@ -204,7 +195,6 @@
             transform: none; box-shadow: none;
         }
 
-        /* ── FORGOT ── */
         .forgot-link { text-align: center; margin-top: 1rem; }
         .forgot-link a {
             color: var(--accent); font-size: 0.86rem; font-weight: 600;
@@ -212,7 +202,6 @@
         }
         .forgot-link a:hover { text-decoration: underline; color: var(--accent-dark); }
 
-        /* ── DIVIDER ── */
         .divider {
             display: flex; align-items: center; text-align: center;
             color: var(--text-light); margin: 1.5rem 0;
@@ -222,7 +211,6 @@
         .divider:not(:empty)::before { margin-right: .85em; }
         .divider:not(:empty)::after  { margin-left:  .85em; }
 
-        /* ── GOOGLE BUTTON ── */
         .btn-google {
             width: 100%; padding: 0.88rem 1rem;
             font-size: 0.93rem; font-weight: 600;
@@ -238,7 +226,6 @@
         }
         .google-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
-        /* ── SPINNER ── */
         .btn-spinner {
             display: none; width: 18px; height: 18px;
             border: 2.5px solid rgba(255,255,255,0.35);
@@ -247,7 +234,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ── LOADER ── */
         #loader {
             display: none; position: fixed; inset: 0;
             background: rgba(255,255,255,0.82);
@@ -261,7 +247,6 @@
             border-radius: 50%; animation: spin 0.85s linear infinite;
         }
 
-        /* ── TOAST ── */
         #toast {
             position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
             padding: 0.9rem 1.4rem; border-radius: 12px;
@@ -276,7 +261,6 @@
         #toast.error   { background: linear-gradient(135deg, #dc2626, #b91c1c); }
         #toast.info    { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); }
 
-        /* ── SUCCESS OVERLAY ── */
         #success-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(255,255,255,0.92);
@@ -302,7 +286,6 @@
         }
         .success-sub { font-size: 0.88rem; color: var(--text-light); }
 
-        /* ── DESKTOP ── */
         @media (min-width: 900px) {
             body { padding: 2rem; background: var(--surface); }
 
@@ -510,7 +493,7 @@
              signOut, onAuthStateChanged, 
              sendPasswordResetEmail }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    /* ── Replace this with your BloodConnect Firebase config ── */
+    // ⚠️ Replace with your actual Firebase config
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "your-bloodconnect-app.firebaseapp.com",
@@ -523,7 +506,7 @@
     const app      = initializeApp(firebaseConfig);
     const auth     = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const ADMIN_EMAIL = "rajesh@bloodconnect.org";
+    const ADMIN_EMAIL = "rajesh@bloodconnect.org"; // Change as needed
 
     /* ── DOM refs ── */
     const loginForm    = document.getElementById('login-form');
@@ -540,7 +523,7 @@
     const eyeToggle    = document.getElementById('eye-toggle');
     const eyeImg       = document.getElementById('eye-img');
 
-    /* ── Email icon swap on focus/blur using FontAwesome classes ── */
+    /* ── Email icon swap on focus/blur ── */
     emailInput.addEventListener('focus', () => {
         emailIconImg.classList.replace('fa-regular', 'fa-solid');
         emailIconImg.style.color = 'var(--accent)';
@@ -622,6 +605,7 @@
     /* ── Admin auth handler ── */
     async function handleAdminAuth(user) {
         if (user.email === ADMIN_EMAIL) {
+            // Store minimal info for dashboard personalization
             sessionStorage.setItem('adminAuthenticated', 'true');
             sessionStorage.setItem('adminEmail', user.email);
             sessionStorage.setItem('adminName', user.displayName || 'Admin');
@@ -638,10 +622,16 @@
         }
     }
 
-    /* ── Auth state listener ── */
+    /* ── Auth state listener (redirect if already logged in) ── */
     onAuthStateChanged(auth, (user) => {
         if (user && user.email === ADMIN_EMAIL) {
+            // Already logged in as admin → go to dashboard
             window.location.href = 'dashboard.html';
+        } else {
+            // Not admin or logged out → clean session and stay
+            sessionStorage.removeItem('adminAuthenticated');
+            sessionStorage.removeItem('adminEmail');
+            sessionStorage.removeItem('adminName');
         }
     });
 
