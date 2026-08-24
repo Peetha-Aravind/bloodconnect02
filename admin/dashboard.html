@@ -572,14 +572,13 @@
 
         // ⚠️ Replace with your actual Firebase config
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "your-bloodconnect-app.firebaseapp.com",
-            projectId: "your-bloodconnect-app",
-            storageBucket: "your-bloodconnect-app.firebasestorage.app",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
+  apiKey: "AIzaSyA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6",
+  authDomain: "your-project-id.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project-id.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abc123def456"
+};
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const ADMIN_EMAIL = "rajesh@bloodconnect.org"; // Must match login page
