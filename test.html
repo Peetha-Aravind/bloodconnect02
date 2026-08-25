@@ -9,41 +9,36 @@
     <!-- Google Fonts: DM Sans -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
     <style>
-        /* ===== VASTRAMAYA GLOBAL VARIABLES (Main Content) ===== */
+        /* ===== BLOODCONNECT GLOBAL VARIABLES ===== */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
             --text-color: rgb(24, 24, 26);
             --text-sub: #6b7280;
             --icon-color: #6b7280;
-            --icon-active: #5127ba;
+            --icon-active: #e11d48;
             --active-bg: #f3f4f6;
-            --hover-bg: #f3f4f6;
+            --hover-bg: #f8fafc;
             --border-subtle: #e5e7eb;
-            --brand-primary: #5127ba;
-            --brand-gradient: linear-gradient(135deg, #5127ba 0%, #673de6 100%);
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
+            --brand-gradient: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
             --danger-color: #ef4444;
             --success-color: #10B981;
             --warning-color: #f59e0b;
-            --switch-on: #5127ba;
+            --switch-on: #e11d48;
             --switch-off: #9CA3AF;
             --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             --radius-md: 8px;
             --radius-lg: 12px;
-        }
-
-        /* ===== ORIGINAL BLOODCONNECT SIDEBAR COLORS (Preserved) ===== */
-        :root {
-            --sidebar-primary: #e11d48;
-            --sidebar-primary-hover: #be123c;
-            --sidebar-bg: #ffffff;
-            --sidebar-hover-bg: #f1f5f9;
-            --sidebar-text-main: #64748b;
-            --sidebar-text-dark: #0f172a;
-            --sidebar-border: #e2e8f0;
-            --sidebar-active-bg: #e11d48;
-            --sidebar-icon-color: #94a3b8;
-            --sidebar-active-icon: #ffffff;
+            --radius-xl: 16px;
+            --sidebar-width: 280px;
+            --topbar-height: 70px;
+            --mobile-header-height: 60px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.06);
+            --shadow-mobile-sidebar: 8px 0 32px rgba(0, 0, 0, 0.12);
         }
 
         * {
@@ -51,6 +46,9 @@
             padding: 0;
             box-sizing: border-box;
             text-decoration: none !important;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         body {
             font-family: "DM Sans", Roboto, sans-serif;
@@ -61,299 +59,855 @@
             background-color: var(--page-bg);
             overflow-x: hidden;
             width: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.sidebar-open {
+            overflow: hidden;
         }
 
-        /* ===== SIDEBAR (Original BloodConnect style) ===== */
+        /* ===== SIDEBAR (Breathable & Spacious) ===== */
         .sidebar {
-            width: 270px;
-            background-color: var(--sidebar-bg);
-            color: var(--sidebar-text-main);
+            width: var(--sidebar-width);
+            background-color: #ffffff;
+            color: #64748b;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
             z-index: 1000;
-            border-right: 1px solid var(--sidebar-border);
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sidebar);
+            transition: var(--transition-smooth);
+            left: 0;
+            top: 0;
         }
         .sidebar-brand {
-            padding: 24px 20px;
+            padding: 26px 24px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: var(--sidebar-text-dark);
-            border-bottom: 1px solid var(--sidebar-border);
-            height: 70px;
+            gap: 14px;
+            color: #0f172a;
+            border-bottom: 1px solid var(--border-subtle);
+            height: var(--topbar-height);
+            flex-shrink: 0;
         }
-        .sidebar-brand i { font-size: 26px; color: var(--sidebar-primary); }
-        .sidebar-brand h2 { font-size: 20px; font-weight: 600; }
-        .sidebar-brand span { color: var(--sidebar-primary); }
-        .sidebar-menu { list-style: none; padding: 15px 12px; flex-grow: 1; overflow-y: auto; }
-        .menu-category {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #94a3b8;
-            padding: 12px 10px 6px 10px;
+        .sidebar-brand i {
+            font-size: 28px;
+            color: var(--brand-primary);
+            flex-shrink: 0;
         }
-        .sidebar-menu li { margin-bottom: 4px; }
+        .sidebar-brand h2 {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+        }
+        .sidebar-brand h2 span {
+            color: var(--brand-primary);
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 16px;
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        /* Menu category labels removed */
+        .sidebar-menu li {
+            margin-bottom: 8px;
+            list-style: none;
+        }
         .nav-link {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            color: var(--sidebar-text-main);
+            gap: 14px;
+            padding: 14px 16px;
+            color: #64748b;
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.25s ease-in-out;
+            border-radius: 10px;
+            transition: var(--transition-smooth);
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
             cursor: pointer;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            position: relative;
         }
         .nav-link i {
-            font-size: 16px;
-            width: 20px;
+            font-size: 17px;
+            width: 22px;
             text-align: center;
-            color: var(--sidebar-icon-color);
-            transition: all 0.25s ease-in-out;
+            color: #94a3b8;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+        .nav-link span:not(.badge) {
+            flex: 1;
         }
         .nav-link:hover {
-            background-color: var(--sidebar-hover-bg);
-            color: var(--sidebar-text-dark);
-            transform: translateX(3px);
+            background-color: #fef2f2;
+            color: #0f172a;
+            transform: translateX(2px);
         }
-        .nav-link:hover i { color: var(--sidebar-primary); }
+        .nav-link:hover i {
+            color: var(--brand-primary);
+            transform: scale(1.08);
+        }
         .nav-link.active {
-            background-color: var(--sidebar-active-bg);
+            background-color: var(--brand-primary);
             color: #ffffff;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.3);
         }
-        .nav-link.active i { color: #ffffff; }
+        .nav-link.active i {
+            color: #ffffff;
+        }
+        .nav-link.active:hover {
+            background-color: var(--brand-primary-hover);
+            transform: translateX(2px);
+        }
+        .nav-link.active:hover i {
+            color: #ffffff;
+            transform: scale(1.08);
+        }
         .badge {
             margin-left: auto;
             background-color: #f1f5f9;
-            padding: 2px 8px;
+            padding: 3px 10px;
             font-size: 11px;
-            font-weight: 600;
-            border-radius: 12px;
-            color: var(--sidebar-text-main);
+            font-weight: 700;
+            border-radius: 14px;
+            color: #64748b;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
-        .nav-link.active .badge { background-color: rgba(255, 255, 255, 0.2); color: #ffffff; }
-        .badge.alert { background-color: #ffe4e6; color: var(--sidebar-primary); }
-        .nav-link.active .badge.alert { background-color: #ffffff; color: var(--sidebar-primary); }
+        .nav-link.active .badge {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+        .badge.alert {
+            background-color: #ffe4e6;
+            color: var(--brand-primary);
+        }
+        .nav-link.active .badge.alert {
+            background-color: #ffffff;
+            color: var(--brand-primary);
+        }
         .user-profile {
-            padding: 16px 20px;
+            padding: 20px 20px 18px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background-color: #f8fafc;
-            border-top: 1px solid var(--sidebar-border);
+            gap: 14px;
+            background-color: #fafbfc;
+            border-top: 1px solid var(--border-subtle);
             cursor: pointer;
             position: relative;
-            transition: all 0.25s ease-in-out;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
         }
-        .user-profile:hover { background-color: var(--sidebar-hover-bg); }
+        .user-profile:hover {
+            background-color: #f8fafc;
+        }
         .user-profile img {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ca8a04;
+            border: 2.5px solid #e11d48;
+            flex-shrink: 0;
         }
-        .user-info h4 { font-size: 13px; font-weight: 500; color: var(--sidebar-text-dark); }
-        .user-info p { font-size: 11px; display: flex; align-items: center; gap: 5px; color: #ca8a04; }
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .user-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-info p {
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ca8a04;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .status-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background-color: #059669;
-            box-shadow: 0 0 6px #059669;
+            background-color: #10B981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+            flex-shrink: 0;
+            animation: pulse-dot 2s infinite;
         }
-        .status-dot.yellow { background-color: #ca8a04; box-shadow: 0 0 6px #ca8a04; }
-        .status-dot.inactive { background-color: #94a3b8; box-shadow: none; }
+        .status-dot.yellow {
+            background-color: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+            animation: pulse-dot-yellow 2s infinite;
+        }
+        .status-dot.inactive {
+            background-color: #94a3b8;
+            box-shadow: none;
+            animation: none;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.7); }
+        }
+        @keyframes pulse-dot-yellow {
+            0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
+        }
         .profile-popup {
             display: none;
             position: absolute;
-            bottom: calc(100% + 5px);
-            left: 12px;
-            right: 12px;
+            bottom: calc(100% + 10px);
+            left: 16px;
+            right: 16px;
             background: #ffffff;
-            border: 1px solid var(--sidebar-border);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            padding: 8px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 10px;
             z-index: 1001;
-            animation: popupFadeIn 0.2s ease-out;
+            animation: popupFadeIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .profile-popup.active { display: block; }
+        .profile-popup.active {
+            display: block;
+        }
         .popup-email {
             font-size: 13px;
-            color: var(--sidebar-text-dark);
-            padding: 8px 10px 12px 10px;
+            color: #0f172a;
+            padding: 10px 12px 14px 12px;
             border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 500;
             word-break: break-all;
         }
-        .nav-link-logout { color: var(--sidebar-primary); }
-        .nav-link-logout i { color: var(--sidebar-primary); }
+        .nav-link-logout {
+            color: var(--brand-primary);
+            border-radius: 8px;
+        }
+        .nav-link-logout i {
+            color: var(--brand-primary);
+        }
         .nav-link-logout:hover,
         .nav-link-logout.active {
             background-color: #ffe4e6;
-            color: var(--sidebar-primary-hover);
+            color: var(--brand-primary-hover);
             box-shadow: none;
+            transform: none;
+        }
+        .nav-link-logout:hover i,
+        .nav-link-logout.active i {
+            color: var(--brand-primary-hover);
+            transform: none;
         }
         @keyframes popupFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ===== TOPBAR ===== */
+        /* ===== MOBILE SIDEBAR OVERLAY ===== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ===== WRAPPER & TOPBAR ===== */
         .wrapper {
-            margin-left: 270px;
+            margin-left: var(--sidebar-width);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transition: all 0.25s ease-in-out;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .topbar {
             background-color: var(--header-bg);
-            height: 70px;
+            height: var(--topbar-height);
             border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
+            padding: 0 32px;
             position: sticky;
             top: 0;
             z-index: 999;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            transition: var(--transition-smooth);
+        }
+        .topbar-left-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
         }
         .topbar-title h2 {
             font-size: 20px;
             font-weight: 700;
-            line-height: 32px;
-            color: rgb(29, 30, 32);
+            line-height: 28px;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
         }
-        .topbar-title p { font-size: 13px; color: var(--text-sub); }
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
         .menu-toggle {
             display: none;
-            background-color: var(--header-bg);
-            color: var(--text-color);
+            background-color: #ffffff;
+            color: #1d1e20;
             border: 1px solid var(--border-subtle);
-            padding: 8px 10px;
-            border-radius: 6px;
+            padding: 10px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .menu-toggle:hover {
+            background-color: #f8fafc;
+            border-color: #d1d5db;
+        }
+        .menu-toggle:active {
+            transform: scale(0.95);
         }
 
-        /* ===== MAIN CONTENT (VASTRAMAYA) ===== */
+        /* Mobile brand (visible only on mobile) */
+        .mobile-brand {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .mobile-brand i {
+            color: var(--brand-primary);
+            font-size: 22px;
+        }
+        .mobile-brand span {
+            color: var(--brand-primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
         .content-inner {
             max-width: 1110px;
             margin: 0 auto;
-            padding: 24px 24px 40px;
+            padding: 28px 28px 48px;
             width: 100%;
         }
         .card {
             background: #ffffff;
-            border-radius: 12px;
+            border-radius: var(--radius-xl);
             border: 1px solid var(--border-subtle);
             overflow: hidden;
             width: 100%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
         }
         .card-header {
-            padding: 24px 20px;
+            padding: 26px 28px;
             border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-
-        /* Desktop Table */
-        .table-wrapper { width: 100%; overflow-x: auto; overflow: visible !important; }
-        .data-table { width: 100%; border-collapse: collapse; z-index: 1; position: relative; }
-        .data-table thead { height: 48px; }
+        .card-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
+        }
+        .card-header .subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            font-weight: 400;
+        }
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+        .data-table thead {
+            height: 52px;
+            background-color: #fafbfc;
+        }
         .data-table th {
             font-weight: 700;
-            font-size: 14px;
-            line-height: 24px;
-            color: rgb(29, 30, 32);
+            font-size: 13px;
+            line-height: 20px;
+            color: #4b5563;
             text-align: left;
             border-bottom: 1px solid var(--border-subtle);
             white-space: nowrap;
+            padding: 14px 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 11px;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
             background-color: #ffffff;
-            padding: 12px 20px;
+            transition: var(--transition-smooth);
         }
-        .data-table tbody tr { border-bottom: 1px solid #f3f4f6; background-color: #ffffff; }
-        .data-table tbody tr:hover { background-color: #f9fafb; }
-        .data-table tbody tr:last-child { border-bottom: none; }
-        .data-table td { padding: 12px 20px; vertical-align: middle; text-align: left; }
-
-        /* Mobile Cards */
-        .mobile-product-cards { display: flex; flex-direction: column; gap: 16px; }
-        .mobile-card {
-            background: #ffffff;
-            border-radius: 16px;
-            border: 1px solid var(--border-subtle);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            width: 100%;
+        .data-table tbody tr:hover {
+            background-color: #fef2f2;
         }
-        .mobile-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .mobile-card .info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .mobile-card .info .title { font-size: 16px; font-weight: 700; color: var(--text-color); }
-        .mobile-card .info .subtitle { font-size: 14px; font-weight: 600; color: var(--brand-primary); }
-        .mobile-card .info .meta { font-size: 12px; font-weight: 500; color: var(--text-sub); }
-        .mobile-card .actions { margin-left: auto; display: flex; gap: 12px; align-items: center; }
-
-        .btn-secondary {
-            padding: 6px 12px;
+        .data-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .data-table td {
+            padding: 18px 20px;
+            vertical-align: middle;
+            text-align: left;
+            font-size: 14px;
+            color: #1d1e20;
+        }
+        .data-table td .recipient-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .data-table td .recipient-location {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+        .data-table td .donation-date {
+            font-size: 13px;
+            color: #4b5563;
+        }
+        .data-table td .donation-amount {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .btn-certificate {
+            padding: 8px 16px;
             border-radius: 8px;
-            border: 1px solid var(--border-subtle);
+            border: 1.5px solid var(--brand-primary);
             background: #ffffff;
             font-size: 13px;
-            color: #673de6;
-            transition: background 0.15s ease;
+            font-weight: 600;
+            color: var(--brand-primary);
+            transition: var(--transition-smooth);
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
         }
-        .btn-secondary:hover { background: #f2efff; }
+        .btn-certificate:hover {
+            background: var(--brand-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
+            transform: translateY(-1px);
+        }
+        .btn-certificate:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .btn-certificate i {
+            font-size: 14px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-sub);
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+        .empty-state p {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .empty-state .hint {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 6px;
+            font-weight: 400;
+        }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar { left: -270px; }
-            .sidebar.active { left: 0; }
-            .wrapper { margin-left: 0; }
-            .menu-toggle { display: block; }
-            .topbar { padding: 0 20px; }
-            .content-inner { padding: 16px; }
-            .desktop-only { display: none !important; }
-            .mobile-only { display: block !important; }
+        /* ===== MOBILE DONATION CARDS ===== */
+        .mobile-product-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px;
         }
+        .mobile-card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid var(--border-subtle);
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: var(--transition-smooth);
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .mobile-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+        .mobile-card .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+        .mobile-card .info .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.2px;
+        }
+        .mobile-card .info .subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand-primary);
+        }
+        .mobile-card .info .meta {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-sub);
+        }
+        .mobile-card .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* ===== LOADING OVERLAY ===== */
+        #loading {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .loading-spinner {
+            background: #ffffff;
+            padding: 28px 36px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+        }
+        .spinner-ring {
+            width: 44px;
+            height: 44px;
+            border: 3.5px solid #f1f5f9;
+            border-top-color: var(--brand-primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 14px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-spinner p {
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        /* ===== TOAST ===== */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 4000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast-item {
+            padding: 14px 20px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-item.success { background: #059669; }
+        .toast-item.error { background: #e11d48; }
+        .toast-item.info { background: #334155; }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 290px;
+                --topbar-height: 60px;
+            }
+            .sidebar {
+                left: -290px;
+                box-shadow: var(--shadow-mobile-sidebar);
+                width: 290px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .sidebar-brand {
+                height: 60px;
+                padding: 18px 20px 16px;
+            }
+            .sidebar-brand h2 {
+                font-size: 19px;
+            }
+            .sidebar-brand i {
+                font-size: 24px;
+            }
+            .sidebar-menu {
+                padding: 16px 14px;
+            }
+            .sidebar-menu li {
+                margin-bottom: 6px;
+            }
+            .nav-link {
+                padding: 14px 14px;
+                font-size: 14px;
+                gap: 13px;
+                border-radius: 9px;
+            }
+            .nav-link i {
+                font-size: 16px;
+                width: 20px;
+            }
+            .user-profile {
+                padding: 16px 16px 14px;
+                gap: 12px;
+            }
+            .user-profile img {
+                width: 40px;
+                height: 40px;
+            }
+            .profile-popup {
+                left: 10px;
+                right: 10px;
+                bottom: calc(100% + 8px);
+            }
+
+            .wrapper {
+                margin-left: 0;
+            }
+            .topbar {
+                height: 60px;
+                padding: 0 16px;
+                justify-content: center;
+                position: sticky;
+                top: 0;
+            }
+            .topbar-left-section {
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+            }
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 9px 11px;
+                font-size: 17px;
+                border-radius: 8px;
+                background: #ffffff;
+            }
+            .topbar-title.desktop-title {
+                display: none;
+            }
+            .mobile-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 17px;
+                font-weight: 700;
+                color: #0f172a;
+                letter-spacing: -0.3px;
+                white-space: nowrap;
+                position: static;
+                transform: none;
+                margin: 0 auto;
+            }
+            .mobile-brand i {
+                color: var(--brand-primary);
+                font-size: 20px;
+            }
+            .content-inner {
+                padding: 16px 16px 32px;
+            }
+            .card-header {
+                padding: 18px 16px;
+            }
+            .card-header h3 {
+                font-size: 15px;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-only {
+                display: block !important;
+            }
+            .mobile-product-cards {
+                padding: 12px;
+                gap: 12px;
+            }
+            .mobile-card {
+                padding: 16px 14px;
+                gap: 12px;
+                border-radius: 12px;
+            }
+            .mobile-card .info .title {
+                font-size: 15px;
+            }
+            .mobile-card .info .subtitle {
+                font-size: 12px;
+            }
+            .mobile-card .info .meta {
+                font-size: 11px;
+            }
+            .btn-certificate {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+            .empty-state {
+                padding: 32px 16px;
+            }
+            .empty-state i {
+                font-size: 40px;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
         @media (min-width: 769px) {
-            .mobile-only { display: none !important; }
-            .desktop-only { display: block !important; }
+            .mobile-only {
+                display: none !important;
+            }
+            .desktop-only {
+                display: block !important;
+            }
+            .mobile-brand {
+                display: none !important;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .content-inner {
+                padding: 22px 20px 36px;
+            }
+            .topbar {
+                padding: 0 24px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 14px 16px;
+            }
+        }
+
+        /* Extra small mobile */
+        @media (max-width: 380px) {
+            .mobile-brand {
+                font-size: 15px;
+                gap: 8px;
+            }
+            .mobile-brand i {
+                font-size: 18px;
+            }
+            .content-inner {
+                padding: 12px 10px 24px;
+            }
+            .mobile-card {
+                padding: 14px 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Left Sidebar Menu (Original BloodConnect style retained) -->
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Left Sidebar Menu -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-heart-pulse"></i>
             <h2>Blood<span>Connect</span></h2>
         </div>
         <ul class="sidebar-menu">
-            <li class="menu-category">Overview</li>
+            <!-- Category labels removed -->
             <li>
                 <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-house-medical"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="menu-category">Activity</li>
             <li>
                 <a href="emergency.html" class="nav-link">
                     <i class="fa-solid fa-truck-medical"></i>
@@ -367,7 +921,6 @@
                     <span>My Donations</span>
                 </a>
             </li>
-            <li class="menu-category">Settings</li>
             <li>
                 <a href="profile-settings.html" class="nav-link">
                     <i class="fa-solid fa-user-gear"></i>
@@ -378,11 +931,11 @@
         <div class="user-profile" id="userProfileBtn">
             <img id="dd-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="User Avatar">
             <div class="user-info">
-                <h4 id="dd-name">Loading...</h4>
-                <p id="dd-status-text"><span class="status-dot yellow"></span> Recovery Period</p>
+                <h4 id="dd-name"></h4>
+                <p id="dd-status-text"><span class="status-dot yellow"></span> <span>Checking status...</span></p>
             </div>
             <div class="profile-popup" id="profilePopup">
-                <div class="popup-email" id="dd-email">Loading email...</div>
+                <div class="popup-email" id="dd-email"></div>
                 <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
@@ -393,16 +946,24 @@
 
     <div class="wrapper">
         <header class="topbar">
-            <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- Mobile: hamburger on left, brand centered -->
+            <div class="topbar-left-section">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="topbar-title">
+                <!-- Desktop title (hidden on mobile) -->
+                <div class="topbar-title desktop-title">
                     <h2>My Donations</h2>
                     <p>Your donation history and certificates.</p>
                 </div>
             </div>
-            <div class="topbar-right"></div>
+            <!-- Mobile brand (centered, visible only on mobile) -->
+            <div class="mobile-brand">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
+            </div>
+            <!-- Right spacer -->
+            <div style="width:44px;"></div>
         </header>
 
         <main class="content-inner" id="mainContent">
@@ -411,13 +972,13 @@
     </div>
 
     <!-- Loading overlay -->
-    <div id="loading" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.7); z-index:3000; align-items:center; justify-content:center;">
-        <div style="background:white; padding:20px 30px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-            <div style="width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#5127ba;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;"></div>
-            <p id="loading-msg" style="margin-top:10px; font-size:14px;">Please wait...</p>
+    <div id="loading">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <p id="loading-msg">Loading your donations...</p>
         </div>
     </div>
-    <div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:4000;"></div>
+    <div id="toast"></div>
 
     <script type="module">
         import { auth, onAuthStateChanged, db, doc, getDoc, fbSignOut } from "./firebase-config.js";
@@ -426,11 +987,12 @@
         let donor = null;
         const mainContent = document.getElementById('mainContent');
         const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
 
-        // Helpers
+        // ===== Helpers =====
         function formatDate(value) {
             if (!value) return 'No record';
             const date = value?.toDate ? value.toDate() : new Date(value);
@@ -442,7 +1004,8 @@
             if (!donor?.lastDonationDate && !donor?.lastDonation) {
                 return { isRecovery: false, text: 'No donation yet', tag: 'gray' };
             }
-            const lastDate = donor.lastDonationDate?.toDate ? donor.lastDonationDate.toDate() : new Date(donor.lastDonationDate || donor.lastDonation);
+            const lastDate = donor.lastDonationDate?.toDate ? donor.lastDonationDate.toDate() : new Date(donor
+                .lastDonationDate || donor.lastDonation);
             if (isNaN(lastDate.getTime())) return { isRecovery: false, text: 'Unknown', tag: 'gray' };
             const eligibleDate = new Date(lastDate);
             eligibleDate.setDate(eligibleDate.getDate() + 90);
@@ -453,7 +1016,7 @@
             return { isRecovery: false, text: 'Eligible now', tag: 'green' };
         }
 
-        // Render donation history with specified columns
+        // ===== Render Donation History =====
         function renderDonationHistory() {
             if (!donor) return;
             const history = donor.donationHistory || [];
@@ -463,7 +1026,15 @@
                 // Mobile cards
                 let cardsHtml = '';
                 if (history.length === 0) {
-                    cardsHtml = `<div class="card" style="padding:20px; text-align:center;">No donation records yet.</div>`;
+                    cardsHtml = `
+                        <div class="card" style="padding:20px;">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-heart-circle-plus"></i>
+                                <p>No donation records yet</p>
+                                <p class="hint">Your donation history will appear here.</p>
+                            </div>
+                        </div>
+                    `;
                 } else {
                     cardsHtml = '<div class="mobile-product-cards">';
                     history.forEach((h, index) => {
@@ -471,11 +1042,11 @@
                             <div class="mobile-card">
                                 <div class="info">
                                     <div class="title">${h.patientName || 'Unknown Recipient'}</div>
-                                    <div class="subtitle">${h.location || '—'}</div>
-                                    <div class="meta">${formatDate(h.date)} • ${h.amountMl || 450} ml</div>
+                                    <div class="subtitle"><i class="fa-solid fa-location-dot" style="font-size:11px;margin-right:4px;"></i>${h.location || '—'}</div>
+                                    <div class="meta"><i class="fa-regular fa-calendar" style="margin-right:4px;"></i>${formatDate(h.date)} • <i class="fa-solid fa-droplet" style="margin-left:6px;margin-right:4px;color:#e11d48;"></i>${h.amountMl || 450} ml</div>
                                 </div>
                                 <div class="actions">
-                                    <button class="btn-secondary certificate-btn" data-index="${index}">
+                                    <button class="btn-certificate certificate-btn" data-index="${index}">
                                         <i class="fa-solid fa-download"></i> Certificate
                                     </button>
                                 </div>
@@ -484,22 +1055,48 @@
                     });
                     cardsHtml += '</div>';
                 }
-                mainContent.innerHTML = `<div class="card"><div class="card-header"><h3 style="font-size:16px; font-weight:700;">Donation Records</h3></div>${cardsHtml}</div>`;
+                mainContent.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Donation Records</h3>
+                            <span class="subtitle">${history.length} total donation${history.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        ${cardsHtml}
+                    </div>
+                `;
             } else {
                 // Desktop table
                 let rows = '';
                 if (history.length === 0) {
-                    rows = `<tr><td colspan="5" style="text-align:center; padding:20px;">No donation records yet.</td></tr>`;
+                    rows = `
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-heart-circle-plus"></i>
+                                    <p>No donation records yet</p>
+                                    <p class="hint">Your donation history will appear here.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                 } else {
                     history.forEach((h, index) => {
                         rows += `
                             <tr>
-                                <td>${h.patientName || 'Unknown Recipient'}</td>
-                                <td>${h.location || '—'}</td>
-                                <td>${formatDate(h.date)}</td>
-                                <td>${h.amountMl || 450} ml</td>
                                 <td>
-                                    <button class="btn-secondary certificate-btn" data-index="${index}">
+                                    <div class="recipient-name">${h.patientName || 'Unknown Recipient'}</div>
+                                </td>
+                                <td>
+                                    <div class="recipient-location"><i class="fa-solid fa-location-dot" style="font-size:12px;margin-right:6px;color:#9ca3af;"></i>${h.location || '—'}</div>
+                                </td>
+                                <td>
+                                    <div class="donation-date"><i class="fa-regular fa-calendar" style="margin-right:6px;color:#9ca3af;"></i>${formatDate(h.date)}</div>
+                                </td>
+                                <td>
+                                    <div class="donation-amount"><i class="fa-solid fa-droplet" style="margin-right:6px;color:#e11d48;"></i>${h.amountMl || 450} ml</div>
+                                </td>
+                                <td>
+                                    <button class="btn-certificate certificate-btn" data-index="${index}">
                                         <i class="fa-solid fa-download"></i> Certificate
                                     </button>
                                 </td>
@@ -509,7 +1106,10 @@
                 }
                 mainContent.innerHTML = `
                     <div class="card">
-                        <div class="card-header"><h3 style="font-size:16px; font-weight:700;">Donation Records</h3></div>
+                        <div class="card-header">
+                            <h3>Donation Records</h3>
+                            <span class="subtitle">${history.length} total donation${history.length !== 1 ? 's' : ''}</span>
+                        </div>
                         <div class="table-wrapper">
                             <table class="data-table">
                                 <thead>
@@ -531,10 +1131,10 @@
             // Attach certificate download handlers
             document.querySelectorAll('.certificate-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const idx = e.currentTarget.getAttribute('data-index');
-                    const record = history[idx];
+                    const record = history[parseInt(idx)];
                     if (record?.certificateUrl) {
-                        // Open certificate URL in new tab
                         window.open(record.certificateUrl, '_blank');
                     } else {
                         toast('Certificate not available yet.', 'info');
@@ -543,18 +1143,87 @@
             });
         }
 
+        // ===== Update Sidebar Profile =====
         function updateSidebarProfile() {
             if (!donor) return;
             document.getElementById('dd-name').textContent = donor.name || 'Donor';
             const eligibility = getEligibilityInfo();
-            document.getElementById('dd-status-text').innerHTML =
-                `<span class="status-dot ${eligibility.isRecovery ? 'yellow' : 'green'}"></span> ${eligibility.isRecovery ? 'Recovery Period' : 'Active Donor'}`;
-            document.getElementById('dd-avatar').src = auth.currentUser?.photoURL ||
-                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80';
-            document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email';
+            const statusText = document.getElementById('dd-status-text');
+            const dotClass = eligibility.isRecovery ? 'yellow' : 'green';
+            statusText.innerHTML = `<span class="status-dot ${dotClass}"></span> <span>${eligibility.text}</span>`;
+            const avatarEl = document.getElementById('dd-avatar');
+            if (auth.currentUser?.photoURL) {
+                avatarEl.src = auth.currentUser.photoURL;
+            }
+            document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email associated';
         }
 
-        // Auth & data loading
+        // ===== Sidebar Mobile Toggle =====
+        function openSidebar() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (sidebar.classList.contains('active')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                closeSidebar();
+            }
+        });
+
+        // Close sidebar when clicking a nav link on mobile
+        document.querySelectorAll('.sidebar .nav-link:not(.nav-link-logout)').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // ===== Profile Popup =====
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
+                profilePopup.classList.remove('active');
+            }
+        });
+
+        // ===== Logout =====
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            showLoading('Signing out...');
+            try {
+                await fbSignOut(auth);
+                hideLoading();
+                window.location.href = 'index.html';
+            } catch (err) {
+                hideLoading();
+                toast(err.message || 'Logout failed. Please try again.', 'error');
+            }
+        });
+
+        // ===== Auth & Data Loading =====
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = 'login-donor.html';
@@ -570,73 +1239,55 @@
             renderDonationHistory();
         });
 
-        // Sidebar mobile toggle
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-
-        // Profile popup
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profilePopup.classList.toggle('active');
-        });
-        document.addEventListener('click', (e) => {
-            if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
-                profilePopup.classList.remove('active');
-            }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            showLoading('Signing out...');
-            try {
-                await fbSignOut(auth);
-                hideLoading();
-                window.location.href = 'index.html';
-            } catch (err) {
-                hideLoading();
-                toast(err.message, 'error');
-            }
-        });
-
-        // Responsive re-render on resize
+        // ===== Responsive Re-render on Resize =====
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            if (donor) renderDonationHistory();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (donor) renderDonationHistory();
+                // Close sidebar if resizing to desktop
+                if (window.innerWidth >= 768 && sidebar.classList.contains('active')) {
+                    closeSidebar();
+                }
+            }, 250);
         });
 
-        // Fallback functions
-        if (typeof showLoading !== 'function') {
+        // ===== Fallback Utility Functions =====
+        if (typeof window.showLoading !== 'function') {
             window.showLoading = (msg) => {
-                document.getElementById('loading').style.display = 'flex';
+                const loadingEl = document.getElementById('loading');
+                loadingEl.style.display = 'flex';
                 document.getElementById('loading-msg').textContent = msg || 'Please wait...';
             };
         }
-        if (typeof hideLoading !== 'function') {
+        if (typeof window.hideLoading !== 'function') {
             window.hideLoading = () => {
                 document.getElementById('loading').style.display = 'none';
             };
         }
-        if (typeof toast !== 'function') {
-            window.toast = (msg, type) => {
-                const toastEl = document.getElementById('toast');
-                toastEl.textContent = msg;
-                toastEl.style.background = type === 'success' ? '#059669' : type === 'error' ? '#e11d48' : '#334155';
-                toastEl.style.color = '#fff';
-                toastEl.style.padding = '12px 20px';
-                toastEl.style.borderRadius = '6px';
-                toastEl.style.opacity = '1';
-                toastEl.style.transition = 'opacity 0.3s';
-                toastEl.style.fontSize = '14px';
-                toastEl.style.fontWeight = '500';
-                toastEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.15)';
-                toastEl.style.zIndex = '4000';
-                toastEl.style.position = 'fixed';
-                toastEl.style.bottom = '20px';
-                toastEl.style.right = '20px';
-                setTimeout(() => { toastEl.style.opacity = '0'; }, 3000);
+        if (typeof window.toast !== 'function') {
+            window.toast = (msg, type = 'info') => {
+                const toastContainer = document.getElementById('toast');
+                const toastEl = document.createElement('div');
+                toastEl.className = `toast-item ${type}`;
+                const icons = {
+                    success: 'fa-solid fa-check-circle',
+                    error: 'fa-solid fa-exclamation-circle',
+                    info: 'fa-solid fa-info-circle'
+                };
+                toastEl.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size:16px;"></i> ${msg}`;
+                toastContainer.appendChild(toastEl);
+                setTimeout(() => {
+                    toastEl.style.opacity = '0';
+                    toastEl.style.transform = 'translateY(10px)';
+                    toastEl.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toastEl.remove(), 300);
+                }, 3000);
             };
         }
+
+        // Initial render placeholder
+        renderDonationHistory();
     </script>
 </body>
 </html>
