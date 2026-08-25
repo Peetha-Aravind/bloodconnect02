@@ -1,38 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BloodConnect — Save Lives Together</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
     <style>
-        /* CSS Variables */
         :root {
             --primary: #e11d48;
             --primary-hover: #be123c;
             --text-dark: #0f172a;
             --text-gray: #475569;
             --text-light: #94a3b8;
-            --bg-glass: rgba(255, 255, 255, 0.85);
+            --bg-glass: rgba(255, 255, 255, 0.88);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
         }
 
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body, html {
+        body,
+        html {
             height: 100%;
             font-family: 'DM Sans', sans-serif;
             color: var(--text-dark);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* Background Layers */
@@ -55,33 +57,39 @@
             width: 100%;
             height: 100%;
             background-color: var(--bg-glass);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: -1;
         }
 
         .screen {
-            min-height: 100vh;
             animation: fadeIn 0.8s ease-out forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        /* Hero */
         .hero-tag {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             background: #ffe4e6;
             color: var(--primary);
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 14px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 10px rgba(225, 29, 72, 0.1);
+            box-shadow: 0 2px 12px rgba(225, 29, 72, 0.1);
         }
 
         .hero-title {
@@ -125,6 +133,7 @@
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             border: none;
+            font-family: 'DM Sans', sans-serif;
         }
 
         .btn-primary {
@@ -162,7 +171,13 @@
             color: var(--text-dark);
         }
 
-        /* Authenticated user area (appears only when logged in) */
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        /* Session Area */
         .session-area {
             margin-top: 25px;
             display: flex;
@@ -173,22 +188,25 @@
         }
 
         .session-pill {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid #e2e8f0;
             border-radius: 30px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .session-pill img {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid #ffe4e6;
         }
 
         .session-link {
@@ -196,20 +214,26 @@
             font-weight: 600;
             text-decoration: none;
             margin-left: 5px;
+            cursor: pointer;
         }
 
         .session-link:hover {
             text-decoration: underline;
         }
 
+        .session-divider {
+            color: #cbd5e1;
+            margin: 0 4px;
+        }
+
         /* Stats Row */
         .stats-row {
             display: flex;
             gap: 50px;
-            margin-top: 70px;
+            margin-top: 60px;
             justify-content: center;
             flex-wrap: wrap;
-            padding: 30px;
+            padding: 30px 40px;
             background: rgba(255, 255, 255, 0.6);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.8);
@@ -230,21 +254,173 @@
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-gray);
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
         }
 
-        /* Footer Styles */
+        /* Donors Section */
+        .donors-section {
+            margin-top: 70px;
+            width: 100%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .donors-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .donors-heading h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .donors-heading h2 .accent {
+            color: var(--primary);
+        }
+
+        .donors-heading p {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+        }
+
+        .donors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .donor-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: var(--radius);
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.25s ease;
+            animation: cardAppear 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .donor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #fecdd3;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .donor-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff;
+            margin: 0 auto 12px auto;
+            letter-spacing: 1px;
+        }
+
+        .donor-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .blood-type-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .donor-location {
+            font-size: 13px;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .donor-location svg {
+            flex-shrink: 0;
+        }
+
+        .donors-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+
+        .donors-loading .spinner {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border: 3px solid #fecdd3;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .donors-empty {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-gray);
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--radius);
+            border: 1px dashed #e2e8f0;
+        }
+
+        .donors-empty .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-top: 1px solid rgba(255, 255, 255, 0.8);
             padding: 40px 20px 20px;
-            margin-top: 60px;
+            margin-top: 70px;
             width: 100%;
         }
 
@@ -302,7 +478,7 @@
             color: var(--primary);
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 4rem;
@@ -313,56 +489,83 @@
             .landing-btns {
                 flex-direction: column;
                 width: 100%;
-                max-width: 300px;
-                margin: 35px auto 0 auto;
+                max-width: 320px;
+                margin: 30px auto 0 auto;
+            }
+            .landing-btns .btn {
+                width: 100%;
             }
             .stats-row {
-                gap: 30px;
+                gap: 25px;
                 flex-direction: column;
-                margin-top: 50px;
+                margin-top: 40px;
+                padding: 25px 20px;
             }
             .footer-content {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 20px;
+            }
+            .donors-heading h2 {
+                font-size: 2.4rem;
+            }
+            .donors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+            .donor-card {
+                padding: 16px 12px;
+            }
+            .session-pill {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .donors-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero-title {
+                font-size: 3.2rem;
             }
         }
     </style>
 </head>
 <body>
-    
+
     <!-- Background Elements -->
     <div class="bg-art"></div>
     <div class="bg-grid"></div>
 
     <!-- Main Content -->
-    <div id="landing" class="screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px;">
-        
-        <div style="max-width: 800px; margin: 0 auto;">
+    <div id="landing" class="screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 50px 20px 20px;">
+
+        <div style="max-width: 800px; width: 100%; margin: 0 auto;">
             <div class="hero-tag">🩸 Emergency Blood Network</div>
-            
+
             <h1 class="hero-title">BLOOD<span class="accent">CONNECT</span></h1>
-            
+
             <p class="hero-sub">A real-time platform connecting blood donors with those in need. Every second counts — be the reason someone survives.</p>
-            
-            <!-- Original Buttons (unchanged) -->
+
+            <!-- Two Buttons: Donor & Finder (no Login button) -->
             <div class="landing-btns">
-                <a href="login-donor.html" class="btn btn-primary">
+                <button id="btnDonor" class="btn btn-primary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Register as Donor
-                </a>
-                <a href="login-finder.html" class="btn btn-outline">
+                </button>
+                <button id="btnFinder" class="btn btn-outline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                     Find Emergency Blood
-                </a>
-                <a href="login-donor.html" class="btn btn-ghost">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Login
-                </a>
+                </button>
             </div>
 
             <!-- Authenticated Session Area (hidden until login) -->
             <div id="sessionArea" class="session-area" style="display: none;"></div>
 
+            <!-- Stats Row -->
             <div class="stats-row">
                 <div class="stat-item"><div class="stat-num">3M+</div><div class="stat-label">Lives Saved</div></div>
                 <div class="stat-item"><div class="stat-num">50K</div><div class="stat-label">Active Donors</div></div>
@@ -370,7 +573,21 @@
                 <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Emergency Ready</div></div>
             </div>
         </div>
-        
+
+        <!-- Registered Donors Section -->
+        <div class="donors-section" id="donorsSection">
+            <div class="donors-heading">
+                <h2>REGISTERED <span class="accent">DONORS</span></h2>
+                <p>Our community of life-savers ready to help in emergencies</p>
+            </div>
+            <div id="donorsGrid" class="donors-grid">
+                <div class="donors-loading">
+                    <div class="spinner"></div>
+                    Loading donors...
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Footer -->
@@ -385,10 +602,9 @@
             <div class="footer-col">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="login-donor.html">Register as Donor</a></li>
-                    <li><a href="login-finder.html">Find Emergency Blood</a></li>
                     <li><a href="donor-dashboard.html">Donor Dashboard</a></li>
                     <li><a href="finder-dashboard.html">Finder Dashboard</a></li>
+                    <li><a href="index.html">Home</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -414,12 +630,204 @@
         </div>
     </footer>
 
-    <!-- Firebase Integration for Session Area -->
+    <!-- Firebase Integration -->
     <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, fbSignOut } from "./firebase-config.js";
-        import { showLoading, hideLoading, toast } from "./utils.js";
+        import {
+            auth,
+            onAuthStateChanged,
+            db,
+            doc,
+            getDoc,
+            collection,
+            getDocs,
+            GoogleAuthProvider,
+            signInWithPopup,
+            fbSignOut
+        } from "./firebase-config.js";
 
+        import {
+            showLoading,
+            hideLoading,
+            toast
+        } from "./utils.js";
+
+        // DOM Elements
+        const btnDonor = document.getElementById('btnDonor');
+        const btnFinder = document.getElementById('btnFinder');
         const sessionArea = document.getElementById('sessionArea');
+        const donorsGrid = document.getElementById('donorsGrid');
+
+        // State
+        let currentUser = null;
+        let pendingAction = null; // 'donor' | 'finder'
+        let googleProvider = null;
+
+        try {
+            googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({ prompt: 'select_account' });
+        } catch (err) {
+            console.error('Failed to init Google provider:', err);
+        }
+
+        /* ---------- Donors Display ---------- */
+
+        function getBloodTypeStyle(bloodType) {
+            const normalized = (bloodType || '').trim().toUpperCase();
+            const styles = {
+                'O-': { bg: '#dc2626', color: '#fff' },
+                'O+': { bg: '#ef4444', color: '#fff' },
+                'A-': { bg: '#2563eb', color: '#fff' },
+                'A+': { bg: '#3b82f6', color: '#fff' },
+                'B-': { bg: '#16a34a', color: '#fff' },
+                'B+': { bg: '#22c55e', color: '#fff' },
+                'AB-': { bg: '#7c3aed', color: '#fff' },
+                'AB+': { bg: '#9333ea', color: '#fff' },
+            };
+            return styles[normalized] || { bg: '#6b7280', color: '#fff' };
+        }
+
+        function getAvatarColor(name) {
+            const colors = [
+                '#e11d48', '#2563eb', '#16a34a', '#9333ea',
+                '#ea580c', '#0891b2', '#dc2626', '#7c3aed',
+                '#0d9488', '#ca8a04', '#4f46e5', '#be123c'
+            ];
+            let hash = 0;
+            for (let i = 0; i < (name || '?').length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
+        function renderDonorCard(donor, index) {
+            const name = donor.name || 'Anonymous';
+            const bloodType = donor.bloodType || donor.blood_group || '?';
+            const location = donor.city || donor.location || donor.address || 'Unknown Location';
+            const avatarBg = getAvatarColor(name);
+            const bloodStyle = getBloodTypeStyle(bloodType);
+            const initials = getInitials(name);
+
+            const card = document.createElement('div');
+            card.className = 'donor-card';
+            card.style.animationDelay = `${Math.min(index * 0.04, 0.8)}s`;
+
+            card.innerHTML = `
+                <div class="donor-avatar" style="background: ${avatarBg};">${initials}</div>
+                <div class="donor-name" title="${name}">${name}</div>
+                <span class="blood-type-badge" style="background: ${bloodStyle.bg}; color: ${bloodStyle.color};">${bloodType}</span>
+                <div class="donor-location">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    ${location}
+                </div>
+            `;
+
+            return card;
+        }
+
+        async function loadDonors() {
+            if (!db) return;
+            try {
+                const donorsSnapshot = await getDocs(collection(db, 'donors'));
+                const donors = [];
+                donorsSnapshot.forEach((docSnap) => {
+                    donors.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Sort: by blood type (universal donors first), then by name
+                donors.sort((a, b) => {
+                    const order = { 'O-': 0, 'O+': 1, 'A-': 2, 'A+': 3, 'B-': 4, 'B+': 5, 'AB-': 6, 'AB+': 7 };
+                    const btA = (a.bloodType || '?').toUpperCase();
+                    const btB = (b.bloodType || '?').toUpperCase();
+                    const orderA = order[btA] !== undefined ? order[btA] : 99;
+                    const orderB = order[btB] !== undefined ? order[btB] : 99;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+
+                if (donors.length === 0) {
+                    donorsGrid.innerHTML = `
+                        <div class="donors-empty">
+                            <div class="empty-icon">🩸</div>
+                            <strong>No donors registered yet</strong>
+                            <p style="margin-top:6px; font-size:14px;">Be the first to register and save lives!</p>
+                        </div>
+                    `;
+                } else {
+                    donorsGrid.innerHTML = '';
+                    donors.forEach((donor, i) => {
+                        donorsGrid.appendChild(renderDonorCard(donor, i));
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading donors:', err);
+                donorsGrid.innerHTML = `
+                    <div class="donors-empty">
+                        <div class="empty-icon">⚠️</div>
+                        <strong>Could not load donors</strong>
+                        <p style="margin-top:6px; font-size:14px;">Please check your connection and try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        /* ---------- Google Auth Flow ---------- */
+
+        async function triggerGoogleAuth() {
+            if (!googleProvider) {
+                toast('Google authentication is not configured.', 'error');
+                return;
+            }
+            showLoading('Connecting to Google...');
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                // Auth state listener will handle the redirect
+                hideLoading();
+                return result.user;
+            } catch (err) {
+                hideLoading();
+                if (err.code === 'auth/popup-closed-by-user') {
+                    toast('Sign-in cancelled.', 'info');
+                } else if (err.code === 'auth/popup-blocked') {
+                    toast('Pop-up blocked. Please allow pop-ups for this site.', 'error');
+                } else {
+                    toast(err.message || 'Authentication failed.', 'error');
+                }
+                return null;
+            }
+        }
+
+        function handleDonorClick() {
+            if (currentUser) {
+                // Already logged in — go straight to donor dashboard
+                window.location.href = 'donor-dashboard.html';
+            } else {
+                pendingAction = 'donor';
+                triggerGoogleAuth();
+            }
+        }
+
+        function handleFinderClick() {
+            if (currentUser) {
+                // Already logged in — go straight to finder dashboard
+                window.location.href = 'finder-dashboard.html';
+            } else {
+                pendingAction = 'finder';
+                triggerGoogleAuth();
+            }
+        }
+
+        /* ---------- Event Listeners ---------- */
+        btnDonor.addEventListener('click', handleDonorClick);
+        btnFinder.addEventListener('click', handleFinderClick);
+
+        /* ---------- Session Rendering ---------- */
 
         function renderSession(user, userData) {
             if (!user) {
@@ -432,56 +840,85 @@
             const isFinder = userData?.role === 'finder' || userData?.finderId;
             const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : '#';
             const roleLabel = isDonor ? 'Donor' : isFinder ? 'Finder' : 'User';
+            const displayName = userData?.name || user.displayName || 'User';
+            const photoURL = user.photoURL ||
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&auto=format&fit=crop&q=80';
 
             sessionArea.innerHTML = `
                 <div class="session-pill">
-                    <img src="${user.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=30&auto=format&fit=crop&q=80'}" alt="User">
-                    <span>Signed in as <strong>${userData?.name || 'User'}</strong> (${roleLabel})</span>
+                    <img src="${photoURL}" alt="User Avatar">
+                    <span>Signed in as <strong>${displayName}</strong> (${roleLabel})</span>
                     <a href="${dashboardLink}" class="session-link">Dashboard</a>
-                    <span style="margin:0 8px; color:#cbd5e1;">|</span>
-                    <button id="sessionSignOut" class="btn btn-ghost" style="padding:6px 10px; font-size:13px;">Sign Out</button>
+                    <span class="session-divider">|</span>
+                    <button id="sessionSignOut" class="btn btn-ghost btn-sm">Sign Out</button>
                 </div>
             `;
             sessionArea.style.display = 'flex';
-            document.getElementById('sessionSignOut').addEventListener('click', async () => {
-                showLoading('Signing out...');
-                try {
-                    await fbSignOut(auth);
-                    hideLoading();
-                    // Auth state listener will auto-hide the session area
-                } catch (err) {
-                    hideLoading();
-                    toast(err.message, 'error');
-                }
-            });
+
+            const signOutBtn = document.getElementById('sessionSignOut');
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', async () => {
+                    showLoading('Signing out...');
+                    try {
+                        await fbSignOut(auth);
+                        hideLoading();
+                        // Auth state listener will auto-hide the session area
+                    } catch (err) {
+                        hideLoading();
+                        toast(err.message || 'Sign out failed.', 'error');
+                    }
+                });
+            }
         }
 
+        /* ---------- Auth State Watcher ---------- */
+
         onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+
             if (user) {
                 let userData = null;
                 try {
                     const donorSnap = await getDoc(doc(db, 'donors', user.uid));
                     if (donorSnap.exists()) {
-                        userData = donorSnap.data();
-                        userData.role = 'donor';
+                        userData = { ...donorSnap.data(), role: 'donor' };
                     } else {
                         const finderSnap = await getDoc(doc(db, 'finders', user.uid));
                         if (finderSnap.exists()) {
-                            userData = finderSnap.data();
-                            userData.role = 'finder';
+                            userData = { ...finderSnap.data(), role: 'finder' };
                         }
                     }
                 } catch (err) {
                     console.error('Error fetching user data:', err);
                 }
                 renderSession(user, userData);
+
+                // Handle pending redirect after auth
+                if (pendingAction) {
+                    const target = pendingAction === 'donor' ? 'donor-dashboard.html' : 'finder-dashboard.html';
+                    pendingAction = null;
+                    // Small delay to let the UI update before redirect
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 200);
+                }
             } else {
                 renderSession(null);
             }
         });
+
+        /* ---------- Load Donors on Page Load ---------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDonors();
+        });
+
+        // Fallback in case DOMContentLoaded already fired
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            loadDonors();
+        }
     </script>
 
-    <!-- Vercel Feedback Script (Keep if needed for your deployment) -->
+    <!-- Vercel Feedback Script -->
     <script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_FtiwLj7uLXXrhXbQa2gVxBx6TqKf" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
 
 </body>
