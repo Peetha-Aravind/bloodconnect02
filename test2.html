@@ -109,7 +109,6 @@
             position: relative;
         }
 
-        /* Hamburger (mobile only) */
         .hamburger-btn {
             display: none;
             background: none;
@@ -121,11 +120,9 @@
             flex-shrink: 0;
             z-index: 1100;
         }
-
         .hamburger-btn:hover {
             background: rgba(225, 29, 72, 0.1);
         }
-
         .hamburger-btn svg {
             width: 26px;
             height: 26px;
@@ -144,7 +141,6 @@
             cursor: pointer;
             flex-shrink: 0;
         }
-
         .nav-logo-icon {
             width: 38px;
             height: 38px;
@@ -152,7 +148,6 @@
             filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.35));
             animation: pulse-drop 2.5s ease-in-out infinite;
         }
-
         @keyframes pulse-drop {
             0%,
             100% {
@@ -162,7 +157,6 @@
                 transform: scale(1.06);
             }
         }
-
         .nav-logo-text {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 28px;
@@ -171,7 +165,6 @@
             white-space: nowrap;
             line-height: 1;
         }
-
         .nav-logo-text .accent {
             color: var(--primary);
         }
@@ -194,11 +187,9 @@
             font-family: 'DM Sans', sans-serif;
             color: var(--text-dark);
         }
-
         .profile-btn:hover {
             background: rgba(225, 29, 72, 0.08);
         }
-
         .profile-btn .profile-avatar,
         .dropdown-header .dropdown-avatar {
             width: 40px;
@@ -216,7 +207,6 @@
             flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
         .profile-btn .profile-name {
             font-weight: 600;
             font-size: 14px;
@@ -226,14 +216,12 @@
             text-overflow: ellipsis;
             color: var(--text-dark);
         }
-
         .profile-btn .profile-chevron {
             transition: transform 0.25s ease;
             display: flex;
             align-items: center;
             color: #64748b;
         }
-
         .profile-btn .profile-chevron.open {
             transform: rotate(180deg);
         }
@@ -255,13 +243,11 @@
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
             white-space: nowrap;
         }
-
         .signin-btn:hover {
             background: var(--primary-hover);
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
         }
-
         .signin-btn svg {
             width: 18px;
             height: 18px;
@@ -271,7 +257,6 @@
             flex-shrink: 0;
         }
 
-        /* Profile Dropdown (desktop) */
         .profile-dropdown {
             position: absolute;
             top: calc(100% + 12px);
@@ -289,7 +274,6 @@
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 100;
         }
-
         .profile-dropdown.active {
             opacity: 1;
             visibility: visible;
@@ -304,18 +288,15 @@
             background: linear-gradient(135deg, #fff1f2, #fff);
             border-bottom: 1px solid #f1f5f9;
         }
-
         .dropdown-header .dropdown-avatar {
             width: 44px;
             height: 44px;
             font-size: 17px;
         }
-
         .dropdown-header .dropdown-info {
             flex: 1;
             min-width: 0;
         }
-
         .dropdown-header .dropdown-name {
             font-weight: 700;
             font-size: 15px;
@@ -324,7 +305,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .dropdown-header .dropdown-email {
             font-size: 12px;
             color: var(--text-gray);
@@ -332,7 +312,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .dropdown-header .dropdown-role {
             display: inline-block;
             font-size: 10px;
@@ -349,7 +328,6 @@
         .dropdown-body {
             padding: 6px;
         }
-
         .dropdown-item {
             display: flex;
             align-items: center;
@@ -368,11 +346,9 @@
             transition: background 0.15s ease;
             text-align: left;
         }
-
         .dropdown-item:hover {
             background: #f8fafc;
         }
-
         .dropdown-item svg {
             width: 18px;
             height: 18px;
@@ -381,7 +357,6 @@
             stroke-width: 2;
             flex-shrink: 0;
         }
-
         .dropdown-item.signout-item {
             color: var(--primary);
             font-weight: 600;
@@ -389,7 +364,6 @@
         .dropdown-item.signout-item svg {
             stroke: var(--primary);
         }
-
         .dropdown-divider {
             height: 1px;
             background: #f1f5f9;
@@ -473,7 +447,6 @@
             backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(2px);
         }
-
         .mobile-overlay.active {
             opacity: 1;
             visibility: visible;
@@ -495,7 +468,6 @@
             overflow-y: auto;
             border-radius: 0 20px 20px 0;
         }
-
         .mobile-slidebar.active {
             left: 0;
         }
@@ -508,7 +480,6 @@
             border-bottom: 1px solid #f1f5f9;
             flex-shrink: 0;
         }
-
         .mobile-slidebar-header .slidebar-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 22px;
@@ -518,7 +489,6 @@
         .mobile-slidebar-header .slidebar-title .accent {
             color: var(--primary);
         }
-
         .mobile-close-btn {
             background: #f1f5f9;
             border: none;
@@ -549,25 +519,46 @@
             flex: 1;
             padding: 16px 14px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .mobile-slidebar-footer {
-            padding: 16px 18px;
+            padding: 16px 18px 20px;
             border-top: 1px solid #f1f5f9;
             flex-shrink: 0;
             background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-
-        .mobile-slidebar-footer .slidebar-email {
-            font-size: 12px;
+        .slidebar-email-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
             color: var(--text-gray);
-            margin-bottom: 10px;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            word-break: break-all;
         }
-
+        .slidebar-email-link:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+        .slidebar-email-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--primary);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
         .mobile-slidebar-footer .logout-btn {
             display: flex;
             align-items: center;
@@ -599,18 +590,19 @@
             stroke-linejoin: round;
         }
 
-        .mobile-slidebar .slidebar-user-info {
+        .slidebar-user-info {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 14px;
+            padding: 14px 16px;
             background: #f8fafc;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
         }
-        .mobile-slidebar .slidebar-user-info .slidebar-avatar {
-            width: 44px;
-            height: 44px;
+        .slidebar-user-info .slidebar-avatar {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #ffe4e6;
@@ -619,30 +611,32 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
             color: #fff;
             flex-shrink: 0;
         }
-        .mobile-slidebar .slidebar-user-info .slidebar-user-name {
+        .slidebar-user-info .slidebar-user-name {
             font-weight: 700;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--text-dark);
+            margin-bottom: 2px;
+            letter-spacing: 0.3px;
         }
-        .mobile-slidebar .slidebar-user-info .slidebar-user-role {
+        .slidebar-user-info .slidebar-user-role {
             font-size: 11px;
             color: var(--primary);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
         }
 
-        .mobile-slidebar .slidebar-nav-item {
+        .slidebar-nav-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
+            padding: 14px 16px;
+            border-radius: 12px;
             border: none;
             background: none;
             cursor: pointer;
@@ -651,26 +645,28 @@
             font-weight: 500;
             color: var(--text-dark);
             text-decoration: none;
-            transition: background 0.15s;
+            transition: background 0.15s ease;
             text-align: left;
+            flex-shrink: 0;
+            margin-bottom: 2px;
         }
-        .mobile-slidebar .slidebar-nav-item:hover {
+        .slidebar-nav-item:hover {
             background: #f8fafc;
         }
-        .mobile-slidebar .slidebar-nav-item svg {
-            width: 18px;
-            height: 18px;
+        .slidebar-nav-item svg {
+            width: 20px;
+            height: 20px;
             stroke: #64748b;
             fill: none;
             stroke-width: 2;
             flex-shrink: 0;
         }
 
-        .mobile-slidebar .slidebar-signin-prompt {
+        .slidebar-signin-prompt {
             text-align: center;
             padding: 20px 10px;
         }
-        .mobile-slidebar .slidebar-signin-prompt .prompt-icon {
+        .slidebar-signin-prompt .prompt-icon {
             width: 56px;
             height: 56px;
             border-radius: 50%;
@@ -680,24 +676,24 @@
             justify-content: center;
             margin: 0 auto 14px;
         }
-        .mobile-slidebar .slidebar-signin-prompt .prompt-icon svg {
+        .slidebar-signin-prompt .prompt-icon svg {
             width: 28px;
             height: 28px;
             stroke: var(--primary);
             fill: none;
             stroke-width: 2;
         }
-        .mobile-slidebar .slidebar-signin-prompt h4 {
+        .slidebar-signin-prompt h4 {
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 6px;
         }
-        .mobile-slidebar .slidebar-signin-prompt p {
+        .slidebar-signin-prompt p {
             font-size: 13px;
             color: var(--text-gray);
             margin-bottom: 16px;
         }
-        .mobile-slidebar .slidebar-google-btn {
+        .slidebar-google-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -714,11 +710,11 @@
             color: var(--text-dark);
             transition: all 0.2s;
         }
-        .mobile-slidebar .slidebar-google-btn:hover {
+        .slidebar-google-btn:hover {
             border-color: #cbd5e1;
             background: #f8fafc;
         }
-        .mobile-slidebar .slidebar-google-btn svg {
+        .slidebar-google-btn svg {
             width: 18px;
             height: 18px;
             flex-shrink: 0;
@@ -1114,17 +1110,13 @@
             :root {
                 --nav-height: 58px;
             }
-
-            /* Mobile navbar: hamburger left, logo centered, profile right */
             .hamburger-btn {
                 display: flex;
             }
-
             .nav-container {
                 padding: 0 12px;
                 gap: 8px;
             }
-
             .nav-logo {
                 position: absolute;
                 left: 50%;
@@ -1139,7 +1131,6 @@
                 font-size: 21px;
                 letter-spacing: 0.8px;
             }
-
             .nav-profile {
                 margin-left: auto;
             }
@@ -1156,7 +1147,6 @@
             .profile-btn .profile-chevron {
                 display: none;
             }
-
             .signin-btn {
                 padding: 8px 14px;
                 font-size: 12px;
@@ -1166,8 +1156,6 @@
                 width: 16px;
                 height: 16px;
             }
-
-            /* Hide desktop dropdown on mobile */
             .profile-dropdown {
                 display: none;
             }
@@ -1233,6 +1221,26 @@
                 padding: 3px 8px;
                 margin-top: 4px;
             }
+
+            .mobile-slidebar-body {
+                padding: 16px 12px;
+                gap: 8px;
+            }
+            .slidebar-user-info {
+                padding: 16px 16px;
+                gap: 14px;
+                margin-bottom: 12px;
+            }
+            .slidebar-nav-item {
+                padding: 14px 16px;
+                gap: 14px;
+                font-size: 15px;
+                margin-bottom: 4px;
+            }
+            .mobile-slidebar-footer {
+                padding: 14px 16px 18px;
+                gap: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1295,7 +1303,6 @@
     <!-- ========== NAVBAR ========== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Hamburger (mobile only) -->
             <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
                 <svg viewBox="0 0 24 24">
                     <line x1="4" y1="7" x2="20" y2="7" />
@@ -1304,7 +1311,6 @@
                 </svg>
             </button>
 
-            <!-- Logo -->
             <a href="#" class="nav-logo" title="BloodConnect Home">
                 <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" fill="#e11d48" stroke="#be123c" stroke-width="0.8"/>
@@ -1313,11 +1319,9 @@
                 <span class="nav-logo-text">BLOOD<span class="accent">CONNECT</span></span>
             </a>
 
-            <!-- Profile Area -->
             <div class="nav-profile" id="navProfile"></div>
         </div>
 
-        <!-- Desktop Dropdown -->
         <div class="profile-dropdown" id="profileDropdown"></div>
     </nav>
 
@@ -1360,7 +1364,6 @@
             </div>
         </div>
 
-        <!-- Donors Display (hidden until login) -->
         <div class="donors-section hidden" id="donorsSection">
             <div class="donors-heading">
                 <h2>REGISTERED <span class="accent">DONORS</span></h2>
@@ -1416,7 +1419,6 @@
         </div>
     </footer>
 
-    <!-- Firebase Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1438,7 +1440,6 @@
         const googleProvider = new GoogleAuthProvider();
         googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-        // DOM elements
         const btnDonor = document.getElementById('btnDonor');
         const btnFinder = document.getElementById('btnFinder');
         const donorsGrid = document.getElementById('donorsGrid');
@@ -1458,7 +1459,6 @@
         let pendingAction = null;
         let dropdownOpen = false;
 
-        // ========== NAVBAR SCROLL ==========
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
                 navbar.classList.add('scrolled');
@@ -1467,7 +1467,6 @@
             }
         });
 
-        // ========== CLICK OUTSIDE TO CLOSE DROPDOWN ==========
         document.addEventListener('click', (e) => {
             if (dropdownOpen && !navbar.contains(e.target)) {
                 closeDropdown();
@@ -1488,7 +1487,6 @@
             if (chevron) chevron.classList.toggle('open', dropdownOpen);
         }
 
-        // ========== MOBILE SLIDE BAR ==========
         function openMobileSlidebar() {
             mobileOverlay.classList.add('active');
             mobileSlidebar.classList.add('active');
@@ -1561,7 +1559,6 @@
             card.className = 'donor-card';
             card.style.animationDelay = `${Math.min(index * 0.04, 0.8)}s`;
 
-            // Phone number is masked — only visible after request acceptance (demonstration)
             const phoneDisplay = phone ?
                 `<div class="donor-phone" title="Phone number visible after request acceptance">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
@@ -1696,7 +1693,6 @@
         function renderNavProfile(user, userData) {
             currentUserData = userData;
 
-            // Desktop dropdown
             if (!user) {
                 navProfile.innerHTML = `
                     <button class="signin-btn" id="navSignInBtn" title="Sign in to BloodConnect">
@@ -1728,7 +1724,6 @@
                 if (signInBtn) signInBtn.addEventListener('click', (e) => { e.stopPropagation(); triggerGoogleAuth(); });
                 if (googleBtn) googleBtn.addEventListener('click', (e) => { e.stopPropagation(); triggerGoogleAuth(); });
 
-                // Mobile slidebar signed-out
                 mobileSlidebarBody.innerHTML = `
                     <div class="slidebar-signin-prompt">
                         <div class="prompt-icon">
@@ -1753,10 +1748,9 @@
                 if (mobileGoogleBtn) mobileGoogleBtn.addEventListener('click', triggerGoogleAuth);
 
             } else {
-                // Signed in state
                 const isDonor = userData?.role === 'donor' || userData?.donorId;
                 const isFinder = userData?.role === 'finder' || userData?.finderId;
-                const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : '#';
+                const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : 'dashboard.html';
                 const roleLabel = isDonor ? 'Donor' : isFinder ? 'Finder' : 'Member';
                 const displayName = userData?.name || user.displayName || 'User';
                 const email = user.email || 'No email available';
@@ -1784,7 +1778,6 @@
                      <div class="dropdown-avatar" style="background:${avatarBg}; display:none;">${initials}</div>` :
                     `<div class="dropdown-avatar" style="background:${avatarBg};">${initials}</div>`;
 
-                // Desktop dropdown — only Dashboard and Sign Out (removed Register Donor and Find Blood)
                 profileDropdown.innerHTML = `
                     <div class="dropdown-header">
                         ${dropdownAvatarHtml}
@@ -1807,7 +1800,7 @@
                     </div>
                 `;
 
-                // Mobile slidebar — full content
+                // Mobile slidebar — updated with breathing space and new options
                 mobileSlidebarBody.innerHTML = `
                     <div class="slidebar-user-info">
                         ${photoURL ?
@@ -1824,18 +1817,26 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                         Dashboard
                     </a>
-                    <a href="find-blood.html" class="slidebar-nav-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                        Find Blood
+                    <a href="emergency-alerts.html" class="slidebar-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+                        Emergency Alerts
                     </a>
-                    <a href="register-donor.html" class="slidebar-nav-item">
+                    <a href="my-donation.html" class="slidebar-nav-item">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                        Register as Donor
+                        My Donation
+                    </a>
+                    <a href="profile-location.html" class="slidebar-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Profile & Location
                     </a>
                 `;
 
+                // Mobile footer with email link and sign out below
                 mobileSlidebarFooter.innerHTML = `
-                    <div class="slidebar-email">${email}</div>
+                    <a class="slidebar-email-link" href="mailto:${email}" title="Click to email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                        ${email}
+                    </a>
                     <button class="logout-btn" id="mobileLogoutBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                         Sign Out
@@ -1849,7 +1850,6 @@
                 if (profileBtn) {
                     profileBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        // On mobile, open slidebar; on desktop, open dropdown
                         if (window.innerWidth <= 768) {
                             openMobileSlidebar();
                         } else {
@@ -1898,7 +1898,6 @@
                 }
                 renderNavProfile(user, userData);
 
-                // Show donors section after login
                 donorsSection.classList.remove('hidden');
                 loadDonors();
 
@@ -1913,10 +1912,6 @@
                 pendingAction = null;
             }
         });
-
-        // ========== INITIAL LOAD ==========
-        // Donors section starts hidden; will be shown after auth state loads if logged in.
-        // loadDonors is called from the auth state watcher when user is logged in.
     </script>
 </body>
 </html>
