@@ -67,14 +67,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Hero */
@@ -318,14 +312,8 @@
         }
 
         @keyframes cardAppear {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .donor-avatar {
@@ -394,9 +382,7 @@
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .donors-empty {
@@ -480,57 +466,32 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 4rem;
-            }
-            .hero-sub {
-                font-size: 1.1rem;
-            }
+            .hero-title { font-size: 4rem; }
+            .hero-sub { font-size: 1.1rem; }
             .landing-btns {
                 flex-direction: column;
                 width: 100%;
                 max-width: 320px;
                 margin: 30px auto 0 auto;
             }
-            .landing-btns .btn {
-                width: 100%;
-            }
+            .landing-btns .btn { width: 100%; }
             .stats-row {
                 gap: 25px;
                 flex-direction: column;
                 margin-top: 40px;
                 padding: 25px 20px;
             }
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
-            .donors-heading h2 {
-                font-size: 2.4rem;
-            }
-            .donors-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
-            }
-            .donor-card {
-                padding: 16px 12px;
-            }
-            .session-pill {
-                padding: 8px 14px;
-                font-size: 13px;
-            }
+            .footer-content { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .donors-heading h2 { font-size: 2.4rem; }
+            .donors-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+            .donor-card { padding: 16px 12px; }
+            .session-pill { padding: 8px 14px; font-size: 13px; }
         }
 
         @media (max-width: 480px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            .donors-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .hero-title {
-                font-size: 3.2rem;
-            }
+            .footer-content { grid-template-columns: 1fr; }
+            .donors-grid { grid-template-columns: 1fr 1fr; }
+            .hero-title { font-size: 3.2rem; }
         }
     </style>
 </head>
@@ -602,9 +563,9 @@
             <div class="footer-col">
                 <h3>Quick Links</h3>
                 <ul>
+                    <li><a href="register-donor.html">Register as Donor</a></li>
+                    <li><a href="find-blood.html">Find Blood</a></li>
                     <li><a href="donor-dashboard.html">Donor Dashboard</a></li>
-                    <li><a href="finder-dashboard.html">Finder Dashboard</a></li>
-                    <li><a href="index.html">Home</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -805,8 +766,8 @@
 
         function handleDonorClick() {
             if (currentUser) {
-                // Already logged in — go straight to donor dashboard
-                window.location.href = 'donor-dashboard.html';
+                // Already logged in — go straight to donor dashboard (or registration if not donor yet)
+                window.location.href = 'register-donor.html';
             } else {
                 pendingAction = 'donor';
                 triggerGoogleAuth();
@@ -816,7 +777,7 @@
         function handleFinderClick() {
             if (currentUser) {
                 // Already logged in — go straight to finder dashboard
-                window.location.href = 'finder-dashboard.html';
+                window.location.href = 'find-blood.html';
             } else {
                 pendingAction = 'finder';
                 triggerGoogleAuth();
@@ -838,7 +799,7 @@
 
             const isDonor = userData?.role === 'donor' || userData?.donorId;
             const isFinder = userData?.role === 'finder' || userData?.finderId;
-            const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : '#';
+            const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'find-blood.html' : '#';
             const roleLabel = isDonor ? 'Donor' : isFinder ? 'Finder' : 'User';
             const displayName = userData?.name || user.displayName || 'User';
             const photoURL = user.photoURL ||
@@ -895,7 +856,7 @@
 
                 // Handle pending redirect after auth
                 if (pendingAction) {
-                    const target = pendingAction === 'donor' ? 'donor-dashboard.html' : 'finder-dashboard.html';
+                    const target = pendingAction === 'donor' ? 'register-donor.html' : 'find-blood.html';
                     pendingAction = null;
                     // Small delay to let the UI update before redirect
                     setTimeout(() => {
@@ -918,7 +879,7 @@
         }
     </script>
 
-    <!-- Vercel Feedback Script -->
+    <!-- Vercel Feedback Script (optional) -->
     <script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_FtiwLj7uLXXrhXbQa2gVxBx6TqKf" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
 
 </body>
