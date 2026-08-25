@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Profile Settings</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES & RESET ===== */
+        :root {
+            --primary-color: #e11d48;
+            --primary-hover: #be123c;
+            --bg-sidebar: #ffffff;
+            --bg-sidebar-hover: #f1f5f9;
+            --text-main: #64748b;
+            --text-dark: #0f172a;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --body-bg: #f8fafc;
+            --transition: all 0.25s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            display: flex;
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 270px;
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            border-right: 1px solid var(--border-color);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.02);
+        }
+        .sidebar-brand {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border-color);
+            height: 70px;
+        }
+        .sidebar-brand i { font-size: 26px; color: var(--primary-color); }
+        .sidebar-brand h2 { font-size: 20px; font-weight: 600; }
+        .sidebar-brand span { color: var(--primary-color); }
+        .sidebar-menu {
+            list-style: none;
+            padding: 15px 12px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .menu-category {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #94a3b8;
+            padding: 12px 10px 6px 10px;
+        }
+        .sidebar-menu li { margin-bottom: 4px; }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+        .nav-link i { font-size: 16px; width: 20px; text-align: center; color: #94a3b8; transition: var(--transition); }
+        .nav-link:hover { background-color: var(--bg-sidebar-hover); color: var(--text-dark); transform: translateX(3px); }
+        .nav-link:hover i { color: var(--primary-color); }
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+        }
+        .nav-link.active i { color: #ffffff; }
+        .badge {
+            margin-left: auto;
+            background-color: #f1f5f9;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 12px;
+            color: var(--text-main);
+        }
+        .nav-link.active .badge { background-color: rgba(255,255,255,0.2); color: #ffffff; }
+        .badge.alert { background-color: #ffe4e6; color: var(--primary-color); }
+        .nav-link.active .badge.alert { background-color: #ffffff; color: var(--primary-color); }
+
+        /* User profile summary */
+        .user-profile {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+        .user-profile:hover { background-color: var(--bg-sidebar-hover); }
+        .user-profile img {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ca8a04;
+        }
+        .user-info h4 { font-size: 13px; font-weight: 500; color: var(--text-dark); }
+        .user-info p { font-size: 11px; display: flex; align-items: center; gap: 5px; color: #ca8a04; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #059669; box-shadow: 0 0 6px #059669; }
+        .status-dot.yellow { background: #ca8a04; box-shadow: 0 0 6px #ca8a04; }
+        .status-dot.inactive { background: #94a3b8; box-shadow: none; }
+
+        /* Profile popup */
+        .profile-popup {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 5px);
+            left: 12px; right: 12px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 8px;
+            z-index: 1001;
+            animation: popupFadeIn 0.2s ease-out;
+        }
+        .profile-popup.active { display: block; }
+        .popup-email {
+            font-size: 13px;
+            color: var(--text-dark);
+            padding: 8px 10px 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 6px;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        .nav-link-logout { color: var(--primary-color); }
+        .nav-link-logout i { color: var(--primary-color); }
+        .nav-link-logout:hover, .nav-link-logout.active {
+            background-color: #ffe4e6;
+            color: var(--primary-hover);
+            box-shadow: none;
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== WRAPPER & TOPBAR ===== */
+        .wrapper {
+            margin-left: 270px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+        .topbar {
+            background-color: #ffffff;
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .topbar-title h2 { font-size: 18px; font-weight: 600; color: var(--text-dark); }
+        .topbar-title p { font-size: 12px; color: var(--text-main); }
+        .menu-toggle {
+            display: none;
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: 40px;
+            flex-grow: 1;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== PROFILE FORM STYLES ===== */
+        .profile-form-container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 24px;
+        }
+        .profile-avatar-large {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .profile-header-info h3 { font-size: 20px; color: var(--text-dark); font-weight: 600; }
+        .profile-header-info p { color: var(--text-main); font-size: 13px; margin-top: 4px; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group select {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            background-color: #ffffff;
+            color: var(--text-dark);
+            width: 100%;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        }
+        .form-group input:disabled, .form-group select:disabled {
+            background-color: #f8fafc;
+            color: #94a3b8;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+        .field-hint { font-size: 11px; color: #94a3b8; font-style: italic; }
+
+        .profile-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary { background-color: #e11d48; color: #fff; }
+        .btn-primary:hover { background-color: #be123c; }
+        .btn-success { background-color: #059669; color: #fff; }
+        .btn-success:hover { background-color: #047857; }
+        .btn-secondary { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .btn-secondary:hover { background-color: #e2e8f0; color: #0f172a; }
+
+        /* ===== LOADING & TOAST ===== */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #e11d48;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #toast {
+            position: fixed; bottom: 20px; right: 20px;
+            z-index: 3000;
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: opacity 0.3s;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .sidebar { left: -270px; }
+            .sidebar.active { left: 0; }
+            .wrapper { margin-left: 0; }
+            .menu-toggle { display: block; }
+            .topbar { padding: 0 20px; }
+            .main-content { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; gap: 12px; }
+            .profile-buttons { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h2>Blood<span>Connect</span></h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-category">Overview</li>
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-house-medical"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-category">Activity</li>
+            <li>
+                <a href="emergency.html" class="nav-link">
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <span>Emergency Alerts</span>
+                    <span class="badge alert" id="emergency-badge">0</span>
+                </a>
+            </li>
+            <li>
+                <a href="history.html" class="nav-link">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>My Donations</span>
+                </a>
+            </li>
+            <li class="menu-category">Settings</li>
+            <li>
+                <a href="profile-settings.html" class="nav-link active">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Profile & Location</span>
+                </a>
+            </li>
+        </ul>
+        <div class="user-profile" id="userProfileBtn">
+            <img id="dd-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="User Avatar">
+            <div class="user-info">
+                <h4 id="dd-name">Loading...</h4>
+                <p id="dd-status-text"><span class="status-dot yellow"></span> Recovery Period</p>
+            </div>
+            <div class="profile-popup" id="profilePopup">
+                <div class="popup-email" id="dd-email">Loading email...</div>
+                <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER ===== -->
+    <div class="wrapper">
+        <header class="topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    <h2>Profile Settings</h2>
+                    <p>Update your personal details and location preferences.</p>
+                </div>
+            </div>
+            <div class="topbar-right"></div>
+        </header>
+
+        <main class="main-content" id="mainContent">
+            <!-- Profile form injected by JS -->
+        </main>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading" style="display:none;">
+        <div style="background:white; padding:20px 30px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
+            <div class="spinner"></div>
+            <p id="loading-msg" style="margin-top:10px; font-size:14px;">Please wait...</p>
+        </div>
+    </div>
+    <div id="toast"></div>
+
+    <script type="module">
+        import { auth, onAuthStateChanged, db, doc, getDoc, updateDoc, fbSignOut } from "./firebase-config.js";
+        import { showLoading, hideLoading, toast } from "./utils.js";
+
+        let donor = null;
+        let isEditing = false;
+        const mainContent = document.getElementById('mainContent');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const userProfileBtn = document.getElementById('userProfileBtn');
+        const profilePopup = document.getElementById('profilePopup');
+
+        // ===== Helpers =====
+        function formatDate(value) {
+            if (!value) return 'No record';
+            const date = value?.toDate ? value.toDate() : new Date(value);
+            if (isNaN(date.getTime())) return 'No record';
+            return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function getEligibilityInfo() {
+            if (!donor?.lastDonationDate && !donor?.lastDonation) return { isRecovery: false, text: 'No donation yet', tag: 'gray' };
+            const lastDate = donor.lastDonationDate?.toDate ? donor.lastDonationDate.toDate() : new Date(donor.lastDonationDate || donor.lastDonation);
+            if (isNaN(lastDate.getTime())) return { isRecovery: false, text: 'Unknown', tag: 'gray' };
+            const eligibleDate = new Date(lastDate);
+            eligibleDate.setDate(eligibleDate.getDate() + 90);
+            const now = new Date();
+            return eligibleDate > now
+                ? { isRecovery: true, text: `Eligible after ${formatDate(eligibleDate)}`, tag: 'yellow' }
+                : { isRecovery: false, text: 'Eligible now', tag: 'green' };
+        }
+
+        function getField(field, fallback = '') {
+            return donor?.[field] ?? fallback;
+        }
+
+        // ===== Render profile form =====
+        function renderProfileForm() {
+            if (!donor) return;
+            const disabled = isEditing ? '' : 'disabled';
+            const hint = isEditing ? '' : '<span class="field-hint">Click "Edit Profile" to make changes</span>';
+            const avatar = auth.currentUser?.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80';
+
+            mainContent.innerHTML = `
+                <div class="profile-form-container">
+                    <div class="profile-header">
+                        <img src="${avatar}" class="profile-avatar-large" alt="Profile Picture">
+                        <div class="profile-header-info">
+                            <h3>${donor.name || 'Donor'}</h3>
+                            <p>Registered Donor &bull; Member since 2024</p>
+                            <p style="font-size: 12px; margin-top: 4px; color: #94a3b8;">
+                                <i class="fa-solid fa-envelope"></i> ${auth.currentUser?.email || 'No email'}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="pf-name">Full Name</label>
+                            <input type="text" id="pf-name" value="${getField('name')}" ${disabled}>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-phone">Phone Number</label>
+                            <input type="tel" id="pf-phone" value="${getField('phone')}" ${disabled}>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-blood-group">Blood Group</label>
+                            <select id="pf-blood-group" ${disabled}>
+                                <option value="">Select Blood Group</option>
+                                ${['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(bg =>
+                                    `<option value="${bg}" ${donor.bloodGroup === bg ? 'selected' : ''}>${bg}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-age">Age</label>
+                            <input type="number" id="pf-age" value="${getField('age')}" ${disabled} min="18" max="65">
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-gender">Gender</label>
+                            <select id="pf-gender" ${disabled}>
+                                <option value="">Select Gender</option>
+                                <option value="Male" ${donor.gender === 'Male' ? 'selected' : ''}>Male</option>
+                                <option value="Female" ${donor.gender === 'Female' ? 'selected' : ''}>Female</option>
+                                <option value="Other" ${donor.gender === 'Other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-weight">Weight (kg)</label>
+                            <input type="number" id="pf-weight" value="${getField('weight')}" ${disabled} min="45" max="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-location">Primary Location</label>
+                            <input type="text" id="pf-location" value="${getField('location')}" ${disabled}>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-city">City</label>
+                            <input type="text" id="pf-city" value="${getField('city')}" ${disabled}>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-state">State</label>
+                            <input type="text" id="pf-state" value="${getField('state')}" ${disabled}>
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-pincode">Pincode</label>
+                            <input type="text" id="pf-pincode" value="${getField('pincode')}" ${disabled} maxlength="10">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="pf-address">Full Address</label>
+                            <input type="text" id="pf-address" value="${getField('address')}" ${disabled}>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="pf-medical">Medical Conditions</label>
+                            <input type="text" id="pf-medical" value="${getField('medicalConditions')}" ${disabled} placeholder="Any health conditions we should know about">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Last Donation Date</label>
+                            <input type="text" value="${formatDate(donor.lastDonationDate || donor.lastDonation)}" disabled style="background-color:#f8fafc; color:#94a3b8; cursor:not-allowed;">
+                        </div>
+                    </div>
+
+                    ${hint}
+
+                    <div class="profile-buttons" style="margin-top: 20px;">
+                        ${!isEditing ? `
+                            <button class="btn btn-primary" id="btn-edit-profile">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+                            </button>
+                        ` : `
+                            <button class="btn btn-success" id="btn-save-profile">
+                                <i class="fa-solid fa-check"></i> Save Changes
+                            </button>
+                            <button class="btn btn-secondary" id="btn-cancel-edit">
+                                <i class="fa-solid fa-xmark"></i> Cancel
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            // Attach button events
+            document.getElementById('btn-edit-profile')?.addEventListener('click', () => {
+                isEditing = true;
+                renderProfileForm();
+            });
+            document.getElementById('btn-save-profile')?.addEventListener('click', saveProfile);
+            document.getElementById('btn-cancel-edit')?.addEventListener('click', () => {
+                isEditing = false;
+                renderProfileForm();
+            });
+        }
+
+        // ===== Save profile to Firestore =====
+        async function saveProfile() {
+            if (!donor?.uid) {
+                toast('Donor data not loaded.', 'error');
+                return;
+            }
+
+            const name = document.getElementById('pf-name').value.trim();
+            const phone = document.getElementById('pf-phone').value.trim();
+            const bloodGroup = document.getElementById('pf-blood-group').value;
+            const age = document.getElementById('pf-age').value;
+            const gender = document.getElementById('pf-gender').value;
+            const weight = document.getElementById('pf-weight').value;
+            const location = document.getElementById('pf-location').value.trim();
+            const city = document.getElementById('pf-city').value.trim();
+            const state = document.getElementById('pf-state').value.trim();
+            const pincode = document.getElementById('pf-pincode').value.trim();
+            const address = document.getElementById('pf-address').value.trim();
+            const medicalConditions = document.getElementById('pf-medical').value.trim();
+
+            if (!name) { toast('Please enter your full name.', 'error'); return; }
+            if (!phone) { toast('Please enter your phone number.', 'error'); return; }
+            if (!bloodGroup) { toast('Please select your blood group.', 'error'); return; }
+
+            const updates = {
+                name,
+                phone,
+                bloodGroup,
+                age: age ? parseInt(age) : '',
+                gender,
+                weight: weight ? parseInt(weight) : '',
+                location,
+                city,
+                state,
+                pincode,
+                address,
+                medicalConditions,
+                updatedAt: new Date().toISOString()
+            };
+            Object.keys(updates).forEach(key => {
+                if (updates[key] === '' || updates[key] === undefined) delete updates[key];
+            });
+
+            showLoading('Saving your profile...');
+            try {
+                await updateDoc(doc(db, 'donors', donor.uid), updates);
+                donor = { ...donor, ...updates };
+                isEditing = false;
+                hideLoading();
+                toast('Profile updated successfully!', 'success');
+                updateSidebarProfile();
+                renderProfileForm();
+            } catch (err) {
+                hideLoading();
+                toast('Failed to save: ' + err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        // ===== Update sidebar info =====
+        function updateSidebarProfile() {
+            if (!donor) return;
+            document.getElementById('dd-name').textContent = donor.name || 'Donor';
+            const eligibility = getEligibilityInfo();
+            document.getElementById('dd-status-text').innerHTML =
+                `<span class="status-dot ${eligibility.isRecovery ? 'yellow' : 'green'}"></span> ${eligibility.isRecovery ? 'Recovery Period' : 'Active Donor'}`;
+            document.getElementById('dd-avatar').src = auth.currentUser?.photoURL ||
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80';
+            document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email';
+        }
+
+        // ===== Auth & data loading =====
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login-donor.html';
+                return;
+            }
+            const snap = await getDoc(doc(db, 'donors', user.uid));
+            if (!snap.exists()) {
+                window.location.href = 'onboarding.html';
+                return;
+            }
+            donor = { ...snap.data(), uid: user.uid };
+            updateSidebarProfile();
+            renderProfileForm();
+        });
+
+        // ===== Sidebar mobile toggle =====
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // ===== Profile popup =====
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
+                profilePopup.classList.remove('active');
+            }
+        });
+
+        // ===== Logout =====
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            showLoading('Signing out...');
+            try {
+                await fbSignOut(auth);
+                hideLoading();
+                window.location.href = 'index.html';
+            } catch (err) {
+                hideLoading();
+                toast(err.message, 'error');
+            }
+        });
+
+        // ===== Fallback functions (if utils not loaded) =====
+        if (typeof showLoading !== 'function') {
+            window.showLoading = (msg) => {
+                const overlay = document.getElementById('loading');
+                const msgEl = document.getElementById('loading-msg');
+                if (msgEl) msgEl.textContent = msg || 'Please wait...';
+                if (overlay) overlay.style.display = 'flex';
+            };
+        }
+        if (typeof hideLoading !== 'function') {
+            window.hideLoading = () => {
+                document.getElementById('loading').style.display = 'none';
+            };
+        }
+        if (typeof toast !== 'function') {
+            window.toast = (msg, type) => {
+                const toastEl = document.getElementById('toast');
+                if (!toastEl) return;
+                toastEl.textContent = msg;
+                toastEl.style.background = type === 'success' ? '#059669' : type === 'error' ? '#e11d48' : '#334155';
+                toastEl.style.color = '#fff';
+                toastEl.style.padding = '12px 20px';
+                toastEl.style.borderRadius = '6px';
+                toastEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.15)';
+                toastEl.style.opacity = '1';
+                toastEl.style.transition = 'opacity 0.3s';
+                toastEl.style.fontSize = '14px';
+                toastEl.style.fontWeight = '500';
+                toastEl.style.zIndex = '3000';
+                toastEl.style.position = 'fixed';
+                toastEl.style.bottom = '20px';
+                toastEl.style.right = '20px';
+                setTimeout(() => { toastEl.style.opacity = '0'; }, 3000);
+            };
+        }
+    </script>
+</body>
+</html>
