@@ -34,11 +34,10 @@
             --radius-xl: 16px;
             --sidebar-width: 280px;
             --topbar-height: 70px;
-            --mobile-header-height: 60px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.06);
-            --shadow-mobile-sidebar: 8px 0 32px rgba(0, 0, 0, 0.12);
+            --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
         }
 
         * {
@@ -75,12 +74,14 @@
             flex-direction: column;
             position: fixed;
             height: 100vh;
+            top: 0;
+            left: 0;
             z-index: 1000;
             border-right: 1px solid var(--border-subtle);
             box-shadow: var(--shadow-sidebar);
-            transition: var(--transition-smooth);
-            left: 0;
-            top: 0;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+            transform: translateX(0);
+            will-change: transform;
         }
         .sidebar-brand {
             padding: 26px 24px 20px;
@@ -123,7 +124,6 @@
             background: #e2e8f0;
             border-radius: 10px;
         }
-        /* Menu category labels removed */
         .sidebar-menu li {
             margin-bottom: 8px;
             list-style: none;
@@ -270,12 +270,22 @@
             animation: none;
         }
         @keyframes pulse-dot {
-            0%, 100% { box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
-            50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.7); }
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+            }
         }
         @keyframes pulse-dot-yellow {
-            0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
-            50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+            }
         }
         .profile-popup {
             display: none;
@@ -323,8 +333,14 @@
             transform: none;
         }
         @keyframes popupFadeIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* ===== MOBILE SIDEBAR OVERLAY ===== */
@@ -351,7 +367,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .topbar {
             background-color: var(--header-bg);
@@ -397,6 +413,7 @@
             transition: var(--transition-smooth);
             flex-shrink: 0;
             line-height: 1;
+            z-index: 10;
         }
         .menu-toggle:hover {
             background-color: #f8fafc;
@@ -415,10 +432,8 @@
             font-weight: 700;
             color: #0f172a;
             letter-spacing: -0.3px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             white-space: nowrap;
+            z-index: 5;
         }
         .mobile-brand i {
             color: var(--brand-primary);
@@ -659,7 +674,9 @@
             margin: 0 auto 14px;
         }
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
         .loading-spinner p {
             font-size: 14px;
@@ -690,12 +707,24 @@
             align-items: center;
             gap: 10px;
         }
-        .toast-item.success { background: #059669; }
-        .toast-item.error { background: #e11d48; }
-        .toast-item.info { background: #334155; }
+        .toast-item.success {
+            background: #059669;
+        }
+        .toast-item.error {
+            background: #e11d48;
+        }
+        .toast-item.info {
+            background: #334155;
+        }
         @keyframes toastIn {
-            from { opacity: 0; transform: translateY(16px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -704,13 +733,16 @@
                 --sidebar-width: 290px;
                 --topbar-height: 60px;
             }
+            /* Sidebar hidden by default on mobile using transform */
             .sidebar {
-                left: -290px;
+                transform: translateX(-100%);
                 box-shadow: var(--shadow-mobile-sidebar);
                 width: 290px;
+                left: 0;
+                z-index: 1000;
             }
             .sidebar.active {
-                left: 0;
+                transform: translateX(0);
             }
             .sidebar-brand {
                 height: 60px;
@@ -761,6 +793,7 @@
                 justify-content: center;
                 position: sticky;
                 top: 0;
+                z-index: 999;
             }
             .topbar-left-section {
                 position: absolute;
@@ -768,6 +801,9 @@
                 top: 50%;
                 transform: translateY(-50%);
                 z-index: 10;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
             .menu-toggle {
                 display: flex;
@@ -777,6 +813,9 @@
                 font-size: 17px;
                 border-radius: 8px;
                 background: #ffffff;
+                border: 1px solid var(--border-subtle);
+                cursor: pointer;
+                z-index: 11;
             }
             .topbar-title.desktop-title {
                 display: none;
@@ -790,9 +829,8 @@
                 color: #0f172a;
                 letter-spacing: -0.3px;
                 white-space: nowrap;
-                position: static;
-                transform: none;
-                margin: 0 auto;
+                z-index: 5;
+                pointer-events: none;
             }
             .mobile-brand i {
                 color: var(--brand-primary);
@@ -856,6 +894,13 @@
             .mobile-brand {
                 display: none !important;
             }
+            /* Ensure sidebar is visible on desktop */
+            .sidebar {
+                transform: translateX(0) !important;
+            }
+            .sidebar-overlay {
+                display: none !important;
+            }
         }
 
         /* Tablet adjustments */
@@ -901,7 +946,6 @@
             <h2>Blood<span>Connect</span></h2>
         </div>
         <ul class="sidebar-menu">
-            <!-- Category labels removed -->
             <li>
                 <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-house-medical"></i>
@@ -931,11 +975,11 @@
         <div class="user-profile" id="userProfileBtn">
             <img id="dd-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="User Avatar">
             <div class="user-info">
-                <h4 id="dd-name"></h4>
+                <h4 id="dd-name">Loading...</h4>
                 <p id="dd-status-text"><span class="status-dot yellow"></span> <span>Checking status...</span></p>
             </div>
             <div class="profile-popup" id="profilePopup">
-                <div class="popup-email" id="dd-email"></div>
+                <div class="popup-email" id="dd-email">Loading email...</div>
                 <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
@@ -946,23 +990,19 @@
 
     <div class="wrapper">
         <header class="topbar">
-            <!-- Mobile: hamburger on left, brand centered -->
             <div class="topbar-left-section">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <!-- Desktop title (hidden on mobile) -->
                 <div class="topbar-title desktop-title">
                     <h2>My Donations</h2>
                     <p>Your donation history and certificates.</p>
                 </div>
             </div>
-            <!-- Mobile brand (centered, visible only on mobile) -->
             <div class="mobile-brand">
                 <i class="fa-solid fa-heart-pulse"></i>
                 <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
             </div>
-            <!-- Right spacer -->
             <div style="width:44px;"></div>
         </header>
 
@@ -1023,7 +1063,6 @@
             const isMobile = window.innerWidth < 768;
 
             if (isMobile) {
-                // Mobile cards
                 let cardsHtml = '';
                 if (history.length === 0) {
                     cardsHtml = `
@@ -1065,7 +1104,6 @@
                     </div>
                 `;
             } else {
-                // Desktop table
                 let rows = '';
                 if (history.length === 0) {
                     rows = `
@@ -1128,7 +1166,6 @@
                 `;
             }
 
-            // Attach certificate download handlers
             document.querySelectorAll('.certificate-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1171,9 +1208,14 @@
             document.body.classList.remove('sidebar-open');
         }
 
+        function isSidebarOpen() {
+            return sidebar.classList.contains('active');
+        }
+
         menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            if (sidebar.classList.contains('active')) {
+            if (isSidebarOpen()) {
                 closeSidebar();
             } else {
                 openSidebar();
@@ -1182,14 +1224,12 @@
 
         sidebarOverlay.addEventListener('click', closeSidebar);
 
-        // Close sidebar on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            if (e.key === 'Escape' && isSidebarOpen()) {
                 closeSidebar();
             }
         });
 
-        // Close sidebar when clicking a nav link on mobile
         document.querySelectorAll('.sidebar .nav-link:not(.nav-link-logout)').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth < 768) {
@@ -1239,20 +1279,19 @@
             renderDonationHistory();
         });
 
-        // ===== Responsive Re-render on Resize =====
+        // ===== Responsive Re-render =====
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 if (donor) renderDonationHistory();
-                // Close sidebar if resizing to desktop
-                if (window.innerWidth >= 768 && sidebar.classList.contains('active')) {
+                if (window.innerWidth >= 768 && isSidebarOpen()) {
                     closeSidebar();
                 }
             }, 250);
         });
 
-        // ===== Fallback Utility Functions =====
+        // ===== Fallback Utilities =====
         if (typeof window.showLoading !== 'function') {
             window.showLoading = (msg) => {
                 const loadingEl = document.getElementById('loading');
@@ -1286,7 +1325,7 @@
             };
         }
 
-        // Initial render placeholder
+        // Initial render
         renderDonationHistory();
     </script>
 </body>
