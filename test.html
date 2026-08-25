@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloodConnect - Dashboard (Vastramaya UI)</title>
+    <title>BloodConnect - My Donations</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: DM Sans -->
@@ -52,7 +52,6 @@
             box-sizing: border-box;
             text-decoration: none !important;
         }
-
         body {
             font-family: "DM Sans", Roboto, sans-serif;
             font-weight: 500;
@@ -86,23 +85,10 @@
             border-bottom: 1px solid var(--sidebar-border);
             height: 70px;
         }
-        .sidebar-brand i {
-            font-size: 26px;
-            color: var(--sidebar-primary);
-        }
-        .sidebar-brand h2 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .sidebar-brand span {
-            color: var(--sidebar-primary);
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 15px 12px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
+        .sidebar-brand i { font-size: 26px; color: var(--sidebar-primary); }
+        .sidebar-brand h2 { font-size: 20px; font-weight: 600; }
+        .sidebar-brand span { color: var(--sidebar-primary); }
+        .sidebar-menu { list-style: none; padding: 15px 12px; flex-grow: 1; overflow-y: auto; }
         .menu-category {
             font-size: 11px;
             font-weight: 600;
@@ -111,9 +97,7 @@
             color: #94a3b8;
             padding: 12px 10px 6px 10px;
         }
-        .sidebar-menu li {
-            margin-bottom: 4px;
-        }
+        .sidebar-menu li { margin-bottom: 4px; }
         .nav-link {
             display: flex;
             align-items: center;
@@ -139,18 +123,14 @@
             color: var(--sidebar-text-dark);
             transform: translateX(3px);
         }
-        .nav-link:hover i {
-            color: var(--sidebar-primary);
-        }
+        .nav-link:hover i { color: var(--sidebar-primary); }
         .nav-link.active {
             background-color: var(--sidebar-active-bg);
             color: #ffffff;
             font-weight: 500;
             box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
         }
-        .nav-link.active i {
-            color: #ffffff;
-        }
+        .nav-link.active i { color: #ffffff; }
         .badge {
             margin-left: auto;
             background-color: #f1f5f9;
@@ -160,18 +140,9 @@
             border-radius: 12px;
             color: var(--sidebar-text-main);
         }
-        .nav-link.active .badge {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-        }
-        .badge.alert {
-            background-color: #ffe4e6;
-            color: var(--sidebar-primary);
-        }
-        .nav-link.active .badge.alert {
-            background-color: #ffffff;
-            color: var(--sidebar-primary);
-        }
+        .nav-link.active .badge { background-color: rgba(255, 255, 255, 0.2); color: #ffffff; }
+        .badge.alert { background-color: #ffe4e6; color: var(--sidebar-primary); }
+        .nav-link.active .badge.alert { background-color: #ffffff; color: var(--sidebar-primary); }
         .user-profile {
             padding: 16px 20px;
             display: flex;
@@ -183,9 +154,7 @@
             position: relative;
             transition: all 0.25s ease-in-out;
         }
-        .user-profile:hover {
-            background-color: var(--sidebar-hover-bg);
-        }
+        .user-profile:hover { background-color: var(--sidebar-hover-bg); }
         .user-profile img {
             width: 40px;
             height: 40px;
@@ -193,18 +162,8 @@
             object-fit: cover;
             border: 2px solid #ca8a04;
         }
-        .user-info h4 {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--sidebar-text-dark);
-        }
-        .user-info p {
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #ca8a04;
-        }
+        .user-info h4 { font-size: 13px; font-weight: 500; color: var(--sidebar-text-dark); }
+        .user-info p { font-size: 11px; display: flex; align-items: center; gap: 5px; color: #ca8a04; }
         .status-dot {
             width: 7px;
             height: 7px;
@@ -212,14 +171,8 @@
             background-color: #059669;
             box-shadow: 0 0 6px #059669;
         }
-        .status-dot.yellow {
-            background-color: #ca8a04;
-            box-shadow: 0 0 6px #ca8a04;
-        }
-        .status-dot.inactive {
-            background-color: #94a3b8;
-            box-shadow: none;
-        }
+        .status-dot.yellow { background-color: #ca8a04; box-shadow: 0 0 6px #ca8a04; }
+        .status-dot.inactive { background-color: #94a3b8; box-shadow: none; }
         .profile-popup {
             display: none;
             position: absolute;
@@ -234,9 +187,7 @@
             z-index: 1001;
             animation: popupFadeIn 0.2s ease-out;
         }
-        .profile-popup.active {
-            display: block;
-        }
+        .profile-popup.active { display: block; }
         .popup-email {
             font-size: 13px;
             color: var(--sidebar-text-dark);
@@ -246,12 +197,8 @@
             font-weight: 500;
             word-break: break-all;
         }
-        .nav-link-logout {
-            color: var(--sidebar-primary);
-        }
-        .nav-link-logout i {
-            color: var(--sidebar-primary);
-        }
+        .nav-link-logout { color: var(--sidebar-primary); }
+        .nav-link-logout i { color: var(--sidebar-primary); }
         .nav-link-logout:hover,
         .nav-link-logout.active {
             background-color: #ffe4e6;
@@ -291,10 +238,7 @@
             line-height: 32px;
             color: rgb(29, 30, 32);
         }
-        .topbar-title p {
-            font-size: 13px;
-            color: var(--text-sub);
-        }
+        .topbar-title p { font-size: 13px; color: var(--text-sub); }
         .menu-toggle {
             display: none;
             background-color: var(--header-bg);
@@ -324,76 +268,8 @@
             padding: 24px 20px;
             border-bottom: 1px solid var(--border-subtle);
         }
-        .primary-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            font-size: 14px;
-            color: #ffffff;
-            background: var(--brand-primary);
-            transition: background 0.15s ease;
-            cursor: pointer;
-        }
-        .primary-btn:hover { background: #471ea7; }
-        .btn-success {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            font-size: 14px;
-            color: #ffffff;
-            background: var(--success-color);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-success:hover { background: #059669; }
-        .btn-secondary {
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-subtle);
-            background: #ffffff;
-            font-size: 13px;
-            color: #673de6;
-            transition: background 0.15s ease;
-            cursor: pointer;
-        }
-        .btn-secondary:hover { background: #f2efff; }
 
-        .toggle-switch {
-            width: 44px;
-            height: 24px;
-            position: relative;
-            display: inline-block;
-        }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-switch .slider {
-            position: absolute;
-            inset: 0;
-            background-color: var(--switch-off);
-            border-radius: 24px;
-            transition: .4s;
-        }
-        .toggle-switch .slider::before {
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: .4s;
-            position: absolute;
-        }
-        .toggle-switch input:checked + .slider { background-color: var(--brand-primary); }
-        .toggle-switch input:checked + .slider::before { transform: translateX(20px); }
-
+        /* Desktop Table */
         .table-wrapper { width: 100%; overflow-x: auto; overflow: visible !important; }
         .data-table { width: 100%; border-collapse: collapse; z-index: 1; position: relative; }
         .data-table thead { height: 48px; }
@@ -413,6 +289,7 @@
         .data-table tbody tr:last-child { border-bottom: none; }
         .data-table td { padding: 12px 20px; vertical-align: middle; text-align: left; }
 
+        /* Mobile Cards */
         .mobile-product-cards { display: flex; flex-direction: column; gap: 16px; }
         .mobile-card {
             background: #ffffff;
@@ -425,49 +302,24 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             width: 100%;
         }
+        .mobile-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .mobile-card .info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
         .mobile-card .info .title { font-size: 16px; font-weight: 700; color: var(--text-color); }
         .mobile-card .info .subtitle { font-size: 14px; font-weight: 600; color: var(--brand-primary); }
         .mobile-card .info .meta { font-size: 12px; font-weight: 500; color: var(--text-sub); }
         .mobile-card .actions { margin-left: auto; display: flex; gap: 12px; align-items: center; }
 
-        .tag {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
-        }
-        .tag.red { background: #ffe4e6; color: #e11d48; }
-        .tag.green { background: #d1fae5; color: #059669; }
-        .tag.gray { background: #f1f5f9; color: #64748b; }
-        .tag.yellow { background: #fef9c3; color: #ca8a04; }
-
-        .desktop-popup {
-            position: fixed;
-            z-index: 10002;
-            background: #ffffff;
-            border-radius: 12px;
+        .btn-secondary {
+            padding: 6px 12px;
+            border-radius: 8px;
             border: 1px solid var(--border-subtle);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 180px;
-            animation: fadeInUp 0.2s ease-out;
-            padding: 8px;
-        }
-        .popup-item {
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+            background: #ffffff;
             font-size: 13px;
-            font-weight: 500;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #673de6;
+            transition: background 0.15s ease;
+            cursor: pointer;
         }
-        .popup-item:hover { background-color: var(--hover-bg); }
-        .popup-item.danger { color: var(--danger-color); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-secondary:hover { background: #f2efff; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -487,7 +339,6 @@
     </style>
 </head>
 <body>
-
     <!-- Left Sidebar Menu (Original BloodConnect style retained) -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
@@ -497,28 +348,28 @@
         <ul class="sidebar-menu">
             <li class="menu-category">Overview</li>
             <li>
-                <a data-target="dashboard" data-title="My Dashboard" data-desc="Welcome back! Here's your donation summary." class="nav-link active">
+                <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-house-medical"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="menu-category">Activity</li>
             <li>
-                <a data-target="emergency" data-title="Emergency Requests" data-desc="Urgent blood requirements based on your location filters." class="nav-link">
+                <a href="emergency.html" class="nav-link">
                     <i class="fa-solid fa-truck-medical"></i>
                     <span>Emergency Alerts</span>
                     <span class="badge alert" id="emergency-badge">0</span>
                 </a>
             </li>
             <li>
-                <a data-target="history" data-title="Donation History" data-desc="Track your past donations and health milestones." class="nav-link">
+                <a href="history.html" class="nav-link active">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>My Donations</span>
                 </a>
             </li>
             <li class="menu-category">Settings</li>
             <li>
-                <a data-target="profile" data-title="Profile Settings" data-desc="Update your personal details and location preferences." class="nav-link">
+                <a href="profile-settings.html" class="nav-link">
                     <i class="fa-solid fa-user-gear"></i>
                     <span>Profile & Location</span>
                 </a>
@@ -532,7 +383,7 @@
             </div>
             <div class="profile-popup" id="profilePopup">
                 <div class="popup-email" id="dd-email">Loading email...</div>
-                <a data-target="logout" data-title="Logout" data-desc="Session ended safely." class="nav-link nav-link-logout">
+                <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -547,15 +398,15 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title">
-                    <h2 id="topbarTitle">My Dashboard</h2>
-                    <p id="topbarDesc">Welcome back! Here's your donation summary.</p>
+                    <h2>My Donations</h2>
+                    <p>Your donation history and certificates.</p>
                 </div>
             </div>
             <div class="topbar-right"></div>
         </header>
 
         <main class="content-inner" id="mainContent">
-            <!-- Rendered via JavaScript -->
+            <!-- Donation list injected by JS -->
         </main>
     </div>
 
@@ -569,24 +420,17 @@
     <div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:4000;"></div>
 
     <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, collection, query, where, onSnapshot, updateDoc, fbSignOut } from "./firebase-config.js";
+        import { auth, onAuthStateChanged, db, doc, getDoc, fbSignOut } from "./firebase-config.js";
         import { showLoading, hideLoading, toast } from "./utils.js";
 
-        let requestsUnsub = null;
-        let currentTab = 'dashboard';
         let donor = null;
-        let requests = [];
-        let isMobile = window.innerWidth < 768;
-
         const mainContent = document.getElementById('mainContent');
-        const topbarTitle = document.getElementById('topbarTitle');
-        const topbarDesc = document.getElementById('topbarDesc');
         const sidebar = document.getElementById('sidebar');
         const menuToggle = document.getElementById('menuToggle');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
 
-        // Helper functions
+        // Helpers
         function formatDate(value) {
             if (!value) return 'No record';
             const date = value?.toDate ? value.toDate() : new Date(value);
@@ -609,225 +453,94 @@
             return { isRecovery: false, text: 'Eligible now', tag: 'green' };
         }
 
-        function getField(field, fallback = '') {
-            return donor?.[field] ?? fallback;
-        }
+        // Render donation history with specified columns
+        function renderDonationHistory() {
+            if (!donor) return;
+            const history = donor.donationHistory || [];
+            const isMobile = window.innerWidth < 768;
 
-        function isMobileView() {
-            return window.innerWidth < 768;
-        }
-
-        // Render Dashboard
-        function renderDashboard() {
-            const eligibility = getEligibilityInfo();
-            const totalDonations = donor?.totalDonations || 0;
-            const bloodGroup = donor?.bloodGroup || '—';
-            const lastDonation = formatDate(donor?.lastDonationDate || donor?.lastDonation);
-            const availabilityChecked = donor?.emergencyAvailable && !eligibility.isRecovery ? 'checked' : '';
-            const availabilityDisabled = eligibility.isRecovery ? 'disabled' : '';
-
-            const statsHtml = `
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">My Blood Group</span>
-                        <span style="font-size:28px; font-weight:700; color:var(--brand-primary);">${bloodGroup}</span>
-                        <span class="tag red">${bloodGroup === 'O-' ? 'Universal Donor' : 'Donor'}</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Total Donations</span>
-                        <span style="font-size:28px; font-weight:700;">${totalDonations}</span>
-                        <span class="text-sub" style="font-size:12px;">Approx. ${totalDonations * 3} lives saved</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Last Donation</span>
-                        <span style="font-size:22px; font-weight:700;">${lastDonation}</span>
-                        <span class="tag ${eligibility.tag}">${eligibility.text}</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:12px; background-color:#f8fafc;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Emergency Availability</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="availabilityToggle" ${availabilityChecked} ${availabilityDisabled}>
-                            <span class="slider"></span>
-                        </label>
-                        <span class="text-sub" style="font-size:12px;">${eligibility.isRecovery ? 'Disabled during recovery period' : 'You are available for emergency requests'}</span>
-                    </div>
-                </div>
-            `;
-
-            let requestContent = '';
-            if (isMobileView()) {
-                let cards = '';
-                if (requests.length === 0) {
-                    cards = `<div class="card" style="padding:20px; text-align:center;">No direct requests yet.</div>`;
+            if (isMobile) {
+                // Mobile cards
+                let cardsHtml = '';
+                if (history.length === 0) {
+                    cardsHtml = `<div class="card" style="padding:20px; text-align:center;">No donation records yet.</div>`;
                 } else {
-                    requests.forEach(r => {
-                        const status = r.status || 'pending';
-                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
-                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
-                        let actionButton = '';
-                        if (status === 'pending') {
-                            actionButton = `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>`;
-                        } else if (status === 'approved') {
-                            actionButton = `<button class="btn-success btn-mark-donated" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Mark as Donated</button>`;
-                        } else {
-                            actionButton = `<span class="tag gray">Donated</span>`;
-                        }
-                        cards += `
+                    cardsHtml = '<div class="mobile-product-cards">';
+                    history.forEach((h, index) => {
+                        cardsHtml += `
                             <div class="mobile-card">
                                 <div class="info">
-                                    <div class="title">${r.finderName || 'Anonymous'}</div>
-                                    <div class="subtitle">${urgency}</div>
-                                    <div class="meta">${r.location || '—'}</div>
+                                    <div class="title">${h.patientName || 'Unknown Recipient'}</div>
+                                    <div class="subtitle">${h.location || '—'}</div>
+                                    <div class="meta">${formatDate(h.date)} • ${h.amountMl || 450} ml</div>
                                 </div>
                                 <div class="actions">
-                                    ${actionButton}
+                                    <button class="btn-secondary certificate-btn" data-index="${index}">
+                                        <i class="fa-solid fa-download"></i> Certificate
+                                    </button>
                                 </div>
                             </div>
                         `;
                     });
+                    cardsHtml += '</div>';
                 }
-                requestContent = `<div class="mobile-product-cards">${cards}</div>`;
+                mainContent.innerHTML = `<div class="card"><div class="card-header"><h3 style="font-size:16px; font-weight:700;">Donation Records</h3></div>${cardsHtml}</div>`;
             } else {
+                // Desktop table
                 let rows = '';
-                if (requests.length === 0) {
-                    rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No direct requests yet.</td></tr>`;
+                if (history.length === 0) {
+                    rows = `<tr><td colspan="5" style="text-align:center; padding:20px;">No donation records yet.</td></tr>`;
                 } else {
-                    requests.forEach(r => {
-                        const status = r.status || 'pending';
-                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
-                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
-                        let actionButton = '';
-                        if (status === 'pending') {
-                            actionButton = `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>`;
-                        } else if (status === 'approved') {
-                            actionButton = `<button class="btn-success btn-mark-donated" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Mark as Donated</button>`;
-                        } else {
-                            actionButton = `<span class="tag gray">Donated</span>`;
-                        }
+                    history.forEach((h, index) => {
                         rows += `
                             <tr>
-                                <td><strong>${r.finderName || 'Anonymous'}</strong></td>
-                                <td>${r.location || '—'}</td>
-                                <td><span class="tag ${tagClass}">${urgency}</span></td>
-                                <td>${actionButton}</td>
+                                <td>${h.patientName || 'Unknown Recipient'}</td>
+                                <td>${h.location || '—'}</td>
+                                <td>${formatDate(h.date)}</td>
+                                <td>${h.amountMl || 450} ml</td>
+                                <td>
+                                    <button class="btn-secondary certificate-btn" data-index="${index}">
+                                        <i class="fa-solid fa-download"></i> Certificate
+                                    </button>
+                                </td>
                             </tr>
                         `;
                     });
                 }
-                requestContent = `
-                    <div class="table-wrapper">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Patient Name</th><th>Hospital / Location</th><th>Urgency</th><th>Action</th></tr>
-                            </thead>
-                            <tbody>${rows}</tbody>
-                        </table>
+                mainContent.innerHTML = `
+                    <div class="card">
+                        <div class="card-header"><h3 style="font-size:16px; font-weight:700;">Donation Records</h3></div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Recipient Name</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Amount (ml)</th>
+                                        <th>Certificate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>${rows}</tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
             }
 
-            const html = `
-                ${statsHtml}
-                <div class="card">
-                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
-                        <h3 style="font-size:16px; font-weight:700;">Recent Direct Requests</h3>
-                        <a href="#" class="btn-secondary" style="text-decoration:none;">View All</a>
-                    </div>
-                    ${requestContent}
-                </div>
-            `;
-            mainContent.innerHTML = html;
-            attachDashboardEvents();
-        }
-
-        function attachDashboardEvents() {
-            const toggle = document.getElementById('availabilityToggle');
-            if (toggle) {
-                toggle.addEventListener('change', async (e) => {
-                    if (!donor) return;
-                    const available = e.target.checked;
-                    try {
-                        await updateDoc(doc(db, 'donors', donor.uid), { emergencyAvailable: available });
-                        donor.emergencyAvailable = available;
-                        toast('Availability updated', 'success');
-                    } catch (err) {
-                        toast(err.message, 'error');
-                    }
-                });
-            }
-            document.querySelectorAll('.btn-approve').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const id = e.currentTarget.getAttribute('data-id');
-                    showLoading('Approving request…');
-                    try {
-                        await updateDoc(doc(db, 'requests', id), { status: 'approved' });
-                        hideLoading();
-                        toast('Request approved!', 'success');
-                    } catch (err) {
-                        hideLoading();
-                        toast(err.message, 'error');
+            // Attach certificate download handlers
+            document.querySelectorAll('.certificate-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = e.currentTarget.getAttribute('data-index');
+                    const record = history[idx];
+                    if (record?.certificateUrl) {
+                        // Open certificate URL in new tab
+                        window.open(record.certificateUrl, '_blank');
+                    } else {
+                        toast('Certificate not available yet.', 'info');
                     }
                 });
             });
-            document.querySelectorAll('.btn-mark-donated').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.currentTarget.getAttribute('data-id');
-                    await markAsDonated(requestId);
-                });
-            });
-        }
-
-        async function markAsDonated(requestId) {
-            if (!donor?.uid) {
-                toast('Donor data not loaded.', 'error');
-                return;
-            }
-
-            showLoading('Recording donation...');
-            try {
-                // 1. Update request status to 'donated'
-                await updateDoc(doc(db, 'requests', requestId), { status: 'donated' });
-
-                // 2. Fetch request data (optional)
-                const requestSnap = await getDoc(doc(db, 'requests', requestId));
-                const requestData = requestSnap.data();
-
-                // 3. Create donation record
-                const donationRecord = {
-                    date: new Date(), // Could use serverTimestamp()
-                    camp: requestData?.location || 'Unknown Camp',
-                    units: 1,
-                    certificateUrl: `https://example.com/certificates/${requestId}.pdf`, // placeholder
-                    requestId: requestId,
-                    createdAt: new Date().toISOString()
-                };
-
-                // 4. Update donor's donationHistory and totalDonations
-                const donorRef = doc(db, 'donors', donor.uid);
-                const donorSnap = await getDoc(donorRef);
-                if (donorSnap.exists()) {
-                    const currentHistory = donorSnap.data().donationHistory || [];
-                    const newTotal = (donorSnap.data().totalDonations || 0) + 1;
-
-                    await updateDoc(donorRef, {
-                        donationHistory: [...currentHistory, donationRecord],
-                        totalDonations: newTotal
-                    });
-
-                    // Update local donor object
-                    donor.donationHistory = [...currentHistory, donationRecord];
-                    donor.totalDonations = newTotal;
-                }
-
-                hideLoading();
-                toast('Donation recorded successfully!', 'success');
-                updateSidebarProfile();
-                renderPage('dashboard'); // refresh UI
-            } catch (err) {
-                hideLoading();
-                toast('Failed to record donation: ' + err.message, 'error');
-                console.error(err);
-            }
         }
 
         function updateSidebarProfile() {
@@ -841,83 +554,43 @@
             document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email';
         }
 
-        function updateEmergencyBadge() {
-            const badge = document.getElementById('emergency-badge');
-            if (badge) {
-                const pending = requests.filter(r => r.status === 'pending').length;
-                badge.textContent = pending;
-                badge.style.display = pending > 0 ? 'inline-block' : 'none';
-            }
-        }
-
-        function renderPage(target) {
-            currentTab = target;
-            switch (target) {
-                case 'dashboard':
-                    topbarTitle.innerText = 'My Dashboard';
-                    topbarDesc.innerText = 'Welcome back! Here\'s your donation summary.';
-                    renderDashboard();
-                    break;
-                case 'emergency':
-                    topbarTitle.innerText = 'Emergency Requests';
-                    topbarDesc.innerText = 'Urgent blood requirements based on your location filters.';
-                    // For brevity, we could call a renderEmergency() but not included in this snippet.
-                    // The full code would have similar handling.
-                    mainContent.innerHTML = '<p>Emergency page not included in this snippet.</p>';
-                    break;
-                case 'history':
-                    topbarTitle.innerText = 'Donation History';
-                    topbarDesc.innerText = 'Track your past donations and health milestones.';
-                    mainContent.innerHTML = '<p>History page not included in this snippet.</p>';
-                    break;
-                case 'profile':
-                    topbarTitle.innerText = 'Profile Settings';
-                    topbarDesc.innerText = 'Update your personal details and location preferences.';
-                    mainContent.innerHTML = '<p>Profile page not included in this snippet.</p>';
-                    break;
-                default:
-                    mainContent.innerHTML = '<p>Page not found.</p>';
-            }
-            updateEmergencyBadge();
-        }
-
         // Auth & data loading
-        onAuthStateChanged(auth, async user => {
-            if (!user) { window.location.href = 'login-donor.html'; return; }
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login-donor.html';
+                return;
+            }
             const snap = await getDoc(doc(db, 'donors', user.uid));
-            if (!snap.exists()) { window.location.href = 'onboarding.html'; return; }
+            if (!snap.exists()) {
+                window.location.href = 'onboarding.html';
+                return;
+            }
             donor = { ...snap.data(), uid: user.uid };
             updateSidebarProfile();
-
-            const q = query(collection(db, 'requests'), where('donorId', '==', user.uid));
-            requestsUnsub = onSnapshot(q, snap => {
-                requests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderPage(currentTab);
-            });
-
-            renderPage(currentTab);
+            renderDonationHistory();
         });
 
-        // Navigation
-        document.addEventListener('click', function(e) {
+        // Sidebar mobile toggle
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Profile popup
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
             if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
                 profilePopup.classList.remove('active');
             }
-            const link = e.target.closest('.nav-link');
-            if (!link) return;
-            e.preventDefault();
-            const target = link.getAttribute('data-target');
-            if (target === 'logout') { signOut(); return; }
-            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-            link.classList.add('active');
-            renderPage(target);
-            if (window.innerWidth <= 768) sidebar.classList.remove('active');
         });
 
-        async function signOut() {
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
             showLoading('Signing out...');
             try {
-                if (requestsUnsub) requestsUnsub();
                 await fbSignOut(auth);
                 hideLoading();
                 window.location.href = 'index.html';
@@ -925,22 +598,11 @@
                 hideLoading();
                 toast(err.message, 'error');
             }
-        }
-
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profilePopup.classList.toggle('active');
         });
 
+        // Responsive re-render on resize
         window.addEventListener('resize', () => {
-            const newIsMobile = isMobileView();
-            if (newIsMobile !== isMobile) {
-                isMobile = newIsMobile;
-                renderPage(currentTab);
-            }
+            if (donor) renderDonationHistory();
         });
 
         // Fallback functions
