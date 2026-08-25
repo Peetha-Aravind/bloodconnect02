@@ -3,64 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloodConnect - Profile Settings</title>
+    <title>BloodConnect - Donor Dashboard (Vastramaya UI)</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts: DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+
     <style>
-        /* ===== CSS VARIABLES & RESET ===== */
+        /* ===== VASTRAMAYA GLOBAL VARIABLES ===== */
         :root {
-            --primary-color: #e11d48;
-            --primary-hover: #be123c;
-            --bg-sidebar: #ffffff;
-            --bg-sidebar-hover: #f1f5f9;
-            --text-main: #64748b;
-            --text-dark: #0f172a;
-            --border-color: #e2e8f0;
-            --card-bg: #ffffff;
-            --body-bg: #f8fafc;
-            --transition: all 0.25s ease-in-out;
+            --page-bg: #f4f5f7;
+            --header-bg: #ffffff;
+            --sidebar-bg: #ffffff;
+            --text-color: rgb(24, 24, 26);
+            --text-sub: #6b7280;
+            --icon-color: #6b7280;
+            --icon-active: #5127ba;
+            --active-bg: #f3f4f6;
+            --hover-bg: #f3f4f6;
+            --border-subtle: #e5e7eb;
+            --brand-primary: #5127ba;
+            --brand-gradient: linear-gradient(135deg, #5127ba 0%, #673de6 100%);
+            --danger-color: #ef4444;
+            --success-color: #10B981;
+            --warning-color: #f59e0b;
+            --switch-on: #5127ba;
+            --switch-off: #9CA3AF;
+            --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-md: 8px;
+            --radius-lg: 12px;
         }
 
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'IBM Plex Sans', sans-serif;
+            text-decoration: none !important;
         }
-
         body {
-            background-color: var(--body-bg);
-            display: flex;
-            min-height: 100vh;
-            color: #334155;
+            font-family: "DM Sans", Roboto, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--text-color);
+            background-color: var(--page-bg);
+            overflow-x: hidden;
+            width: 100%;
         }
 
-        /* ===== SIDEBAR ===== */
+        /* ===== SIDEBAR (unchanged structure, updated with variables) ===== */
         .sidebar {
             width: 270px;
-            background-color: var(--bg-sidebar);
+            background-color: var(--sidebar-bg);
+            color: var(--text-sub);
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
             z-index: 1000;
-            border-right: 1px solid var(--border-color);
-            box-shadow: 4px 0 15px rgba(0,0,0,0.02);
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
         }
         .sidebar-brand {
             padding: 24px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--text-dark);
-            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-subtle);
             height: 70px;
         }
-        .sidebar-brand i { font-size: 26px; color: var(--primary-color); }
-        .sidebar-brand h2 { font-size: 20px; font-weight: 600; }
-        .sidebar-brand span { color: var(--primary-color); }
+        .sidebar-brand i {
+            font-size: 26px;
+            color: var(--brand-primary);
+        }
+        .sidebar-brand h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .sidebar-brand span {
+            color: var(--brand-primary);
+        }
         .sidebar-menu {
             list-style: none;
             padding: 15px 12px;
@@ -75,117 +101,177 @@
             color: #94a3b8;
             padding: 12px 10px 6px 10px;
         }
-        .sidebar-menu li { margin-bottom: 4px; }
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
         .nav-link {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 11px 14px;
-            color: var(--text-main);
+            color: var(--text-sub);
             text-decoration: none;
             border-radius: 8px;
-            transition: var(--transition);
+            transition: all 0.25s ease-in-out;
             font-size: 14px;
             font-weight: 400;
             cursor: pointer;
         }
-        .nav-link i { font-size: 16px; width: 20px; text-align: center; color: #94a3b8; transition: var(--transition); }
-        .nav-link:hover { background-color: var(--bg-sidebar-hover); color: var(--text-dark); transform: translateX(3px); }
-        .nav-link:hover i { color: var(--primary-color); }
+        .nav-link i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: var(--icon-color);
+            transition: all 0.25s ease-in-out;
+        }
+        .nav-link:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+            transform: translateX(3px);
+        }
+        .nav-link:hover i {
+            color: var(--brand-primary);
+        }
         .nav-link.active {
-            background-color: var(--primary-color);
+            background-color: var(--brand-primary);
             color: #ffffff;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+            box-shadow: 0 4px 12px rgba(81, 39, 186, 0.25);
         }
-        .nav-link.active i { color: #ffffff; }
+        .nav-link.active i {
+            color: #ffffff;
+        }
         .badge {
             margin-left: auto;
-            background-color: #f1f5f9;
+            background-color: var(--active-bg);
             padding: 2px 8px;
             font-size: 11px;
             font-weight: 600;
             border-radius: 12px;
-            color: var(--text-main);
+            color: var(--text-sub);
         }
-        .nav-link.active .badge { background-color: rgba(255,255,255,0.2); color: #ffffff; }
-        .badge.alert { background-color: #ffe4e6; color: var(--primary-color); }
-        .nav-link.active .badge.alert { background-color: #ffffff; color: var(--primary-color); }
-
-        /* User profile summary */
+        .nav-link.active .badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+        .badge.alert {
+            background-color: #ffe4e6;
+            color: var(--brand-primary);
+        }
+        .nav-link.active .badge.alert {
+            background-color: #ffffff;
+            color: var(--brand-primary);
+        }
         .user-profile {
             padding: 16px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            background-color: #f8fafc;
-            border-top: 1px solid var(--border-color);
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-subtle);
             cursor: pointer;
             position: relative;
-            transition: var(--transition);
+            transition: all 0.25s ease-in-out;
         }
-        .user-profile:hover { background-color: var(--bg-sidebar-hover); }
+        .user-profile:hover {
+            background-color: var(--hover-bg);
+        }
         .user-profile img {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #ca8a04;
         }
-        .user-info h4 { font-size: 13px; font-weight: 500; color: var(--text-dark); }
-        .user-info p { font-size: 11px; display: flex; align-items: center; gap: 5px; color: #ca8a04; }
-        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #059669; box-shadow: 0 0 6px #059669; }
-        .status-dot.yellow { background: #ca8a04; box-shadow: 0 0 6px #ca8a04; }
-        .status-dot.inactive { background: #94a3b8; box-shadow: none; }
-
-        /* Profile popup */
+        .user-info h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        .user-info p {
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ca8a04;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+            box-shadow: 0 0 6px var(--success-color);
+        }
+        .status-dot.yellow {
+            background-color: #ca8a04;
+            box-shadow: 0 0 6px #ca8a04;
+        }
+        .status-dot.inactive {
+            background-color: #94a3b8;
+            box-shadow: none;
+        }
         .profile-popup {
             display: none;
             position: absolute;
             bottom: calc(100% + 5px);
-            left: 12px; right: 12px;
+            left: 12px;
+            right: 12px;
             background: #ffffff;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             padding: 8px;
             z-index: 1001;
             animation: popupFadeIn 0.2s ease-out;
         }
-        .profile-popup.active { display: block; }
+        .profile-popup.active {
+            display: block;
+        }
         .popup-email {
             font-size: 13px;
-            color: var(--text-dark);
+            color: var(--text-color);
             padding: 8px 10px 12px 10px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--border-subtle);
             margin-bottom: 6px;
             font-weight: 500;
             word-break: break-all;
         }
-        .nav-link-logout { color: var(--primary-color); }
-        .nav-link-logout i { color: var(--primary-color); }
-        .nav-link-logout:hover, .nav-link-logout.active {
+        .nav-link-logout {
+            color: var(--brand-primary);
+        }
+        .nav-link-logout i {
+            color: var(--brand-primary);
+        }
+        .nav-link-logout:hover,
+        .nav-link-logout.active {
             background-color: #ffe4e6;
-            color: var(--primary-hover);
+            color: var(--brand-primary);
             box-shadow: none;
         }
         @keyframes popupFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* ===== WRAPPER & TOPBAR ===== */
+        /* ===== TOPBAR ===== */
         .wrapper {
             margin-left: 270px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transition: var(--transition);
+            transition: all 0.25s ease-in-out;
         }
         .topbar {
-            background-color: #ffffff;
+            background-color: var(--header-bg);
             height: 70px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -193,168 +279,548 @@
             position: sticky;
             top: 0;
             z-index: 999;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
-        .topbar-title h2 { font-size: 18px; font-weight: 600; color: var(--text-dark); }
-        .topbar-title p { font-size: 12px; color: var(--text-main); }
+        .topbar-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 32px;
+            color: rgb(29, 30, 32);
+        }
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
         .menu-toggle {
             display: none;
-            background-color: #f8fafc;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
+            background-color: var(--header-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-subtle);
             padding: 8px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
         }
 
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            padding: 40px;
-            flex-grow: 1;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== PROFILE FORM STYLES ===== */
-        .profile-form-container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            max-width: 700px;
+        /* ===== MAIN CONTENT (VASTRAMAYA) ===== */
+        .content-inner {
+            max-width: 1110px;
             margin: 0 auto;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 24px;
-        }
-        .profile-avatar-large {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f1f5f9;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .profile-header-info h3 { font-size: 20px; color: var(--text-dark); font-weight: 600; }
-        .profile-header-info p { color: var(--text-main); font-size: 13px; margin-top: 4px; }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .form-group input, .form-group select {
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            transition: var(--transition);
-            background-color: #ffffff;
-            color: var(--text-dark);
+            padding: 24px 24px 40px;
             width: 100%;
         }
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        .mobile-content-inner {
+            padding: 16px;
+            width: 100%;
+            overflow-x: hidden;
         }
-        .form-group input:disabled, .form-group select:disabled {
-            background-color: #f8fafc;
-            color: #94a3b8;
-            cursor: not-allowed;
-            border-color: #e2e8f0;
-        }
-        .field-hint { font-size: 11px; color: #94a3b8; font-style: italic; }
 
-        .profile-buttons {
+        /* Breadcrumbs */
+        .breadcrumbs {
             display: flex;
-            gap: 12px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 16px;
         }
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
+        .breadcrumbs span {
+            color: #d1d5db;
+        }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            width: 100%;
+        }
+        .card-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        /* Buttons */
+        .primary-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+            background: var(--brand-primary);
+            transition: background 0.15s ease;
+            cursor: pointer;
+        }
+        .primary-btn:hover {
+            background: #471ea7;
+        }
+        .primary-btn i {
+            font-size: 14px;
+        }
+        .btn-secondary {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            font-size: 13px;
+            color: #673de6;
+            transition: background 0.15s ease;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: #f2efff;
+        }
+        .btn-success {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+            background: var(--success-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Search Input */
+        .search-input-wrap {
+            background: #f9fafb;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            padding: 12px 16px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.15s ease;
+            width: 100%;
+        }
+        .search-input-wrap:focus-within {
+            border-color: #673de6;
+        }
+        .search-input-wrap i {
+            width: 16px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .search-input-wrap input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-color);
+            width: 100%;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            position: relative;
+            display: inline-block;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-switch .slider {
+            position: absolute;
+            inset: 0;
+            background-color: var(--switch-off);
+            border-radius: 24px;
+            transition: .4s;
+        }
+        .toggle-switch .slider::before {
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+            position: absolute;
+        }
+        .toggle-switch input:checked+.slider {
+            background-color: var(--brand-primary);
+        }
+        .toggle-switch input:checked+.slider::before {
+            transform: translateX(20px);
+        }
+
+        /* Kebab Menu */
+        .kebab {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            cursor: pointer;
+            position: relative;
+        }
+        .kebab:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+        .kebab .dot {
+            width: 4px;
+            height: 4px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            position: relative;
+        }
+        .kebab .dot::before,
+        .kebab .dot::after {
+            content: "";
+            width: 4px;
+            height: 4px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+        }
+        .kebab .dot::before {
+            top: -6px;
+        }
+        .kebab .dot::after {
+            bottom: -6px;
+        }
+
+        /* Desktop Table */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            overflow: visible !important;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            z-index: 1;
+            position: relative;
+        }
+        .data-table thead {
+            height: 48px;
+        }
+        .data-table th {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 24px;
+            color: rgb(29, 30, 32);
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+            background-color: #ffffff;
+            padding: 12px 20px;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            background-color: #ffffff;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        .data-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .data-table td {
+            padding: 12px 20px;
+            vertical-align: middle;
+            text-align: left;
+        }
+        .product-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        /* Mobile Cards */
+        .mobile-product-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .mobile-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+        .mobile-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .mobile-card img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        .mobile-card .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             gap: 6px;
         }
-        .btn-primary { background-color: #e11d48; color: #fff; }
-        .btn-primary:hover { background-color: #be123c; }
-        .btn-success { background-color: #059669; color: #fff; }
-        .btn-success:hover { background-color: #047857; }
-        .btn-secondary { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
-        .btn-secondary:hover { background-color: #e2e8f0; color: #0f172a; }
-
-        /* ===== LOADING & TOAST ===== */
-        .loading-overlay {
-            position: fixed; inset: 0;
-            background: rgba(255,255,255,0.7);
-            z-index: 2000;
+        .mobile-card .info .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .mobile-card .info .subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--brand-primary);
+        }
+        .mobile-card .info .meta {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-sub);
+        }
+        .mobile-card .actions {
+            margin-left: auto;
             display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .product-card-menu-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Popup / Overlays */
+        .desktop-popup {
+            position: fixed;
+            z-index: 10002;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            animation: fadeInUp 0.2s ease-out;
+            padding: 8px;
+        }
+        .desktop-popup .popup-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .desktop-popup .popup-item:hover {
+            background-color: var(--hover-bg);
+        }
+        .desktop-popup .popup-item.danger {
+            color: var(--danger-color);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Advanced Menu Bottom Sheet */
+        .advanced-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-radius: 24px 24px 0 0;
+            padding: 24px 0;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .advanced-menu.open {
+            transform: translateY(0);
+        }
+        .drag-handle {
+            width: 40px;
+            height: 4px;
+            border-radius: 999px;
+            background-color: #e5e7eb;
+            margin: 0 auto 16px;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
             align-items: center;
             justify-content: center;
         }
-        .spinner {
-            width: 36px; height: 36px;
-            border: 3px solid #e2e8f0;
-            border-top-color: #e11d48;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+        .modal-overlay.active {
+            display: flex;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #toast {
-            position: fixed; bottom: 20px; right: 20px;
-            z-index: 3000;
-            padding: 12px 20px;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: opacity 0.3s;
+        .modal-content {
+            max-width: 480px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-premium);
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 24px;
+            width: 90%;
+        }
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* Forms */
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            background: white;
+            transition: all 0.15s ease;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+        .form-input:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(81, 39, 186, 0.1);
+            outline: none;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .sidebar { left: -270px; }
-            .sidebar.active { left: 0; }
-            .wrapper { margin-left: 0; }
-            .menu-toggle { display: block; }
-            .topbar { padding: 0 20px; }
-            .main-content { padding: 20px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .profile-header { flex-direction: column; text-align: center; gap: 12px; }
-            .profile-buttons { justify-content: center; }
+            .sidebar {
+                left: -270px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .wrapper {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .topbar {
+                padding: 0 20px;
+            }
+            .content-inner {
+                padding: 16px;
+            }
+            .mobile-content-inner {
+                display: block;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-only {
+                display: block !important;
+            }
+            .modal-content {
+                border-radius: 24px 24px 0 0;
+                animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                align-self: flex-end;
+            }
+            @keyframes slideUpModal {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+            .desktop-only {
+                display: block !important;
+            }
+        }
+
+        /* Utility */
+        .text-sub {
+            color: var(--text-sub);
+        }
+        .tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        .tag.red {
+            background: #ffe4e6;
+            color: #e11d48;
+        }
+        .tag.green {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .tag.purple {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+        .tag.yellow {
+            background: #fef9c3;
+            color: #ca8a04;
+        }
+        .tag.gray {
+            background: #f1f5f9;
+            color: #64748b;
         }
     </style>
 </head>
 <body>
-    <!-- ===== SIDEBAR ===== -->
+
+    <!-- Left Sidebar Menu (unchanged) -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-heart-pulse"></i>
@@ -363,28 +829,28 @@
         <ul class="sidebar-menu">
             <li class="menu-category">Overview</li>
             <li>
-                <a href="dashboard.html" class="nav-link">
+                <a data-target="dashboard" data-title="My Dashboard" data-desc="Welcome back! Here's your donation summary." class="nav-link active">
                     <i class="fa-solid fa-house-medical"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="menu-category">Activity</li>
             <li>
-                <a href="emergency.html" class="nav-link">
+                <a data-target="emergency" data-title="Emergency Requests" data-desc="Urgent blood requirements based on your location filters." class="nav-link">
                     <i class="fa-solid fa-truck-medical"></i>
                     <span>Emergency Alerts</span>
                     <span class="badge alert" id="emergency-badge">0</span>
                 </a>
             </li>
             <li>
-                <a href="history.html" class="nav-link">
+                <a data-target="history" data-title="Donation History" data-desc="Track your past donations and health milestones." class="nav-link">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>My Donations</span>
                 </a>
             </li>
             <li class="menu-category">Settings</li>
             <li>
-                <a href="profile-settings.html" class="nav-link active">
+                <a data-target="profile" data-title="Profile Settings" data-desc="Update your personal details and location preferences." class="nav-link">
                     <i class="fa-solid fa-user-gear"></i>
                     <span>Profile & Location</span>
                 </a>
@@ -398,7 +864,7 @@
             </div>
             <div class="profile-popup" id="profilePopup">
                 <div class="popup-email" id="dd-email">Loading email...</div>
-                <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
+                <a data-target="logout" data-title="Logout" data-desc="Session ended safely." class="nav-link nav-link-logout">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -406,7 +872,6 @@
         </div>
     </aside>
 
-    <!-- ===== MAIN WRAPPER ===== -->
     <div class="wrapper">
         <header class="topbar">
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -414,40 +879,63 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title">
-                    <h2>Profile Settings</h2>
-                    <p>Update your personal details and location preferences.</p>
+                    <h2 id="topbarTitle">My Dashboard</h2>
+                    <p id="topbarDesc">Welcome back! Here's your donation summary.</p>
                 </div>
             </div>
             <div class="topbar-right"></div>
         </header>
 
-        <main class="main-content" id="mainContent">
-            <!-- Profile form injected by JS -->
+        <main class="content-inner" id="mainContent">
+            <!-- Rendered via JavaScript -->
         </main>
     </div>
 
     <!-- Loading overlay -->
-    <div class="loading-overlay" id="loading" style="display:none;">
+    <div id="loading" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.7); z-index:3000; align-items:center; justify-content:center;">
         <div style="background:white; padding:20px 30px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-            <div class="spinner"></div>
+            <div style="width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#5127ba;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;"></div>
             <p id="loading-msg" style="margin-top:10px; font-size:14px;">Please wait...</p>
         </div>
     </div>
-    <div id="toast"></div>
+    <div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:4000;"></div>
+
+    <!-- Modal overlay for generic use -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <!-- filled by JS -->
+        </div>
+    </div>
+
+    <!-- Mobile advanced menu -->
+    <div class="advanced-menu" id="advancedMenu">
+        <div class="drag-handle"></div>
+        <div id="advancedMenuContent" style="padding: 0 20px;"></div>
+    </div>
 
     <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, updateDoc, fbSignOut } from "./firebase-config.js";
+        import { auth, onAuthStateChanged, db, doc, getDoc, collection, query, where, onSnapshot, updateDoc, fbSignOut } from "./firebase-config.js";
         import { showLoading, hideLoading, toast } from "./utils.js";
 
+        let requestsUnsub = null;
+        let currentTab = 'dashboard';
         let donor = null;
-        let isEditing = false;
+        let requests = [];
+        let isEditingProfile = false;
+        let isMobile = window.innerWidth < 768;
+
         const mainContent = document.getElementById('mainContent');
+        const topbarTitle = document.getElementById('topbarTitle');
+        const topbarDesc = document.getElementById('topbarDesc');
         const sidebar = document.getElementById('sidebar');
         const menuToggle = document.getElementById('menuToggle');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+        const advancedMenu = document.getElementById('advancedMenu');
 
-        // ===== Helpers =====
+        // Helper functions
         function formatDate(value) {
             if (!value) return 'No record';
             const date = value?.toDate ? value.toDate() : new Date(value);
@@ -456,144 +944,498 @@
         }
 
         function getEligibilityInfo() {
-            if (!donor?.lastDonationDate && !donor?.lastDonation) return { isRecovery: false, text: 'No donation yet', tag: 'gray' };
+            if (!donor?.lastDonationDate && !donor?.lastDonation) {
+                return { isRecovery: false, text: 'No donation yet', tag: 'gray' };
+            }
             const lastDate = donor.lastDonationDate?.toDate ? donor.lastDonationDate.toDate() : new Date(donor.lastDonationDate || donor.lastDonation);
             if (isNaN(lastDate.getTime())) return { isRecovery: false, text: 'Unknown', tag: 'gray' };
             const eligibleDate = new Date(lastDate);
             eligibleDate.setDate(eligibleDate.getDate() + 90);
             const now = new Date();
-            return eligibleDate > now
-                ? { isRecovery: true, text: `Eligible after ${formatDate(eligibleDate)}`, tag: 'yellow' }
-                : { isRecovery: false, text: 'Eligible now', tag: 'green' };
+            if (eligibleDate > now) {
+                return { isRecovery: true, text: `Eligible after ${formatDate(eligibleDate)}`, tag: 'yellow' };
+            }
+            return { isRecovery: false, text: 'Eligible now', tag: 'green' };
         }
 
         function getField(field, fallback = '') {
             return donor?.[field] ?? fallback;
         }
 
-        // ===== Render profile form =====
-        function renderProfileForm() {
-            if (!donor) return;
-            const disabled = isEditing ? '' : 'disabled';
-            const hint = isEditing ? '' : '<span class="field-hint">Click "Edit Profile" to make changes</span>';
-            const avatar = auth.currentUser?.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80';
+        // Toggle mobile/desktop rendering
+        function isMobileView() {
+            return window.innerWidth < 768;
+        }
 
-            mainContent.innerHTML = `
-                <div class="profile-form-container">
-                    <div class="profile-header">
-                        <img src="${avatar}" class="profile-avatar-large" alt="Profile Picture">
-                        <div class="profile-header-info">
-                            <h3>${donor.name || 'Donor'}</h3>
-                            <p>Registered Donor &bull; Member since 2024</p>
-                            <p style="font-size: 12px; margin-top: 4px; color: #94a3b8;">
-                                <i class="fa-solid fa-envelope"></i> ${auth.currentUser?.email || 'No email'}
-                            </p>
-                        </div>
+        // Render Dashboard Page
+        function renderDashboard() {
+            const eligibility = getEligibilityInfo();
+            const totalDonations = donor?.totalDonations || 0;
+            const bloodGroup = donor?.bloodGroup || '—';
+            const lastDonation = formatDate(donor?.lastDonationDate || donor?.lastDonation);
+            const availabilityChecked = donor?.emergencyAvailable && !eligibility.isRecovery ? 'checked' : '';
+            const availabilityDisabled = eligibility.isRecovery ? 'disabled' : '';
+
+            // Stats cards
+            const statsHtml = `
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
+                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
+                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">My Blood Group</span>
+                        <span style="font-size:28px; font-weight:700; color:var(--brand-primary);">${bloodGroup}</span>
+                        <span class="tag red">${bloodGroup === 'O-' ? 'Universal Donor' : 'Donor'}</span>
                     </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="pf-name">Full Name</label>
-                            <input type="text" id="pf-name" value="${getField('name')}" ${disabled}>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-phone">Phone Number</label>
-                            <input type="tel" id="pf-phone" value="${getField('phone')}" ${disabled}>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-blood-group">Blood Group</label>
-                            <select id="pf-blood-group" ${disabled}>
-                                <option value="">Select Blood Group</option>
-                                ${['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(bg =>
-                                    `<option value="${bg}" ${donor.bloodGroup === bg ? 'selected' : ''}>${bg}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-age">Age</label>
-                            <input type="number" id="pf-age" value="${getField('age')}" ${disabled} min="18" max="65">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-gender">Gender</label>
-                            <select id="pf-gender" ${disabled}>
-                                <option value="">Select Gender</option>
-                                <option value="Male" ${donor.gender === 'Male' ? 'selected' : ''}>Male</option>
-                                <option value="Female" ${donor.gender === 'Female' ? 'selected' : ''}>Female</option>
-                                <option value="Other" ${donor.gender === 'Other' ? 'selected' : ''}>Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-weight">Weight (kg)</label>
-                            <input type="number" id="pf-weight" value="${getField('weight')}" ${disabled} min="45" max="200">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-location">Primary Location</label>
-                            <input type="text" id="pf-location" value="${getField('location')}" ${disabled}>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-city">City</label>
-                            <input type="text" id="pf-city" value="${getField('city')}" ${disabled}>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-state">State</label>
-                            <input type="text" id="pf-state" value="${getField('state')}" ${disabled}>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-pincode">Pincode</label>
-                            <input type="text" id="pf-pincode" value="${getField('pincode')}" ${disabled} maxlength="10">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="pf-address">Full Address</label>
-                            <input type="text" id="pf-address" value="${getField('address')}" ${disabled}>
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="pf-medical">Medical Conditions</label>
-                            <input type="text" id="pf-medical" value="${getField('medicalConditions')}" ${disabled} placeholder="Any health conditions we should know about">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label>Last Donation Date</label>
-                            <input type="text" value="${formatDate(donor.lastDonationDate || donor.lastDonation)}" disabled style="background-color:#f8fafc; color:#94a3b8; cursor:not-allowed;">
-                        </div>
+                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
+                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Total Donations</span>
+                        <span style="font-size:28px; font-weight:700;">${totalDonations}</span>
+                        <span class="text-sub" style="font-size:12px;">Approx. ${totalDonations * 3} lives saved</span>
                     </div>
-
-                    ${hint}
-
-                    <div class="profile-buttons" style="margin-top: 20px;">
-                        ${!isEditing ? `
-                            <button class="btn btn-primary" id="btn-edit-profile">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
-                            </button>
-                        ` : `
-                            <button class="btn btn-success" id="btn-save-profile">
-                                <i class="fa-solid fa-check"></i> Save Changes
-                            </button>
-                            <button class="btn btn-secondary" id="btn-cancel-edit">
-                                <i class="fa-solid fa-xmark"></i> Cancel
-                            </button>
-                        `}
+                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
+                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Last Donation</span>
+                        <span style="font-size:22px; font-weight:700;">${lastDonation}</span>
+                        <span class="tag ${eligibility.tag}">${eligibility.text}</span>
+                    </div>
+                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:12px; background-color:#f8fafc;">
+                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Emergency Availability</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="availabilityToggle" ${availabilityChecked} ${availabilityDisabled}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="text-sub" style="font-size:12px;">${eligibility.isRecovery ? 'Disabled during recovery period' : 'You are available for emergency requests'}</span>
                     </div>
                 </div>
             `;
 
-            // Attach button events
-            document.getElementById('btn-edit-profile')?.addEventListener('click', () => {
-                isEditing = true;
-                renderProfileForm();
+            // Recent requests table/cards
+            let requestContent = '';
+            if (isMobileView()) {
+                // Mobile cards
+                let cards = '';
+                if (requests.length === 0) {
+                    cards = `<div class="card" style="padding:20px; text-align:center;">No direct requests yet.</div>`;
+                } else {
+                    requests.forEach(r => {
+                        const status = r.status || 'pending';
+                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
+                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
+                        cards += `
+                            <div class="mobile-card">
+                                <div class="info">
+                                    <div class="title">${r.finderName || 'Anonymous'}</div>
+                                    <div class="subtitle">${urgency}</div>
+                                    <div class="meta">${r.location || '—'}</div>
+                                </div>
+                                <div class="actions">
+                                    ${status === 'pending' ? `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>` : `<span class="tag ${tagClass}">${urgency}</span>`}
+                                    <button class="product-card-menu-btn kebab-btn" data-id="${r.id}">
+                                        <span class="dot"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                requestContent = `<div class="mobile-product-cards">${cards}</div>`;
+            } else {
+                // Desktop table
+                let rows = '';
+                if (requests.length === 0) {
+                    rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No direct requests yet.</td></tr>`;
+                } else {
+                    requests.forEach(r => {
+                        const status = r.status || 'pending';
+                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
+                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
+                        rows += `
+                            <tr>
+                                <td><strong>${r.finderName || 'Anonymous'}</strong></td>
+                                <td>${r.location || '—'}</td>
+                                <td><span class="tag ${tagClass}">${urgency}</span></td>
+                                <td>
+                                    ${status === 'pending' ? `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>` : `<span class="tag ${tagClass}">${urgency}</span>`}
+                                    <button class="kebab kebab-btn" data-id="${r.id}" style="margin-left:8px;"><span class="dot"></span></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                requestContent = `
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Patient Name</th><th>Hospital / Location</th><th>Urgency</th><th>Action</th></tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            const html = `
+                ${statsHtml}
+                <div class="card">
+                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="font-size:16px; font-weight:700;">Recent Direct Requests</h3>
+                        <a href="#" class="btn-secondary" style="text-decoration:none;">View All</a>
+                    </div>
+                    ${requestContent}
+                </div>
+            `;
+            mainContent.innerHTML = html;
+            attachDashboardEvents();
+        }
+
+        function attachDashboardEvents() {
+            const toggle = document.getElementById('availabilityToggle');
+            if (toggle) {
+                toggle.addEventListener('change', async (e) => {
+                    if (!donor) return;
+                    const available = e.target.checked;
+                    try {
+                        await updateDoc(doc(db, 'donors', donor.uid), { emergencyAvailable: available });
+                        donor.emergencyAvailable = available;
+                        toast('Availability updated', 'success');
+                    } catch (err) {
+                        toast(err.message, 'error');
+                    }
+                });
+            }
+            document.querySelectorAll('.btn-approve').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    showLoading('Approving request…');
+                    try {
+                        await updateDoc(doc(db, 'requests', id), { status: 'approved' });
+                        hideLoading();
+                        toast('Request approved!', 'success');
+                    } catch (err) {
+                        hideLoading();
+                        toast(err.message, 'error');
+                    }
+                });
             });
-            document.getElementById('btn-save-profile')?.addEventListener('click', saveProfile);
-            document.getElementById('btn-cancel-edit')?.addEventListener('click', () => {
-                isEditing = false;
-                renderProfileForm();
+            // Kebab menus
+            document.querySelectorAll('.kebab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    openKebabMenu(e, id);
+                });
+            });
+            // Close popups on outside click
+            document.addEventListener('click', closeAllPopups);
+        }
+
+        function closeAllPopups() {
+            document.querySelectorAll('.desktop-popup').forEach(p => p.remove());
+        }
+
+        function openKebabMenu(e, id) {
+            closeAllPopups();
+            const popup = document.createElement('div');
+            popup.className = 'desktop-popup';
+            popup.style.left = `${e.clientX}px`;
+            popup.style.top = `${e.clientY}px`;
+            popup.innerHTML = `
+                <div class="popup-item" data-action="approve" data-id="${id}"><i class="fa-solid fa-hand-holding-medical"></i> Approve</div>
+                <div class="popup-item" data-action="view" data-id="${id}"><i class="fa-solid fa-eye"></i> View Details</div>
+                <div class="popup-item danger" data-action="decline" data-id="${id}"><i class="fa-solid fa-xmark"></i> Decline</div>
+            `;
+            document.body.appendChild(popup);
+            popup.querySelectorAll('.popup-item').forEach(item => {
+                item.addEventListener('click', async () => {
+                    const action = item.getAttribute('data-action');
+                    const reqId = item.getAttribute('data-id');
+                    if (action === 'approve') {
+                        showLoading('Approving…');
+                        await updateDoc(doc(db, 'requests', reqId), { status: 'approved' });
+                        hideLoading();
+                        toast('Approved!', 'success');
+                    } else if (action === 'decline') {
+                        showLoading('Declining…');
+                        await updateDoc(doc(db, 'requests', reqId), { status: 'declined' });
+                        hideLoading();
+                        toast('Declined', 'info');
+                    }
+                    closeAllPopups();
+                });
             });
         }
 
-        // ===== Save profile to Firestore =====
+        // Render Emergency Page
+        function renderEmergency() {
+            const pending = requests.filter(r => r.status === 'pending');
+            let content = '';
+            if (isMobileView()) {
+                // Mobile cards
+                if (pending.length === 0) {
+                    content = `<div class="card" style="padding:20px; text-align:center;">No emergency alerts right now.</div>`;
+                } else {
+                    content = '<div class="mobile-product-cards">';
+                    pending.forEach(r => {
+                        content += `
+                            <div class="mobile-card">
+                                <div class="info">
+                                    <div class="title">${r.urgency || 'Emergency'}</div>
+                                    <div class="subtitle">${r.location || '—'}</div>
+                                    <div class="meta">${formatDate(r.createdAt)} &bull; ${r.bloodGroup || '—'}</div>
+                                </div>
+                                <div class="actions">
+                                    <button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>
+                                    <button class="product-card-menu-btn kebab-btn" data-id="${r.id}"><span class="dot"></span></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    content += '</div>';
+                }
+            } else {
+                // Desktop table
+                let rows = '';
+                if (pending.length === 0) {
+                    rows = `<tr><td colspan="5" style="text-align:center; padding:20px;">No emergency alerts right now.</td></tr>`;
+                } else {
+                    pending.forEach(r => {
+                        rows += `
+                            <tr>
+                                <td>${formatDate(r.createdAt)}</td>
+                                <td>${r.urgency || 'Emergency'}</td>
+                                <td><strong>${r.location || '—'}</strong></td>
+                                <td><span class="tag red">${r.bloodGroup || '—'}</span></td>
+                                <td>
+                                    <button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>
+                                    <button class="kebab kebab-btn" data-id="${r.id}" style="margin-left:8px;"><span class="dot"></span></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                content = `
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead><tr><th>Date Posted</th><th>Required For</th><th>Location Details</th><th>Blood Group</th><th>Status</th></tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            mainContent.innerHTML = `
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+                    <div class="search-input-wrap" style="max-width:300px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search requests..." />
+                    </div>
+                    <select class="form-input" style="width:auto; min-width:140px;">
+                        <option>Radius: 10 KM</option>
+                        <option>Radius: 25 KM</option>
+                        <option>Radius: 50 KM</option>
+                    </select>
+                    <select class="form-input" style="width:auto; min-width:160px;">
+                        <option>Sort: Highest Urgency</option>
+                        <option>Sort: Nearest Location</option>
+                    </select>
+                    <button class="primary-btn"><i class="fa-solid fa-location-crosshairs"></i> Update My Location</button>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3 style="font-size:16px; font-weight:700;">Pending Emergency Requests</h3></div>
+                    ${content}
+                </div>
+            `;
+            attachEmergencyEvents();
+        }
+
+        function attachEmergencyEvents() {
+            document.querySelectorAll('.btn-approve').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    showLoading('Approving request…');
+                    try {
+                        await updateDoc(doc(db, 'requests', id), { status: 'approved' });
+                        hideLoading();
+                        toast('Request approved!', 'success');
+                    } catch (err) {
+                        hideLoading();
+                        toast(err.message, 'error');
+                    }
+                });
+            });
+            document.querySelectorAll('.kebab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    openKebabMenu(e, id);
+                });
+            });
+            document.addEventListener('click', closeAllPopups);
+        }
+
+        // Render History Page
+        function renderHistory() {
+            const history = donor?.donationHistory || [];
+            if (isMobileView()) {
+                let cards = '';
+                if (history.length === 0) {
+                    cards = `<div class="card" style="padding:20px; text-align:center;">No donation records yet.</div>`;
+                } else {
+                    cards = '<div class="mobile-product-cards">';
+                    history.forEach(h => {
+                        cards += `
+                            <div class="mobile-card">
+                                <div class="info">
+                                    <div class="title">${h.camp || '—'}</div>
+                                    <div class="subtitle">${formatDate(h.date)}</div>
+                                    <div class="meta">${h.units || '1 Unit (450ml)'}</div>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn-secondary"><i class="fa-solid fa-download"></i> Download</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    cards += '</div>';
+                }
+                mainContent.innerHTML = `<div class="card"><div class="card-header"><h3>Donation History</h3></div>${cards}</div>`;
+            } else {
+                let rows = '';
+                if (history.length === 0) {
+                    rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No donation records yet.</td></tr>`;
+                } else {
+                    history.forEach(h => {
+                        rows += `
+                            <tr>
+                                <td>${formatDate(h.date)}</td>
+                                <td>${h.camp || '—'}</td>
+                                <td>${h.units || '1 Unit (450ml)'}</td>
+                                <td><button class="btn-secondary"><i class="fa-solid fa-download"></i> Download</button></td>
+                            </tr>
+                        `;
+                    });
+                }
+                mainContent.innerHTML = `
+                    <div class="card">
+                        <div class="card-header"><h3>Donation History</h3></div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead><tr><th>Donation Date</th><th>Camp / Hospital Name</th><th>Units Donated</th><th>Certificate</th></tr></thead>
+                                <tbody>${rows}</tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Render Profile Page
+        function renderProfile() {
+            const disabled = isEditingProfile ? '' : 'disabled';
+            const hint = isEditingProfile ? '' : '<span class="text-sub" style="font-size:12px;">Click "Edit Profile" to make changes</span>';
+            const avatar = auth.currentUser?.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80';
+
+            mainContent.innerHTML = `
+                <div class="card" style="max-width:700px; margin:0 auto;">
+                    <div class="card-header" style="display:flex; align-items:center; gap:20px;">
+                        <img src="${avatar}" style="width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid #f1f5f9;">
+                        <div>
+                            <h3 style="font-size:20px; font-weight:700;">${getField('name', 'Donor')}</h3>
+                            <p class="text-sub" style="font-size:13px;">Registered Donor &bull; Member since 2024</p>
+                            <p class="text-sub" style="font-size:12px; margin-top:4px;"><i class="fa-solid fa-envelope"></i> ${auth.currentUser?.email || 'No email'}</p>
+                        </div>
+                    </div>
+                    <div style="padding:24px;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px;">
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">FULL NAME</label>
+                                <input class="form-input" id="pf-name" value="${getField('name')}" ${disabled}>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">PHONE NUMBER</label>
+                                <input class="form-input" id="pf-phone" value="${getField('phone')}" ${disabled}>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">BLOOD GROUP</label>
+                                <select class="form-input" id="pf-blood-group" ${disabled}>
+                                    <option value="">Select Blood Group</option>
+                                    ${['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(bg => `<option value="${bg}" ${donor?.bloodGroup === bg ? 'selected' : ''}>${bg}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">AGE</label>
+                                <input class="form-input" type="number" id="pf-age" value="${getField('age')}" ${disabled} min="18" max="65">
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">GENDER</label>
+                                <select class="form-input" id="pf-gender" ${disabled}>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male" ${donor?.gender === 'Male' ? 'selected' : ''}>Male</option>
+                                    <option value="Female" ${donor?.gender === 'Female' ? 'selected' : ''}>Female</option>
+                                    <option value="Other" ${donor?.gender === 'Other' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">WEIGHT (KG)</label>
+                                <input class="form-input" type="number" id="pf-weight" value="${getField('weight')}" ${disabled} min="45" max="200">
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">PRIMARY LOCATION</label>
+                                <input class="form-input" id="pf-location" value="${getField('location')}" ${disabled}>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">CITY</label>
+                                <input class="form-input" id="pf-city" value="${getField('city')}" ${disabled}>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">STATE</label>
+                                <input class="form-input" id="pf-state" value="${getField('state')}" ${disabled}>
+                            </div>
+                            <div>
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">PINCODE</label>
+                                <input class="form-input" id="pf-pincode" value="${getField('pincode')}" ${disabled} maxlength="10">
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">FULL ADDRESS</label>
+                                <input class="form-input" id="pf-address" value="${getField('address')}" ${disabled}>
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">MEDICAL CONDITIONS</label>
+                                <input class="form-input" id="pf-medical" value="${getField('medicalConditions')}" ${disabled} placeholder="Any health conditions we should know about">
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <label class="text-sub" style="font-size:12px; font-weight:600;">LAST DONATION DATE</label>
+                                <input class="form-input" type="text" value="${formatDate(donor?.lastDonationDate || donor?.lastDonation)}" disabled style="background-color:#f8fafc; color:#94a3b8;">
+                            </div>
+                        </div>
+                        ${hint}
+                        <div style="display:flex; gap:12px; margin-top:20px;">
+                            ${!isEditingProfile ? `
+                                <button class="primary-btn" id="btn-edit-profile"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
+                            ` : `
+                                <button class="btn-success" id="btn-save-profile"><i class="fa-solid fa-check"></i> Save Changes</button>
+                                <button class="btn-secondary" id="btn-cancel-edit"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachProfileEvents();
+        }
+
+        function attachProfileEvents() {
+            document.getElementById('btn-edit-profile')?.addEventListener('click', () => {
+                isEditingProfile = true;
+                renderProfile();
+            });
+            document.getElementById('btn-save-profile')?.addEventListener('click', saveProfile);
+            document.getElementById('btn-cancel-edit')?.addEventListener('click', () => {
+                isEditingProfile = false;
+                renderProfile();
+            });
+        }
+
         async function saveProfile() {
             if (!donor?.uid) {
                 toast('Donor data not loaded.', 'error');
                 return;
             }
-
             const name = document.getElementById('pf-name').value.trim();
             const phone = document.getElementById('pf-phone').value.trim();
             const bloodGroup = document.getElementById('pf-blood-group').value;
@@ -634,19 +1476,17 @@
             try {
                 await updateDoc(doc(db, 'donors', donor.uid), updates);
                 donor = { ...donor, ...updates };
-                isEditing = false;
+                isEditingProfile = false;
                 hideLoading();
                 toast('Profile updated successfully!', 'success');
                 updateSidebarProfile();
-                renderProfileForm();
+                renderProfile();
             } catch (err) {
                 hideLoading();
                 toast('Failed to save: ' + err.message, 'error');
-                console.error(err);
             }
         }
 
-        // ===== Update sidebar info =====
         function updateSidebarProfile() {
             if (!donor) return;
             document.getElementById('dd-name').textContent = donor.name || 'Donor';
@@ -658,43 +1498,83 @@
             document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email';
         }
 
-        // ===== Auth & data loading =====
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'login-donor.html';
-                return;
+        function updateEmergencyBadge() {
+            const badge = document.getElementById('emergency-badge');
+            if (badge) {
+                const pending = requests.filter(r => r.status === 'pending').length;
+                badge.textContent = pending;
+                badge.style.display = pending > 0 ? 'inline-block' : 'none';
             }
+        }
+
+        function renderPage(target) {
+            currentTab = target;
+            closeAllPopups();
+            switch (target) {
+                case 'dashboard':
+                    topbarTitle.innerText = 'My Dashboard';
+                    topbarDesc.innerText = 'Welcome back! Here\'s your donation summary.';
+                    renderDashboard();
+                    break;
+                case 'emergency':
+                    topbarTitle.innerText = 'Emergency Requests';
+                    topbarDesc.innerText = 'Urgent blood requirements based on your location filters.';
+                    renderEmergency();
+                    break;
+                case 'history':
+                    topbarTitle.innerText = 'Donation History';
+                    topbarDesc.innerText = 'Track your past donations and health milestones.';
+                    renderHistory();
+                    break;
+                case 'profile':
+                    topbarTitle.innerText = 'Profile Settings';
+                    topbarDesc.innerText = isEditingProfile ? 'Update your personal details and save changes.' : 'View and update your personal information.';
+                    renderProfile();
+                    break;
+                default:
+                    mainContent.innerHTML = '<p>Page not found.</p>';
+            }
+            updateEmergencyBadge();
+        }
+
+        // Auth
+        onAuthStateChanged(auth, async user => {
+            if (!user) { window.location.href = 'login-donor.html'; return; }
             const snap = await getDoc(doc(db, 'donors', user.uid));
-            if (!snap.exists()) {
-                window.location.href = 'onboarding.html';
-                return;
-            }
+            if (!snap.exists()) { window.location.href = 'onboarding.html'; return; }
             donor = { ...snap.data(), uid: user.uid };
             updateSidebarProfile();
-            renderProfileForm();
+            const q = query(collection(db, 'requests'), where('donorId', '==', user.uid));
+            requestsUnsub = onSnapshot(q, snap => {
+                requests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderPage(currentTab);
+            });
+            renderPage(currentTab);
         });
 
-        // ===== Sidebar mobile toggle =====
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-
-        // ===== Profile popup =====
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profilePopup.classList.toggle('active');
-        });
-        document.addEventListener('click', (e) => {
+        // Navigation
+        document.addEventListener('click', function(e) {
             if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
                 profilePopup.classList.remove('active');
             }
+            const link = e.target.closest('.nav-link');
+            if (!link) return;
+            e.preventDefault();
+            const target = link.getAttribute('data-target');
+            if (target === 'logout') { signOut(); return; }
+            if (target === 'profile' && currentTab === 'profile' && isEditingProfile) {
+                isEditingProfile = false;
+            }
+            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+            link.classList.add('active');
+            renderPage(target);
+            if (window.innerWidth <= 768) sidebar.classList.remove('active');
         });
 
-        // ===== Logout =====
-        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
+        async function signOut() {
             showLoading('Signing out...');
             try {
+                if (requestsUnsub) requestsUnsub();
                 await fbSignOut(auth);
                 hideLoading();
                 window.location.href = 'index.html';
@@ -702,15 +1582,31 @@
                 hideLoading();
                 toast(err.message, 'error');
             }
+        }
+
+        // Mobile toggle
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
         });
 
-        // ===== Fallback functions (if utils not loaded) =====
+        // Resize handler
+        window.addEventListener('resize', () => {
+            const newIsMobile = isMobileView();
+            if (newIsMobile !== isMobile) {
+                isMobile = newIsMobile;
+                renderPage(currentTab);
+            }
+        });
+
+        // Fallback functions
         if (typeof showLoading !== 'function') {
             window.showLoading = (msg) => {
-                const overlay = document.getElementById('loading');
-                const msgEl = document.getElementById('loading-msg');
-                if (msgEl) msgEl.textContent = msg || 'Please wait...';
-                if (overlay) overlay.style.display = 'flex';
+                document.getElementById('loading').style.display = 'flex';
+                document.getElementById('loading-msg').textContent = msg || 'Please wait...';
             };
         }
         if (typeof hideLoading !== 'function') {
@@ -721,18 +1617,17 @@
         if (typeof toast !== 'function') {
             window.toast = (msg, type) => {
                 const toastEl = document.getElementById('toast');
-                if (!toastEl) return;
                 toastEl.textContent = msg;
                 toastEl.style.background = type === 'success' ? '#059669' : type === 'error' ? '#e11d48' : '#334155';
                 toastEl.style.color = '#fff';
                 toastEl.style.padding = '12px 20px';
                 toastEl.style.borderRadius = '6px';
-                toastEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.15)';
                 toastEl.style.opacity = '1';
                 toastEl.style.transition = 'opacity 0.3s';
                 toastEl.style.fontSize = '14px';
                 toastEl.style.fontWeight = '500';
-                toastEl.style.zIndex = '3000';
+                toastEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.15)';
+                toastEl.style.zIndex = '4000';
                 toastEl.style.position = 'fixed';
                 toastEl.style.bottom = '20px';
                 toastEl.style.right = '20px';
