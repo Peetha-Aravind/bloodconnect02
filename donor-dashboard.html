@@ -3,721 +3,938 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloodConnect - Donor Dashboard</title>
-    <!-- FontAwesome for Icons -->
+    <title>BloodConnect - My Donations</title>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: IBM Plex Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-
+    <!-- Google Fonts: DM Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables & Reset */
+        /* ===== BLOODCONNECT GLOBAL VARIABLES ===== */
         :root {
-            --primary-color: #e11d48;
-            --primary-hover: #be123c;
-            --bg-sidebar: #ffffff;
-            --bg-sidebar-hover: #f1f5f9;
-            --text-main: #64748b;
-            --text-dark: #0f172a;
-            --border-color: #e2e8f0;
-            --card-bg: #ffffff;
-            --body-bg: #f8fafc;
-            --transition: all 0.25s ease-in-out;
+            --page-bg: #f4f5f7;
+            --header-bg: #ffffff;
+            --text-color: rgb(24, 24, 26);
+            --text-sub: #6b7280;
+            --icon-color: #6b7280;
+            --icon-active: #e11d48;
+            --active-bg: #f3f4f6;
+            --hover-bg: #f8fafc;
+            --border-subtle: #e5e7eb;
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
+            --brand-gradient: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+            --danger-color: #ef4444;
+            --success-color: #10B981;
+            --warning-color: #f59e0b;
+            --switch-on: #e11d48;
+            --switch-off: #9CA3AF;
+            --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --sidebar-width: 280px;
+            --topbar-height: 70px;
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.06);
+            --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'IBM Plex Sans', sans-serif;
+            text-decoration: none !important;
         }
-
+        html {
+            scroll-behavior: smooth;
+        }
         body {
-            background-color: var(--body-bg);
-            display: flex;
-            min-height: 100vh;
-            color: #334155;
+            font-family: "DM Sans", Roboto, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--text-color);
+            background-color: var(--page-bg);
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.sidebar-open {
+            overflow: hidden;
         }
 
-        /* Sidebar Layout */
+        /* ===== SIDEBAR (Breathable & Spacious) ===== */
         .sidebar {
-            width: 270px;
-            background-color: var(--bg-sidebar);
-            color: var(--text-main);
+            width: var(--sidebar-width);
+            background-color: #ffffff;
+            color: #64748b;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
-            transition: var(--transition);
+            top: 0;
+            left: 0;
             z-index: 1000;
-            border-right: 1px solid var(--border-color);
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sidebar);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+            transform: translateX(0);
+            will-change: transform;
         }
-
-        /* Brand Logo */
         .sidebar-brand {
-            padding: 24px 20px;
+            padding: 26px 24px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: var(--text-dark);
-            border-bottom: 1px solid var(--border-color);
-            height: 70px;
+            gap: 14px;
+            color: #0f172a;
+            border-bottom: 1px solid var(--border-subtle);
+            height: var(--topbar-height);
+            flex-shrink: 0;
         }
-
         .sidebar-brand i {
-            font-size: 26px;
-            color: var(--primary-color);
+            font-size: 28px;
+            color: var(--brand-primary);
+            flex-shrink: 0;
         }
-
         .sidebar-brand h2 {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            white-space: nowrap;
         }
-
-        .sidebar-brand span {
-            color: var(--primary-color);
+        .sidebar-brand h2 span {
+            color: var(--brand-primary);
         }
-
-        /* Navigation Menu */
         .sidebar-menu {
             list-style: none;
-            padding: 15px 12px;
+            padding: 20px 16px;
             flex-grow: 1;
             overflow-y: auto;
+            overflow-x: hidden;
         }
-
-        .menu-category {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #94a3b8;
-            padding: 12px 10px 6px 10px;
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
         }
-
+        .sidebar-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
         .sidebar-menu li {
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            list-style: none;
         }
-
         .nav-link {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            color: var(--text-main);
+            gap: 14px;
+            padding: 14px 16px;
+            color: #64748b;
             text-decoration: none;
-            border-radius: 8px;
-            transition: var(--transition);
+            border-radius: 10px;
+            transition: var(--transition-smooth);
             font-size: 14px;
-            font-weight: 400;
-            cursor: pointer;
-        }
-
-        .nav-link i {
-            font-size: 16px;
-            width: 20px;
-            text-align: center;
-            transition: var(--transition);
-            color: #94a3b8;
-        }
-
-        .nav-link:hover {
-            background-color: var(--bg-sidebar-hover);
-            color: var(--text-dark);
-            transform: translateX(3px);
-        }
-
-        .nav-link:hover i {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active {
-            background-color: var(--primary-color);
-            color: #ffffff;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+            cursor: pointer;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            position: relative;
         }
-
+        .nav-link i {
+            font-size: 17px;
+            width: 22px;
+            text-align: center;
+            color: #94a3b8;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+        .nav-link span:not(.badge) {
+            flex: 1;
+        }
+        .nav-link:hover {
+            background-color: #fef2f2;
+            color: #0f172a;
+            transform: translateX(2px);
+        }
+        .nav-link:hover i {
+            color: var(--brand-primary);
+            transform: scale(1.08);
+        }
+        .nav-link.active {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.3);
+        }
         .nav-link.active i {
             color: #ffffff;
         }
-
-        /* Badges */
+        .nav-link.active:hover {
+            background-color: var(--brand-primary-hover);
+            transform: translateX(2px);
+        }
+        .nav-link.active:hover i {
+            color: #ffffff;
+            transform: scale(1.08);
+        }
         .badge {
             margin-left: auto;
             background-color: #f1f5f9;
-            padding: 2px 8px;
+            padding: 3px 10px;
             font-size: 11px;
-            font-weight: 600;
-            border-radius: 12px;
-            color: var(--text-main);
+            font-weight: 700;
+            border-radius: 14px;
+            color: #64748b;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
-
         .nav-link.active .badge {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.25);
             color: #ffffff;
         }
-
         .badge.alert {
             background-color: #ffe4e6;
-            color: var(--primary-color);
+            color: var(--brand-primary);
         }
-
         .nav-link.active .badge.alert {
             background-color: #ffffff;
-            color: var(--primary-color);
+            color: var(--brand-primary);
         }
-
-        /* User Profile Summary & Popup */
         .user-profile {
-            padding: 16px 20px;
+            padding: 20px 20px 18px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background-color: #f8fafc;
-            border-top: 1px solid var(--border-color);
-            position: relative;
+            gap: 14px;
+            background-color: #fafbfc;
+            border-top: 1px solid var(--border-subtle);
             cursor: pointer;
-            transition: var(--transition);
+            position: relative;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
         }
-
         .user-profile:hover {
-            background-color: var(--bg-sidebar-hover);
+            background-color: #f8fafc;
         }
-
         .user-profile img {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ca8a04;
+            border: 2.5px solid #e11d48;
+            flex-shrink: 0;
         }
-
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
         .user-info h4 {
             font-size: 13px;
-            font-weight: 500;
-            color: var(--text-dark);
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
         .user-info p {
             font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             color: #ca8a04;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
         .status-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #059669;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            box-shadow: 0 0 6px #059669;
+            background-color: #10B981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+            flex-shrink: 0;
+            animation: pulse-dot 2s infinite;
         }
-
         .status-dot.yellow {
-            background-color: #ca8a04;
-            box-shadow: 0 0 6px #ca8a04;
+            background-color: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+            animation: pulse-dot-yellow 2s infinite;
         }
-
         .status-dot.inactive {
             background-color: #94a3b8;
             box-shadow: none;
+            animation: none;
         }
-
-        /* Profile Popup Styles */
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+            }
+        }
+        @keyframes pulse-dot-yellow {
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+            }
+        }
         .profile-popup {
             display: none;
             position: absolute;
-            bottom: calc(100% + 5px);
-            left: 12px;
-            right: 12px;
+            bottom: calc(100% + 10px);
+            left: 16px;
+            right: 16px;
             background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            padding: 8px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 10px;
             z-index: 1001;
-            animation: popupFadeIn 0.2s ease-out;
-            cursor: default;
+            animation: popupFadeIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .profile-popup.active {
             display: block;
         }
-
         .popup-email {
             font-size: 13px;
-            color: var(--text-dark);
-            padding: 8px 10px 12px 10px;
+            color: #0f172a;
+            padding: 10px 12px 14px 12px;
             border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 500;
             word-break: break-all;
         }
-
         .nav-link-logout {
-            color: var(--primary-color);
-            margin-bottom: 0;
-            cursor: pointer;
+            color: var(--brand-primary);
+            border-radius: 8px;
         }
-
         .nav-link-logout i {
-            color: var(--primary-color);
+            color: var(--brand-primary);
         }
-
         .nav-link-logout:hover,
         .nav-link-logout.active {
             background-color: #ffe4e6;
-            color: var(--primary-hover);
+            color: var(--brand-primary-hover);
             box-shadow: none;
-            font-weight: 500;
+            transform: none;
         }
-
+        .nav-link-logout:hover i,
+        .nav-link-logout.active i {
+            color: var(--brand-primary-hover);
+            transform: none;
+        }
         @keyframes popupFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(10px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Main Wrapper & Top Bar */
+        /* ===== MOBILE SIDEBAR OVERLAY ===== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ===== WRAPPER & TOPBAR ===== */
         .wrapper {
-            margin-left: 270px;
+            margin-left: var(--sidebar-width);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transition: var(--transition);
+            transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .topbar {
-            background-color: #ffffff;
-            height: 70px;
-            border-bottom: 1px solid var(--border-color);
+            background-color: var(--header-bg);
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
+            padding: 0 32px;
             position: sticky;
             top: 0;
             z-index: 999;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            transition: var(--transition-smooth);
         }
-
-        .topbar-title h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-dark);
-            letter-spacing: -0.3px;
-        }
-
-        .topbar-title p {
-            font-size: 12px;
-            color: var(--text-main);
-        }
-
-        .topbar-right {
+        .topbar-left-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            min-width: 0;
         }
-
-        /* Main Content Area */
-        .main-content {
-            padding: 40px;
-            flex-grow: 1;
-            animation: fadeIn 0.3s ease-in-out;
+        .topbar-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 28px;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
         }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: var(--card-bg);
-            padding: 22px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
-        .stat-card h3 {
-            font-size: 12px;
-            font-weight: 500;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .stat-card .number {
-            font-size: 28px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-top: 6px;
-        }
-
-        /* Toggle Switch CSS */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-            margin-top: 8px;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
+        .menu-toggle {
+            display: none;
+            background-color: #ffffff;
+            color: #1d1e20;
+            border: 1px solid var(--border-subtle);
+            padding: 10px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #cbd5e1;
-            transition: .4s;
-            border-radius: 24px;
+            font-size: 18px;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+            line-height: 1;
+            z-index: 10;
         }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .menu-toggle:hover {
+            background-color: #f8fafc;
+            border-color: #d1d5db;
         }
-        input:checked+.slider {
-            background-color: #059669;
-        }
-        input:checked+.slider:before {
-            transform: translateX(20px);
+        .menu-toggle:active {
+            transform: scale(0.95);
         }
 
-        .data-table-container {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
+        /* Mobile brand (visible only on mobile) */
+        .mobile-brand {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            z-index: 5;
+        }
+        .mobile-brand i {
+            color: var(--brand-primary);
+            font-size: 22px;
+        }
+        .mobile-brand span {
+            color: var(--brand-primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .content-inner {
+            max-width: 1110px;
+            margin: 0 auto;
+            padding: 28px 28px 48px;
+            width: 100%;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-subtle);
             overflow: hidden;
-            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+        .card-header {
+            padding: 26px 28px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .card-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
+        }
+        .card-header .subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            font-weight: 400;
+        }
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
         }
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
+            min-width: 650px;
         }
-        .data-table th,
-        .data-table td {
-            padding: 16px 20px;
-            border-bottom: 1px solid #f1f5f9;
+        .data-table thead {
+            height: 52px;
+            background-color: #fafbfc;
         }
         .data-table th {
-            background-color: #f8fafc;
-            color: #475569;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
-        }
-        .data-table tr:hover {
-            background-color: #f8fafc;
-        }
-
-        .tag {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .tag.red {
-            background: #ffe4e6;
-            color: #e11d48;
-        }
-        .tag.green {
-            background: #d1fae5;
-            color: #059669;
-        }
-        .tag.purple {
-            background: #f3e8ff;
-            color: #7e22ce;
-        }
-        .tag.yellow {
-            background: #fef9c3;
-            color: #ca8a04;
-        }
-        .tag.gray {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-        .tag.black {
-            background: #1e293b;
-            color: #f8fafc;
-        }
-
-        .btn {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-primary {
-            background-color: #e11d48;
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background-color: #be123c;
-        }
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #cbd5e1;
-            color: #475569;
-        }
-        .btn-outline:hover {
-            background-color: #f1f5f9;
-            color: #0f172a;
-        }
-        .btn-success {
-            background-color: #059669;
-            color: #fff;
-        }
-        .btn-success:hover {
-            background-color: #047857;
-        }
-        .btn-secondary {
-            background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-        .btn-secondary:hover {
-            background-color: #e2e8f0;
-            color: #0f172a;
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-select {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            font-size: 14px;
-            outline: none;
-            background-color: white;
-            color: var(--text-dark);
-        }
-
-        .menu-toggle {
-            display: none;
-            background-color: #f8fafc;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
-            padding: 8px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        /* Profile Form Styles */
-        .profile-form-container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            max-width: 700px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 24px;
-        }
-
-        .profile-avatar-large {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f1f5f9;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .profile-header-info h3 {
-            font-size: 20px;
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .profile-header-info p {
-            color: var(--text-main);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
+            line-height: 20px;
+            color: #4b5563;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+            padding: 14px 20px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-size: 11px;
         }
-
-        .form-group input,
-        .form-group select {
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            transition: var(--transition);
+        .data-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
             background-color: #ffffff;
-            color: var(--text-dark);
-            width: 100%;
+            transition: var(--transition-smooth);
         }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        .data-table tbody tr:hover {
+            background-color: #fef2f2;
         }
-
-        .form-group input:disabled,
-        .form-group select:disabled {
-            background-color: #f8fafc;
-            color: #94a3b8;
-            cursor: not-allowed;
-            border-color: #e2e8f0;
+        .data-table tbody tr:last-child {
+            border-bottom: none;
         }
-
-        .form-group input:disabled:focus,
-        .form-group select:disabled:focus {
-            border-color: #e2e8f0;
+        .data-table td {
+            padding: 18px 20px;
+            vertical-align: middle;
+            text-align: left;
+            font-size: 14px;
+            color: #1d1e20;
+        }
+        .data-table td .recipient-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .data-table td .recipient-location {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+        .data-table td .donation-date {
+            font-size: 13px;
+            color: #4b5563;
+        }
+        .data-table td .donation-amount {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .btn-certificate {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1.5px solid var(--brand-primary);
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand-primary);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+        .btn-certificate:hover {
+            background: var(--brand-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
+            transform: translateY(-1px);
+        }
+        .btn-certificate:active {
+            transform: translateY(0);
             box-shadow: none;
         }
-
-        .form-group .field-hint {
-            font-size: 11px;
-            color: #94a3b8;
-            font-style: italic;
+        .btn-certificate i {
+            font-size: 14px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-sub);
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+        .empty-state p {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .empty-state .hint {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 6px;
+            font-weight: 400;
         }
 
-        .profile-buttons {
+        /* ===== MOBILE DONATION CARDS ===== */
+        .mobile-product-cards {
             display: flex;
-            gap: 12px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px;
+        }
+        .mobile-card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid var(--border-subtle);
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: var(--transition-smooth);
+            width: 100%;
             flex-wrap: wrap;
         }
-
-        .profile-buttons .btn {
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 6px;
+        .mobile-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+        .mobile-card .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+        .mobile-card .info .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.2px;
+        }
+        .mobile-card .info .subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand-primary);
+        }
+        .mobile-card .info .meta {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-sub);
+        }
+        .mobile-card .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
         }
 
+        /* ===== LOADING OVERLAY ===== */
+        #loading {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .loading-spinner {
+            background: #ffffff;
+            padding: 28px 36px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+        }
+        .spinner-ring {
+            width: 44px;
+            height: 44px;
+            border: 3.5px solid #f1f5f9;
+            border-top-color: var(--brand-primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 14px;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .loading-spinner p {
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        /* ===== TOAST ===== */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 4000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast-item {
+            padding: 14px 20px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-item.success {
+            background: #059669;
+        }
+        .toast-item.error {
+            background: #e11d48;
+        }
+        .toast-item.info {
+            background: #334155;
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 290px;
+                --topbar-height: 60px;
+            }
+            /* Sidebar hidden by default on mobile using transform */
             .sidebar {
-                left: -270px;
+                transform: translateX(-100%);
+                box-shadow: var(--shadow-mobile-sidebar);
+                width: 290px;
+                left: 0;
+                z-index: 1000;
             }
             .sidebar.active {
-                left: 0;
+                transform: translateX(0);
             }
+            .sidebar-brand {
+                height: 60px;
+                padding: 18px 20px 16px;
+            }
+            .sidebar-brand h2 {
+                font-size: 19px;
+            }
+            .sidebar-brand i {
+                font-size: 24px;
+            }
+            .sidebar-menu {
+                padding: 16px 14px;
+            }
+            .sidebar-menu li {
+                margin-bottom: 6px;
+            }
+            .nav-link {
+                padding: 14px 14px;
+                font-size: 14px;
+                gap: 13px;
+                border-radius: 9px;
+            }
+            .nav-link i {
+                font-size: 16px;
+                width: 20px;
+            }
+            .user-profile {
+                padding: 16px 16px 14px;
+                gap: 12px;
+            }
+            .user-profile img {
+                width: 40px;
+                height: 40px;
+            }
+            .profile-popup {
+                left: 10px;
+                right: 10px;
+                bottom: calc(100% + 8px);
+            }
+
             .wrapper {
                 margin-left: 0;
             }
-            .menu-toggle {
-                display: block;
-            }
             .topbar {
-                padding: 0 20px;
+                height: 60px;
+                padding: 0 16px;
+                justify-content: center;
+                position: sticky;
+                top: 0;
+                z-index: 999;
             }
-            .main-content {
-                padding: 20px;
+            .topbar-left-section {
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
-            .action-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 9px 11px;
+                font-size: 17px;
+                border-radius: 8px;
+                background: #ffffff;
+                border: 1px solid var(--border-subtle);
+                cursor: pointer;
+                z-index: 11;
             }
-            .form-grid {
-                grid-template-columns: 1fr;
+            .topbar-title.desktop-title {
+                display: none;
             }
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
+            .mobile-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 17px;
+                font-weight: 700;
+                color: #0f172a;
+                letter-spacing: -0.3px;
+                white-space: nowrap;
+                z-index: 5;
+                pointer-events: none;
+            }
+            .mobile-brand i {
+                color: var(--brand-primary);
+                font-size: 20px;
+            }
+            .content-inner {
+                padding: 16px 16px 32px;
+            }
+            .card-header {
+                padding: 18px 16px;
+            }
+            .card-header h3 {
+                font-size: 15px;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-only {
+                display: block !important;
+            }
+            .mobile-product-cards {
+                padding: 12px;
                 gap: 12px;
             }
-            .profile-buttons {
-                justify-content: center;
+            .mobile-card {
+                padding: 16px 14px;
+                gap: 12px;
+                border-radius: 12px;
+            }
+            .mobile-card .info .title {
+                font-size: 15px;
+            }
+            .mobile-card .info .subtitle {
+                font-size: 12px;
+            }
+            .mobile-card .info .meta {
+                font-size: 11px;
+            }
+            .btn-certificate {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+            .empty-state {
+                padding: 32px 16px;
+            }
+            .empty-state i {
+                font-size: 40px;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+            .desktop-only {
+                display: block !important;
+            }
+            .mobile-brand {
+                display: none !important;
+            }
+            .sidebar {
+                transform: translateX(0) !important;
+            }
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .content-inner {
+                padding: 22px 20px 36px;
+            }
+            .topbar {
+                padding: 0 24px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 14px 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .mobile-brand {
+                font-size: 15px;
+                gap: 8px;
+            }
+            .mobile-brand i {
+                font-size: 18px;
+            }
+            .content-inner {
+                padding: 12px 10px 24px;
+            }
+            .mobile-card {
+                padding: 14px 12px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Left Sidebar Menu -->
     <aside class="sidebar" id="sidebar">
@@ -725,52 +942,42 @@
             <i class="fa-solid fa-heart-pulse"></i>
             <h2>Blood<span>Connect</span></h2>
         </div>
-
         <ul class="sidebar-menu">
-            <li class="menu-category">Overview</li>
             <li>
-                <a data-target="dashboard" data-title="My Dashboard" data-desc="Welcome back! Here's your donation summary." class="nav-link active">
+                <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-house-medical"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-
-            <li class="menu-category">Activity</li>
             <li>
-                <a data-target="emergency" data-title="Emergency Requests" data-desc="Urgent blood requirements based on your location filters." class="nav-link">
+                <a href="emergency.html" class="nav-link">
                     <i class="fa-solid fa-truck-medical"></i>
                     <span>Emergency Alerts</span>
                     <span class="badge alert" id="emergency-badge">0</span>
                 </a>
             </li>
             <li>
-                <a data-target="history" data-title="Donation History" data-desc="Track your past donations and health milestones." class="nav-link">
+                <a href="history.html" class="nav-link active">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>My Donations</span>
                 </a>
             </li>
-
-            <li class="menu-category">Settings</li>
             <li>
-                <a data-target="profile" data-title="Profile Settings" data-desc="Update your personal details and location preferences." class="nav-link">
+                <a href="donor-profile.html" class="nav-link">
                     <i class="fa-solid fa-user-gear"></i>
                     <span>Profile & Location</span>
                 </a>
             </li>
         </ul>
-
-        <!-- Clickable User Profile with Popup Menu -->
         <div class="user-profile" id="userProfileBtn">
             <img id="dd-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="User Avatar">
             <div class="user-info">
                 <h4 id="dd-name">Loading...</h4>
-                <p id="dd-status-text"><span class="status-dot yellow"></span> Recovery Period</p>
+                <p id="dd-status-text"><span class="status-dot yellow"></span> <span>Checking status...</span></p>
             </div>
-
-            <!-- Profile Popup Menu -->
             <div class="profile-popup" id="profilePopup">
                 <div class="popup-email" id="dd-email">Loading email...</div>
-                <a data-target="logout" data-title="Logout" data-desc="Session ended safely." class="nav-link nav-link-logout">
+                <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -780,59 +987,49 @@
 
     <div class="wrapper">
         <header class="topbar">
-            <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="topbar-left-section">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="topbar-title">
-                    <h2 id="topbarTitle">My Dashboard</h2>
-                    <p id="topbarDesc">Welcome back! Here's your donation summary.</p>
+                <div class="topbar-title desktop-title">
+                    <h2>My Donations</h2>
+                    <p>Your donation history and certificates.</p>
                 </div>
             </div>
-            <div class="topbar-right"></div>
+            <div class="mobile-brand">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
+            </div>
+            <div style="width:44px;"></div>
         </header>
 
-        <main class="main-content" id="mainContent">
-            <!-- Rendered via JavaScript -->
+        <main class="content-inner" id="mainContent">
+            <!-- Donation list injected by JS -->
         </main>
     </div>
 
     <!-- Loading overlay -->
-    <div class="loading-overlay" id="loading" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.7); z-index:2000; align-items:center; justify-content:center;">
-        <div style="background:white; padding:20px 30px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-            <div class="spinner" style="width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#e11d48;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;"></div>
-            <p id="loading-msg" style="margin-top:10px; font-size:14px;">Please wait...</p>
+    <div id="loading">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <p id="loading-msg">Loading your donations...</p>
         </div>
     </div>
-    <div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:3000;"></div>
-
-    <style>
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+    <div id="toast"></div>
 
     <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, collection, query, where, onSnapshot, updateDoc, fbSignOut } from "./firebase-config.js";
+        import { auth, onAuthStateChanged, db, doc, getDoc, fbSignOut } from "./firebase-config.js";
         import { showLoading, hideLoading, toast } from "./utils.js";
 
-        let requestsUnsub = null;
-        let currentTab = 'dashboard';
         let donor = null;
-        let requests = [];
-        let isEditingProfile = false;
-
         const mainContent = document.getElementById('mainContent');
-        const topbarTitle = document.getElementById('topbarTitle');
-        const topbarDesc = document.getElementById('topbarDesc');
         const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
 
-        // ---------- Helper functions ----------
+        // ===== Helpers =====
         function formatDate(value) {
             if (!value) return 'No record';
             const date = value?.toDate ? value.toDate() : new Date(value);
@@ -856,617 +1053,277 @@
             return { isRecovery: false, text: 'Eligible now', tag: 'green' };
         }
 
-        function getDonorField(field, fallback = '—') {
-            return donor?.[field] || fallback;
-        }
+        // ===== Render Donation History =====
+        function renderDonationHistory() {
+            if (!donor) return;
+            const history = donor.donationHistory || [];
+            const isMobile = window.innerWidth < 768;
 
-        // ---------- Page renderers ----------
-        function renderDashboard() {
-            const eligibility = getEligibilityInfo();
-            const totalDonations = donor?.totalDonations || 0;
-            const bloodGroup = donor?.bloodGroup || '—';
-            const lastDonation = formatDate(donor?.lastDonationDate || donor?.lastDonation);
-            const availabilityChecked = donor?.emergencyAvailable && !eligibility.isRecovery ? 'checked' : '';
-            const availabilityDisabled = eligibility.isRecovery ? 'disabled' : '';
-
-            let requestRows = '';
-            if (requests.length === 0) {
-                requestRows =
-                    `<tr><td colspan="4" style="text-align:center; padding:30px; color:#64748b;">No direct requests yet.</td></tr>`;
-            } else {
-                requests.forEach(r => {
-                    const status = r.status || 'pending';
-                    const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ?
-                        'Scheduled' : 'Completed');
-                    const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
-                    let action = '';
-                    if (status === 'pending') {
-                        action =
-                            `<button class="btn btn-primary btn-approve" data-id="${r.id}"><i class="fa-solid fa-hand-holding-medical"></i> Approve</button>`;
-                    } else if (status === 'approved') {
-                        action = `<span class="tag green">Approved</span>`;
-                    } else {
-                        action = `<span class="tag gray">Donated</span>`;
-                    }
-                    requestRows += `
-                        <tr>
-                            <td><strong>${r.finderName || 'Anonymous'}</strong></td>
-                            <td>${r.location || '—'}</td>
-                            <td><span class="tag ${tagClass}">${urgency}</span></td>
-                            <td>${action}</td>
-                        </tr>`;
-                });
-            }
-
-            return `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div>
-                            <h3>My Blood Group</h3>
-                            <div class="number" style="color:var(--primary-color);">${bloodGroup}</div>
+            if (isMobile) {
+                let cardsHtml = '';
+                if (history.length === 0) {
+                    cardsHtml = `
+                        <div class="card" style="padding:20px;">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-heart-circle-plus"></i>
+                                <p>No donation records yet</p>
+                                <p class="hint">Your donation history will appear here.</p>
+                            </div>
                         </div>
-                        <div style="margin-top:10px;"><span class="tag red">${bloodGroup === 'O-' ? 'Universal Donor' : 'Donor'}</span></div>
-                    </div>
-                    <div class="stat-card">
-                        <div>
-                            <h3>Total Donations</h3>
-                            <div class="number">${totalDonations}</div>
-                        </div>
-                        <div style="margin-top:10px; font-size:12px; color:var(--text-main);">Approx. ${totalDonations * 3} lives saved</div>
-                    </div>
-                    <div class="stat-card">
-                        <div>
-                            <h3>Last Donation</h3>
-                            <div class="number" style="font-size: 22px;">${lastDonation}</div>
-                        </div>
-                        <div style="margin-top:10px;"><span class="tag ${eligibility.tag}">${eligibility.text}</span></div>
-                    </div>
-                    <div class="stat-card" style="background-color: #f8fafc;">
-                        <div>
-                            <h3>Emergency Availability</h3>
-                            <label class="toggle-switch">
-                              <input type="checkbox" id="availabilityToggle" ${availabilityChecked} ${availabilityDisabled}>
-                              <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div style="margin-top:10px; font-size:12px; color:var(--text-main);">
-                            ${eligibility.isRecovery ? 'Disabled during recovery period' : 'You are available for emergency requests'}
-                        </div>
-                    </div>
-                </div>
-
-                <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--text-dark);">Recent Direct Requests</h3>
-                <div class="data-table-container">
-                    <table class="data-table">
-                       <thead><tr><th>Patient Name</th><th>Hospital / Location</th><th>Urgency</th><th>Action</th></tr></thead>
-                       <tbody>
-                           ${requestRows}
-                       </tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        function renderEmergency() {
-            const pending = requests.filter(r => r.status === 'pending');
-            let rows = '';
-            if (pending.length === 0) {
-                rows =
-                    `<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b;">No emergency alerts right now.</td></tr>`;
-            } else {
-                pending.forEach(r => {
-                    rows += `
-                        <tr>
-                            <td>${r.createdAt ? formatDate(r.createdAt) : '—'}</td>
-                            <td>${r.urgency || 'Emergency'}</td>
-                            <td><strong>${r.location || '—'}</strong></td>
-                            <td><span class="tag red">${r.bloodGroup || '—'}</span></td>
-                            <td><button class="btn btn-primary btn-approve" data-id="${r.id}"><i class="fa-solid fa-hand-holding-medical"></i> Approve</button></td>
-                        </tr>`;
-                });
-            }
-            return `
-                <div class="action-bar">
-                    <div class="filter-group">
-                        <select class="filter-select">
-                            <option>Radius: 10 KM</option>
-                            <option>Radius: 25 KM</option>
-                            <option>Radius: 50 KM</option>
-                        </select>
-                        <select class="filter-select">
-                            <option>Sort: Highest Urgency</option>
-                            <option>Sort: Nearest Location</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary"><i class="fa-solid fa-location-crosshairs"></i> Update My Location</button>
-                </div>
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead><tr><th>Date Posted</th><th>Required For</th><th>Location Details</th><th>Blood Group</th><th>Status</th></tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        function renderHistory() {
-            const history = donor?.donationHistory || [];
-            let rows = '';
-            if (history.length === 0) {
-                rows =
-                    `<tr><td colspan="4" style="text-align:center; padding:30px; color:#64748b;">No donation records yet.</td></tr>`;
-            } else {
-                history.forEach(h => {
-                    rows += `
-                        <tr>
-                            <td>${formatDate(h.date)}</td>
-                            <td>${h.camp || '—'}</td>
-                            <td>${h.units || '1 Unit (450ml)'}</td>
-                            <td><button class="btn btn-outline"><i class="fa-solid fa-download"></i> Download</button></td>
-                        </tr>`;
-                });
-            }
-            return `
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr><th>Donation Date</th><th>Camp / Hospital Name</th><th>Units Donated</th><th>Certificate</th></tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        function renderProfile() {
-            const name = getDonorField('name', '');
-            const phone = getDonorField('phone', '');
-            const bloodGroup = getDonorField('bloodGroup', '');
-            const location = getDonorField('location', '');
-            const address = getDonorField('address', '');
-            const city = getDonorField('city', '');
-            const state = getDonorField('state', '');
-            const pincode = getDonorField('pincode', '');
-            const age = getDonorField('age', '');
-            const gender = getDonorField('gender', '');
-            const weight = getDonorField('weight', '');
-            const medicalConditions = getDonorField('medicalConditions', '');
-            const email = auth.currentUser?.email || 'No email';
-            const avatarUrl = auth.currentUser?.photoURL ||
-                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80';
-            const lastDonationDate = formatDate(donor?.lastDonationDate || donor?.lastDonation);
-
-            const disabledAttr = isEditingProfile ? '' : 'disabled';
-            const readOnlyNote = isEditingProfile ? '' :
-                '<span class="field-hint">Click "Edit Profile" to update your information</span>';
-
-            return `
-                <div class="profile-form-container">
-                    <div class="profile-header">
-                        <img src="${avatarUrl}" class="profile-avatar-large" alt="Profile Picture">
-                        <div class="profile-header-info">
-                            <h3>${name || 'Donor'}</h3>
-                            <p>Registered Donor &bull; Member since 2024</p>
-                            <p style="font-size: 12px; margin-top: 4px; color: #94a3b8;">
-                                <i class="fa-solid fa-envelope"></i> ${email}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="pf-name"><i class="fa-solid fa-user"></i> Full Name</label>
-                            <input type="text" id="pf-name" value="${name}" ${disabledAttr} placeholder="Enter your full name">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-phone"><i class="fa-solid fa-phone"></i> Phone Number</label>
-                            <input type="tel" id="pf-phone" value="${phone}" ${disabledAttr} placeholder="Enter your phone number">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-blood-group"><i class="fa-solid fa-droplet"></i> Blood Group</label>
-                            <select id="pf-blood-group" ${disabledAttr}>
-                                <option value="">Select Blood Group</option>
-                                ${['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(bg =>
-                                    `<option value="${bg}" ${bloodGroup === bg ? 'selected' : ''}>${bg}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-age"><i class="fa-solid fa-calendar"></i> Age</label>
-                            <input type="number" id="pf-age" value="${age}" ${disabledAttr} placeholder="Your age" min="18" max="65">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-gender"><i class="fa-solid fa-venus-mars"></i> Gender</label>
-                            <select id="pf-gender" ${disabledAttr}>
-                                <option value="">Select Gender</option>
-                                <option value="Male" ${gender === 'Male' ? 'selected' : ''}>Male</option>
-                                <option value="Female" ${gender === 'Female' ? 'selected' : ''}>Female</option>
-                                <option value="Other" ${gender === 'Other' ? 'selected' : ''}>Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-weight"><i class="fa-solid fa-weight"></i> Weight (kg)</label>
-                            <input type="number" id="pf-weight" value="${weight}" ${disabledAttr} placeholder="Your weight in kg" min="45" max="200">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-location"><i class="fa-solid fa-location-dot"></i> Primary Location</label>
-                            <input type="text" id="pf-location" value="${location}" ${disabledAttr} placeholder="City or area name">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-city"><i class="fa-solid fa-city"></i> City</label>
-                            <input type="text" id="pf-city" value="${city}" ${disabledAttr} placeholder="Your city">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-state"><i class="fa-solid fa-map"></i> State</label>
-                            <input type="text" id="pf-state" value="${state}" ${disabledAttr} placeholder="Your state">
-                        </div>
-                        <div class="form-group">
-                            <label for="pf-pincode"><i class="fa-solid fa-map-pin"></i> Pincode</label>
-                            <input type="text" id="pf-pincode" value="${pincode}" ${disabledAttr} placeholder="Your pincode" maxlength="10">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="pf-address"><i class="fa-solid fa-house"></i> Full Address</label>
-                            <input type="text" id="pf-address" value="${address}" ${disabledAttr} placeholder="Street, building, landmark etc.">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="pf-medical"><i class="fa-solid fa-notes-medical"></i> Medical Conditions (if any)</label>
-                            <input type="text" id="pf-medical" value="${medicalConditions}" ${disabledAttr} placeholder="Any health conditions we should know about">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label><i class="fa-solid fa-clock-rotate-left"></i> Last Donation Date</label>
-                            <input type="text" value="${lastDonationDate}" disabled style="background-color:#f8fafc; color:#94a3b8; cursor:not-allowed;">
-                        </div>
-                    </div>
-
-                    ${readOnlyNote}
-
-                    <div class="profile-buttons" style="margin-top: 20px;">
-                        ${!isEditingProfile ? `
-                            <button class="btn btn-primary" id="btn-edit-profile">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
-                            </button>
-                        ` : `
-                            <button class="btn btn-success" id="btn-save-profile">
-                                <i class="fa-solid fa-check"></i> Save Changes
-                            </button>
-                            <button class="btn btn-secondary" id="btn-cancel-edit">
-                                <i class="fa-solid fa-xmark"></i> Cancel
-                            </button>
-                        `}
-                    </div>
-                </div>
-            `;
-        }
-
-        // ---------- Save profile to Firestore ----------
-        async function saveProfile() {
-            if (!donor?.uid) {
-                toast('Donor data not loaded. Please try again.', 'error');
-                return;
-            }
-
-            const name = document.getElementById('pf-name')?.value?.trim() || '';
-            const phone = document.getElementById('pf-phone')?.value?.trim() || '';
-            const bloodGroup = document.getElementById('pf-blood-group')?.value || '';
-            const age = document.getElementById('pf-age')?.value || '';
-            const gender = document.getElementById('pf-gender')?.value || '';
-            const weight = document.getElementById('pf-weight')?.value || '';
-            const location = document.getElementById('pf-location')?.value?.trim() || '';
-            const city = document.getElementById('pf-city')?.value?.trim() || '';
-            const state = document.getElementById('pf-state')?.value?.trim() || '';
-            const pincode = document.getElementById('pf-pincode')?.value?.trim() || '';
-            const address = document.getElementById('pf-address')?.value?.trim() || '';
-            const medicalConditions = document.getElementById('pf-medical')?.value?.trim() || '';
-
-            // Basic validation
-            if (!name) {
-                toast('Please enter your full name.', 'error');
-                document.getElementById('pf-name')?.focus();
-                return;
-            }
-            if (!phone) {
-                toast('Please enter your phone number.', 'error');
-                document.getElementById('pf-phone')?.focus();
-                return;
-            }
-            if (!bloodGroup) {
-                toast('Please select your blood group.', 'error');
-                document.getElementById('pf-blood-group')?.focus();
-                return;
-            }
-
-            const updates = {
-                name,
-                phone,
-                bloodGroup,
-                age: age ? parseInt(age) : '',
-                gender,
-                weight: weight ? parseInt(weight) : '',
-                location,
-                city,
-                state,
-                pincode,
-                address,
-                medicalConditions,
-                updatedAt: new Date().toISOString()
-            };
-
-            // Remove empty optional fields
-            Object.keys(updates).forEach(key => {
-                if (updates[key] === '' || updates[key] === undefined) {
-                    delete updates[key];
+                    `;
+                } else {
+                    cardsHtml = '<div class="mobile-product-cards">';
+                    history.forEach((h, index) => {
+                        cardsHtml += `
+                            <div class="mobile-card">
+                                <div class="info">
+                                    <div class="title">${h.patientName || 'Unknown Recipient'}</div>
+                                    <div class="subtitle"><i class="fa-solid fa-location-dot" style="font-size:11px;margin-right:4px;"></i>${h.location || '—'}</div>
+                                    <div class="meta"><i class="fa-regular fa-calendar" style="margin-right:4px;"></i>${formatDate(h.date)} • <i class="fa-solid fa-droplet" style="margin-left:6px;margin-right:4px;color:#e11d48;"></i>${h.amountMl || 450} ml</div>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn-certificate certificate-btn" data-index="${index}">
+                                        <i class="fa-solid fa-download"></i> Certificate
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    cardsHtml += '</div>';
                 }
-            });
-
-            showLoading('Saving your profile...');
-            try {
-                await updateDoc(doc(db, 'donors', donor.uid), updates);
-                // Update local donor object
-                donor = { ...donor, ...updates };
-                isEditingProfile = false;
-                hideLoading();
-                toast('Profile updated successfully!', 'success');
-                // Re-render profile and sidebar
-                renderPage('profile');
-                updateSidebarProfile();
-            } catch (err) {
-                hideLoading();
-                toast('Failed to save: ' + err.message, 'error');
-                console.error('Profile save error:', err);
+                mainContent.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Donation Records</h3>
+                            <span class="subtitle">${history.length} total donation${history.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        ${cardsHtml}
+                    </div>
+                `;
+            } else {
+                let rows = '';
+                if (history.length === 0) {
+                    rows = `
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-heart-circle-plus"></i>
+                                    <p>No donation records yet</p>
+                                    <p class="hint">Your donation history will appear here.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    history.forEach((h, index) => {
+                        rows += `
+                            <tr>
+                                <td>
+                                    <div class="recipient-name">${h.patientName || 'Unknown Recipient'}</div>
+                                </td>
+                                <td>
+                                    <div class="recipient-location"><i class="fa-solid fa-location-dot" style="font-size:12px;margin-right:6px;color:#9ca3af;"></i>${h.location || '—'}</div>
+                                </td>
+                                <td>
+                                    <div class="donation-date"><i class="fa-regular fa-calendar" style="margin-right:6px;color:#9ca3af;"></i>${formatDate(h.date)}</div>
+                                </td>
+                                <td>
+                                    <div class="donation-amount"><i class="fa-solid fa-droplet" style="margin-right:6px;color:#e11d48;"></i>${h.amountMl || 450} ml</div>
+                                </td>
+                                <td>
+                                    <button class="btn-certificate certificate-btn" data-index="${index}">
+                                        <i class="fa-solid fa-download"></i> Certificate
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                mainContent.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Donation Records</h3>
+                            <span class="subtitle">${history.length} total donation${history.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Recipient Name</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Amount (ml)</th>
+                                        <th>Certificate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>${rows}</tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
             }
+
+            document.querySelectorAll('.certificate-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = e.currentTarget.getAttribute('data-index');
+                    const record = history[parseInt(idx)];
+                    if (record?.certificateUrl) {
+                        window.open(record.certificateUrl, '_blank');
+                    } else {
+                        toast('Certificate not available yet.', 'info');
+                    }
+                });
+            });
         }
 
+        // ===== Update Sidebar Profile =====
         function updateSidebarProfile() {
             if (!donor) return;
-            const nameEl = document.getElementById('dd-name');
-            const statusEl = document.getElementById('dd-status-text');
-            if (nameEl) nameEl.textContent = donor.name || 'Donor';
-            if (statusEl) {
-                const eligibility = getEligibilityInfo();
-                statusEl.innerHTML =
-                    `<span class="status-dot ${eligibility.isRecovery ? 'yellow' : 'green'}"></span> ${eligibility.isRecovery ? 'Recovery Period' : 'Active Donor'}`;
-            }
+            document.getElementById('dd-name').textContent = donor.name || 'Donor';
+            const eligibility = getEligibilityInfo();
+            const statusText = document.getElementById('dd-status-text');
+            const dotClass = eligibility.isRecovery ? 'yellow' : 'green';
+            statusText.innerHTML = `<span class="status-dot ${dotClass}"></span> <span>${eligibility.text}</span>`;
             const avatarEl = document.getElementById('dd-avatar');
-            if (avatarEl) {
-                avatarEl.src = auth.currentUser?.photoURL ||
-                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80';
+            if (auth.currentUser?.photoURL) {
+                avatarEl.src = auth.currentUser.photoURL;
             }
+            document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email associated';
         }
 
-        // ---------- Render page based on target ----------
-        function renderPage(target) {
-            currentTab = target;
-            let html = '';
-            switch (target) {
-                case 'dashboard':
-                    topbarTitle.innerText = 'My Dashboard';
-                    topbarDesc.innerText = 'Welcome back! Here\'s your donation summary.';
-                    html = renderDashboard();
-                    break;
-                case 'emergency':
-                    topbarTitle.innerText = 'Emergency Requests';
-                    topbarDesc.innerText = 'Urgent blood requirements based on your location filters.';
-                    html = renderEmergency();
-                    break;
-                case 'history':
-                    topbarTitle.innerText = 'Donation History';
-                    topbarDesc.innerText = 'Track your past donations and health milestones.';
-                    html = renderHistory();
-                    break;
-                case 'profile':
-                    topbarTitle.innerText = 'Profile Settings';
-                    topbarDesc.innerText = isEditingProfile ? 'Update your personal details and save changes.' :
-                        'View and update your personal information.';
-                    html = renderProfile();
-                    break;
-                default:
-                    html = '<p>Page not found.</p>';
-            }
-            mainContent.innerHTML = html;
-            attachEventHandlers(target);
-            updateEmergencyBadge();
+        // ===== Sidebar Mobile Toggle =====
+        function openSidebar() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.classList.add('sidebar-open');
         }
 
-        function attachEventHandlers(target) {
-            // Approve request buttons (dashboard & emergency)
-            if (target === 'dashboard' || target === 'emergency') {
-                document.querySelectorAll('.btn-approve').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        const id = e.currentTarget.getAttribute('data-id');
-                        showLoading('Approving request…');
-                        try {
-                            await updateDoc(doc(db, 'requests', id), { status: 'approved' });
-                            hideLoading();
-                            toast('Request approved!', 'success');
-                        } catch (err) {
-                            hideLoading();
-                            toast(err.message, 'error');
-                        }
-                    });
-                });
-            }
-
-            // Dashboard availability toggle
-            if (target === 'dashboard') {
-                const toggle = document.getElementById('availabilityToggle');
-                if (toggle) {
-                    toggle.addEventListener('change', async (e) => {
-                        if (!donor) return;
-                        const available = e.target.checked;
-                        try {
-                            await updateDoc(doc(db, 'donors', donor.uid), { emergencyAvailable: available });
-                            donor.emergencyAvailable = available;
-                            toast('Availability updated', 'success');
-                        } catch (err) {
-                            toast(err.message, 'error');
-                        }
-                    });
-                }
-            }
-
-            // Profile edit/save/cancel buttons
-            if (target === 'profile') {
-                const btnEdit = document.getElementById('btn-edit-profile');
-                const btnSave = document.getElementById('btn-save-profile');
-                const btnCancel = document.getElementById('btn-cancel-edit');
-
-                if (btnEdit) {
-                    btnEdit.addEventListener('click', () => {
-                        isEditingProfile = true;
-                        renderPage('profile');
-                    });
-                }
-
-                if (btnSave) {
-                    btnSave.addEventListener('click', saveProfile);
-                }
-
-                if (btnCancel) {
-                    btnCancel.addEventListener('click', () => {
-                        isEditingProfile = false;
-                        renderPage('profile');
-                    });
-                }
-            }
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
         }
 
-        function updateEmergencyBadge() {
-            const badge = document.getElementById('emergency-badge');
-            if (badge) {
-                const pending = requests.filter(r => r.status === 'pending').length;
-                badge.textContent = pending;
-                badge.style.display = pending > 0 ? 'inline-block' : 'none';
-            }
+        function isSidebarOpen() {
+            return sidebar.classList.contains('active');
         }
 
-        // ---------- Auth & Data Loading ----------
-        onAuthStateChanged(auth, async user => {
-            if (!user) {
-                window.location.href = 'login-donor.html';
-                return;
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isSidebarOpen()) {
+                closeSidebar();
+            } else {
+                openSidebar();
             }
-
-            const snap = await getDoc(doc(db, 'donors', user.uid));
-            if (!snap.exists()) {
-                window.location.href = 'onboarding.html';
-                return;
-            }
-
-            donor = { ...snap.data(), uid: user.uid };
-
-            // Update sidebar profile
-            updateSidebarProfile();
-            const emailEl = document.getElementById('dd-email');
-            if (emailEl) emailEl.textContent = user.email || 'No email';
-
-            // Set up real-time listener for requests
-            const q = query(collection(db, 'requests'), where('donorId', '==', user.uid));
-            requestsUnsub = onSnapshot(q, snap => {
-                requests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderPage(currentTab);
-            });
-
-            // Initial render
-            renderPage(currentTab);
         });
 
-        // ---------- Navigation ----------
-        document.addEventListener('click', function(e) {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isSidebarOpen()) {
+                closeSidebar();
+            }
+        });
+
+        document.querySelectorAll('.sidebar .nav-link:not(.nav-link-logout)').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // ===== Profile Popup =====
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
             if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
                 profilePopup.classList.remove('active');
             }
-
-            const link = e.target.closest('.nav-link');
-            if (!link) return;
-
-            e.preventDefault();
-            const target = link.getAttribute('data-target');
-
-            if (target === 'logout') {
-                signOut();
-                return;
-            }
-
-            // If clicking on profile nav while already editing, reset edit state
-            if (target === 'profile' && currentTab === 'profile' && isEditingProfile) {
-                isEditingProfile = false;
-            }
-
-            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-            link.classList.add('active');
-
-            renderPage(target);
-
-            if (link.classList.contains('nav-link-logout')) {
-                profilePopup.classList.remove('active');
-            }
-
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('active');
-            }
         });
 
-        // ---------- Sign Out ----------
-        async function signOut() {
+        // ===== Logout =====
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
             showLoading('Signing out...');
             try {
-                if (requestsUnsub) requestsUnsub();
                 await fbSignOut(auth);
                 hideLoading();
                 window.location.href = 'index.html';
             } catch (err) {
                 hideLoading();
-                toast(err.message, 'error');
+                toast(err.message || 'Logout failed. Please try again.', 'error');
             }
-        }
-
-        // ---------- Mobile Sidebar Toggle ----------
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
         });
 
-        // ---------- Profile Popup Toggle ----------
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profilePopup.classList.toggle('active');
+        // ===== Auth & Data Loading =====
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login-donor.html';
+                return;
+            }
+            const snap = await getDoc(doc(db, 'donors', user.uid));
+            if (!snap.exists()) {
+                window.location.href = 'onboarding.html';
+                return;
+            }
+            donor = { ...snap.data(), uid: user.uid };
+            updateSidebarProfile();
+            renderDonationHistory();
         });
 
-        // ---------- Fallback for utils functions ----------
-        if (typeof showLoading !== 'function') {
+        // ===== Responsive Re-render =====
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (donor) renderDonationHistory();
+                if (window.innerWidth >= 768 && isSidebarOpen()) {
+                    closeSidebar();
+                }
+            }, 250);
+        });
+
+        // ===== Fallback Utilities =====
+        if (typeof window.showLoading !== 'function') {
             window.showLoading = (msg) => {
-                const overlay = document.getElementById('loading');
-                const msgEl = document.getElementById('loading-msg');
-                if (msgEl) msgEl.textContent = msg || 'Please wait...';
-                if (overlay) overlay.style.display = 'flex';
+                const loadingEl = document.getElementById('loading');
+                loadingEl.style.display = 'flex';
+                document.getElementById('loading-msg').textContent = msg || 'Please wait...';
             };
         }
-        if (typeof hideLoading !== 'function') {
+        if (typeof window.hideLoading !== 'function') {
             window.hideLoading = () => {
-                const overlay = document.getElementById('loading');
-                if (overlay) overlay.style.display = 'none';
+                document.getElementById('loading').style.display = 'none';
             };
         }
-        if (typeof toast !== 'function') {
-            window.toast = (msg, type) => {
-                const toastEl = document.getElementById('toast');
-                if (!toastEl) return;
-                toastEl.textContent = msg;
-                toastEl.style.background = type === 'success' ? '#059669' : type === 'error' ? '#e11d48' : '#334155';
-                toastEl.style.color = '#fff';
-                toastEl.style.padding = '12px 20px';
-                toastEl.style.borderRadius = '6px';
-                toastEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.15)';
-                toastEl.style.transition = 'opacity 0.3s';
-                toastEl.style.opacity = '1';
-                toastEl.style.fontSize = '14px';
-                toastEl.style.fontWeight = '500';
-                toastEl.style.zIndex = '3000';
-                toastEl.style.position = 'fixed';
-                toastEl.style.bottom = '20px';
-                toastEl.style.right = '20px';
-                setTimeout(() => { toastEl.style.opacity = '0'; }, 3000);
+        if (typeof window.toast !== 'function') {
+            window.toast = (msg, type = 'info') => {
+                const toastContainer p= document.getElementById('toast');
+                const toastEl = document.createElement('div');
+                toastEl.className = `toast-item ${type}`;
+                const icons = {
+                    success: 'fa-solid fa-check-circle',
+                    error: 'fa-solid fa-exclamation-circle',
+                    info: 'fa-solid fa-info-circle'
+                };
+                toastEl.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size:16px;"></i> ${msg}`;
+                toastContainer.appendChild(toastEl);
+                setTimeout(() => {
+                    toastEl.style.opacity = '0';
+                    toastEl.style.transform = 'translateY(10px)';
+                    toastEl.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toastEl.remove(), 300);
+                }, 3000);
             };
         }
+
+        // Initial render
+        renderDonationHistory();
     </script>
 </body>
 </html>
