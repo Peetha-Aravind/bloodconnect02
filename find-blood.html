@@ -291,20 +291,17 @@
                     constraints.push(where('bloodType', '==', bloodType));
                 }
                 if (location) {
-                    // Simple location contains search (case-insensitive not supported natively)
-                    // We'll fetch all and filter in JS for simplicity
-                    if (!bloodType) {
-                        q = query(q, where('city', '>=', location), where('city', '<=', location + '\uf8ff'));
-                    }
-                }
-                const donorsQuery = query(q, ...constraints);
-                const snapshot = await getDocs(donorsQuery);
-                let donors = [];
-                snapshot.forEach(doc => donors.push(doc.data()));
-
-                // Additional filter if location not handled by Firestore
-                if (location) {
+                    // Firestore doesn't support case-insensitive contains, so we filter after fetching
+                    // For simplicity, fetch all and filter in JS
+                    const donorsQuery = query(q, ...constraints);
+                    const snapshot = await getDocs(donorsQuery);
+                    let donors = [];
+                    snapshot.forEach(doc => donors.push(doc.data()));
                     donors = donors.filter(d => (d.city || '').toLowerCase().includes(location));
+                } else {
+                    const donorsQuery = query(q, ...constraints);
+                    const snapshot = await getDocs(donorsQuery);
+                    snapshot.forEach(doc => donors.push(doc.data()));
                 }
 
                 const resultsDiv = document.getElementById('results');
