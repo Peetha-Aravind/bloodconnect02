@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BloodConnect — Save Lives Together</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ========== CSS VARIABLES ========== */
+        :root {
+            --primary: #e11d48;
+            --primary-hover: #be123c;
+            --text-dark: #0f172a;
+            --text-gray: #475569;
+            --text-light: #94a3b8;
+            --bg-glass: rgba(255, 255, 255, 0.88);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --nav-height: 68px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ========== BACKGROUND LAYERS ========== */
+        .bg-art {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .screen {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.93);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .nav-logo-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.35));
+            animation: pulse-drop 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-drop {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .nav-logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 1.5px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        .nav-logo-text .accent {
+            color: var(--primary);
+        }
+
+        /* Profile Area */
+        .nav-profile {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 30px;
+            transition: background 0.2s ease;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+        }
+
+        .profile-btn:hover {
+            background: rgba(225, 29, 72, 0.08);
+        }
+
+        .profile-btn .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffe4e6;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-btn .profile-avatar svg {
+            width: 22px;
+            height: 22px;
+            stroke: #64748b;
+            fill: none;
+        }
+
+        .profile-btn .profile-name {
+            font-weight: 600;
+            font-size: 14px;
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-dark);
+        }
+
+        .profile-btn .profile-chevron {
+            transition: transform 0.25s ease;
+            display: flex;
+            align-items: center;
+            color: #64748b;
+        }
+
+        .profile-btn .profile-chevron.open {
+            transform: rotate(180deg);
+        }
+
+        /* Sign In button (when signed out) */
+        .signin-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+            white-space: nowrap;
+        }
+
+        .signin-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+        }
+
+        .signin-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        /* Dropdown Menu */
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            min-width: 280px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px) scale(0.96);
+            transform-origin: top right;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-header {
+            padding: 18px 20px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #fff1f2, #fff);
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .dropdown-header .dropdown-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffe4e6;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .dropdown-header .dropdown-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dropdown-header .dropdown-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-header .dropdown-email {
+            font-size: 13px;
+            color: var(--text-gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-header .dropdown-role {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            background: #ffe4e6;
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .dropdown-body {
+            padding: 8px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background 0.15s ease;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: #f8fafc;
+        }
+
+        .dropdown-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: #64748b;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        .dropdown-item.signout-item {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .dropdown-item.signout-item svg {
+            stroke: var(--primary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 6px 0;
+        }
+
+        /* Signed-out dropdown */
+        .dropdown-signed-out {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .dropdown-signed-out .signed-out-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #ffe4e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .dropdown-signed-out .signed-out-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--primary);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .dropdown-signed-out h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-signed-out p {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .google-signin-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .google-signin-btn:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .google-signin-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffe4e6;
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(225, 29, 72, 0.1);
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 6rem;
+            line-height: 1;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .hero-title .accent {
+            color: var(--primary);
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 35px auto;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .landing-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--text-gray);
+            border: 2px solid transparent;
+        }
+
+        .btn-ghost:hover {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 50px;
+            margin-top: 60px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--text-dark);
+            line-height: 1;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Donors Section */
+        .donors-section {
+            margin-top: 70px;
+            width: 100%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .donors-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .donors-heading h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .donors-heading h2 .accent {
+            color: var(--primary);
+        }
+
+        .donors-heading p {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+        }
+
+        .donors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .donor-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: var(--radius);
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.25s ease;
+            animation: cardAppear 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .donor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #fecdd3;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .donor-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff;
+            margin: 0 auto 12px auto;
+            letter-spacing: 1px;
+        }
+
+        .donor-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .blood-type-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .donor-location {
+            font-size: 13px;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .donor-location svg {
+            flex-shrink: 0;
+        }
+
+        .donors-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+
+        .donors-loading .spinner {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border: 3px solid #fecdd3;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .donors-empty {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-gray);
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--radius);
+            border: 1px dashed #e2e8f0;
+            grid-column: 1 / -1;
+        }
+
+        .donors-empty .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px 20px 20px;
+            margin-top: 70px;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .footer-col ul li a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        /* Loading Overlay */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .auth-overlay-box {
+            background: #fff;
+            padding: 28px 36px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            max-width: 360px;
+            width: 90%;
+        }
+
+        .auth-overlay-box .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #fecdd3;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        .auth-overlay-box h3 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .auth-overlay-box p {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 58px;
+            }
+
+            .nav-container {
+                padding: 0 16px;
+            }
+
+            .nav-logo-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .nav-logo-text {
+                font-size: 22px;
+                letter-spacing: 1px;
+            }
+
+            .signin-btn {
+                padding: 8px 14px;
+                font-size: 13px;
+                gap: 6px;
+            }
+
+            .signin-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .profile-btn .profile-avatar {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+
+            .profile-btn .profile-name {
+                display: none;
+            }
+
+            .profile-dropdown {
+                min-width: 260px;
+                right: -8px;
+                top: calc(100% + 8px);
+            }
+
+            .hero-title {
+                font-size: 4rem;
+            }
+            .hero-sub {
+                font-size: 1.1rem;
+            }
+            .landing-btns {
+                flex-direction: column;
+                width: 100%;
+                max-width: 320px;
+                margin: 30px auto 0 auto;
+            }
+            .landing-btns .btn {
+                width: 100%;
+            }
+            .stats-row {
+                gap: 25px;
+                flex-direction: column;
+                margin-top: 40px;
+                padding: 25px 20px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            .donors-heading h2 {
+                font-size: 2.4rem;
+            }
+            .donors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+            .donor-card {
+                padding: 16px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo-text {
+                font-size: 19px;
+                letter-spacing: 0.5px;
+            }
+
+            .nav-logo-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .profile-dropdown {
+                min-width: 240px;
+                right: -4px;
+                border-radius: 14px;
+            }
+
+            .dropdown-header {
+                padding: 14px 16px 10px;
+            }
+
+            .dropdown-header .dropdown-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .donors-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero-title {
+                font-size: 3.2rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-logo-text {
+                font-size: 16px;
+            }
+            .nav-container {
+                padding: 0 10px;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-art"></div>
+    <div class="bg-grid"></div>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="#" class="nav-logo" title="BloodConnect Home">
+                <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" fill="#e11d48" stroke="#be123c" stroke-width="0.8"/>
+                    <path d="M9.5 12.5c.5 1.5 1.5 2.5 2.5 3.5 1-1 2-2 2.5-3.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                <span class="nav-logo-text">BLOOD<span class="accent">CONNECT</span></span>
+            </a>
+
+            <!-- Profile Area -->
+            <div class="nav-profile" id="navProfile">
+                <!-- Content dynamically populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <!-- Content dynamically populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="landing" class="screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: calc(var(--nav-height) + 40px) 20px 20px; min-height: 100vh;">
+        <div style="max-width: 800px; width: 100%; margin: 0 auto;">
+            <div class="hero-tag">🩸 Emergency Blood Network</div>
+            <h1 class="hero-title">BLOOD<span class="accent">CONNECT</span></h1>
+            <p class="hero-sub">A real-time platform connecting blood donors with those in need. Every second counts — be the reason someone survives.</p>
+
+            <!-- Two Buttons -->
+            <div class="landing-btns">
+                <button id="btnDonor" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    Register as Donor
+                </button>
+                <button id="btnFinder" class="btn btn-outline">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    Find Emergency Blood
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-num">3M+</div><div class="stat-label">Lives Saved</div></div>
+                <div class="stat-item"><div class="stat-num">50K</div><div class="stat-label">Active Donors</div></div>
+                <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Blood Types</div></div>
+                <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Emergency Ready</div></div>
+            </div>
+        </div>
+
+        <!-- Donors Display -->
+        <div class="donors-section" id="donorsSection">
+            <div class="donors-heading">
+                <h2>REGISTERED <span class="accent">DONORS</span></h2>
+                <p>Our community of life-savers ready to help in emergencies</p>
+            </div>
+            <div id="donorsGrid" class="donors-grid">
+                <div class="donors-loading">
+                    <div class="spinner"></div>
+                    Loading donors...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="footer-logo">BLOOD<span>CONNECT</span></div>
+                <p style="color: var(--text-gray); font-size: 14px; margin-top: 10px;">
+                    Connecting donors and patients in real time. Every drop counts.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="register-donor.html">Register as Donor</a></li>
+                    <li><a href="find-blood.html">Find Emergency Blood</a></li>
+                    <li><a href="donor-dashboard.html">Donor Dashboard</a></li>
+                    <li><a href="finder-dashboard.html">Finder Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Emergency</h3>
+                <ul>
+                    <li><a href="#">National Blood Helpline</a></li>
+                    <li><a href="#">Find Nearest Blood Bank</a></li>
+                    <li><a href="#">Report an Issue</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 BloodConnect. All rights reserved. Made with ❤️ for saving lives.
+        </div>
+    </footer>
+
+    <!-- Firebase App (Core) -->
+    <script type="module">
+        // =============================================
+        // FIREBASE INITIALIZATION (inline config)
+        // =============================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
+            authDomain: "blood-connect-608b2.firebaseapp.com",
+            projectId: "blood-connect-608b2",
+            storageBucket: "blood-connect-608b2.firebasestorage.app",
+            messagingSenderId: "60567900670",
+            appId: "1:60567900670:web:e1ae781c4674c12e5e30af",
+            measurementId: "G-B23VQKDGY5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+        // =============================================
+        // DOM ELEMENTS
+        // =============================================
+        const btnDonor = document.getElementById('btnDonor');
+        const btnFinder = document.getElementById('btnFinder');
+        const donorsGrid = document.getElementById('donorsGrid');
+        const navbar = document.getElementById('navbar');
+        const navProfile = document.getElementById('navProfile');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        let currentUser = null;
+        let currentUserData = null;
+        let pendingAction = null; // 'donor' | 'finder'
+        let dropdownOpen = false;
+
+        // =============================================
+        // SCROLL EFFECT FOR NAVBAR
+        // =============================================
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // =============================================
+        // CLICK OUTSIDE TO CLOSE DROPDOWN
+        // =============================================
+        document.addEventListener('click', (e) => {
+            if (dropdownOpen && !navbar.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        function closeDropdown() {
+            dropdownOpen = false;
+            profileDropdown.classList.remove('active');
+            const chevron = document.querySelector('.profile-chevron');
+            if (chevron) chevron.classList.remove('open');
+        }
+
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            profileDropdown.classList.toggle('active', dropdownOpen);
+            const chevron = document.querySelector('.profile-chevron');
+            if (chevron) chevron.classList.toggle('open', dropdownOpen);
+        }
+
+        // =============================================
+        // DONORS DISPLAY
+        // =============================================
+        function getBloodTypeStyle(bloodType) {
+            const styles = {
+                'O-': { bg: '#dc2626', color: '#fff' },
+                'O+': { bg: '#ef4444', color: '#fff' },
+                'A-': { bg: '#2563eb', color: '#fff' },
+                'A+': { bg: '#3b82f6', color: '#fff' },
+                'B-': { bg: '#16a34a', color: '#fff' },
+                'B+': { bg: '#22c55e', color: '#fff' },
+                'AB-': { bg: '#7c3aed', color: '#fff' },
+                'AB+': { bg: '#9333ea', color: '#fff' },
+            };
+            const normalized = (bloodType || '').trim().toUpperCase();
+            return styles[normalized] || { bg: '#6b7280', color: '#fff' };
+        }
+
+        function getAvatarColor(name) {
+            const colors = [
+                '#e11d48', '#2563eb', '#16a34a', '#9333ea',
+                '#ea580c', '#0891b2', '#dc2626', '#7c3aed',
+                '#0d9488', '#ca8a04', '#4f46e5', '#be123c'
+            ];
+            let hash = 0;
+            for (let i = 0; i < (name || '?').length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
+        function renderDonorCard(donor, index) {
+            const name = donor.name || 'Anonymous';
+            const bloodType = donor.bloodType || donor.blood_group || '?';
+            const location = donor.city || donor.location || donor.address || 'Unknown Location';
+            const avatarBg = getAvatarColor(name);
+            const bloodStyle = getBloodTypeStyle(bloodType);
+            const initials = getInitials(name);
+
+            const card = document.createElement('div');
+            card.className = 'donor-card';
+            card.style.animationDelay = `${Math.min(index * 0.04, 0.8)}s`;
+
+            card.innerHTML = `
+                <div class="donor-avatar" style="background: ${avatarBg};">${initials}</div>
+                <div class="donor-name" title="${name}">${name}</div>
+                <span class="blood-type-badge" style="background: ${bloodStyle.bg}; color: ${bloodStyle.color};">${bloodType}</span>
+                <div class="donor-location">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    ${location}
+                </div>
+            `;
+            return card;
+        }
+
+        async function loadDonors() {
+            if (!db) return;
+            try {
+                const donorsSnapshot = await getDocs(collection(db, 'donors'));
+                const donors = [];
+                donorsSnapshot.forEach((docSnap) => {
+                    donors.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                donors.sort((a, b) => {
+                    const order = { 'O-': 0, 'O+': 1, 'A-': 2, 'A+': 3, 'B-': 4, 'B+': 5, 'AB-': 6, 'AB+': 7 };
+                    const btA = (a.bloodType || '?').toUpperCase();
+                    const btB = (b.bloodType || '?').toUpperCase();
+                    const orderA = order[btA] !== undefined ? order[btA] : 99;
+                    const orderB = order[btB] !== undefined ? order[btB] : 99;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+
+                if (donors.length === 0) {
+                    donorsGrid.innerHTML = `
+                        <div class="donors-empty">
+                            <div class="empty-icon">🩸</div>
+                            <strong>No donors registered yet</strong>
+                            <p style="margin-top:6px; font-size:14px;">Be the first to register and save lives!</p>
+                        </div>
+                    `;
+                } else {
+                    donorsGrid.innerHTML = '';
+                    donors.forEach((donor, i) => {
+                        donorsGrid.appendChild(renderDonorCard(donor, i));
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading donors:', err);
+                donorsGrid.innerHTML = `
+                    <div class="donors-empty">
+                        <div class="empty-icon">⚠️</div>
+                        <strong>Could not load donors</strong>
+                        <p style="margin-top:6px; font-size:14px;">Please check your connection and try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // =============================================
+        // GOOGLE AUTH FLOW
+        // =============================================
+        function showAuthOverlay(message) {
+            const existing = document.querySelector('.auth-overlay');
+            if (existing) existing.remove();
+
+            const overlay = document.createElement('div');
+            overlay.className = 'auth-overlay';
+            overlay.innerHTML = `
+                <div class="auth-overlay-box">
+                    <div class="spinner"></div>
+                    <h3>Google Sign-In</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            return overlay;
+        }
+
+        function removeAuthOverlay(overlay) {
+            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }
+
+        async function triggerGoogleAuth() {
+            closeDropdown();
+            const overlay = showAuthOverlay('Redirecting to Google sign-in...');
+            try {
+                await signInWithPopup(auth, googleProvider);
+            } catch (err) {
+                console.error('Google sign-in error:', err);
+                if (err.code === 'auth/popup-closed-by-user') {
+                    alert('Sign-in was cancelled. Please try again.');
+                } else if (err.code === 'auth/popup-blocked') {
+                    alert('Popup was blocked. Please allow popups for this site and try again.');
+                } else if (err.code === 'auth/cancelled-popup-request') {
+                    // Silently ignore
+                } else {
+                    alert('Sign-in failed: ' + (err.message || 'Unknown error'));
+                }
+                pendingAction = null;
+            } finally {
+                removeAuthOverlay(overlay);
+            }
+        }
+
+        function handleDonorClick() {
+            if (auth.currentUser) {
+                window.location.href = 'register-donor.html';
+            } else {
+                pendingAction = 'donor';
+                triggerGoogleAuth();
+            }
+        }
+
+        function handleFinderClick() {
+            if (auth.currentUser) {
+                window.location.href = 'find-blood.html';
+            } else {
+                pendingAction = 'finder';
+                triggerGoogleAuth();
+            }
+        }
+
+        btnDonor.addEventListener('click', handleDonorClick);
+        btnFinder.addEventListener('click', handleFinderClick);
+
+        // =============================================
+        // NAVBAR PROFILE RENDERING
+        // =============================================
+        function renderNavProfile(user, userData) {
+            currentUserData = userData;
+
+            if (!user) {
+                // Signed out state
+                navProfile.innerHTML = `
+                    <button class="signin-btn" id="navSignInBtn" title="Sign in to BloodConnect">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+                        Sign In
+                    </button>
+                `;
+                profileDropdown.innerHTML = `
+                    <div class="dropdown-signed-out">
+                        <div class="signed-out-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+                        </div>
+                        <h4>Welcome to BloodConnect</h4>
+                        <p>Sign in to register as a donor or find emergency blood. New users get an account automatically.</p>
+                        <button class="google-signin-btn" id="googleSignInBtn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                            </svg>
+                            Sign in with Google
+                        </button>
+                    </div>
+                `;
+
+                const signInBtn = document.getElementById('navSignInBtn');
+                const googleBtn = document.getElementById('googleSignInBtn');
+
+                if (signInBtn) {
+                    signInBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        triggerGoogleAuth();
+                    });
+                }
+                if (googleBtn) {
+                    googleBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        triggerGoogleAuth();
+                    });
+                }
+                return;
+            }
+
+            // Signed in state
+            const isDonor = userData?.role === 'donor' || userData?.donorId;
+            const isFinder = userData?.role === 'finder' || userData?.finderId;
+            const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : '#';
+            const roleLabel = isDonor ? 'Donor' : isFinder ? 'Finder' : 'Member';
+            const displayName = userData?.name || user.displayName || 'User';
+            const email = user.email || 'No email available';
+            const photoURL = user.photoURL || '';
+            const avatarBg = getAvatarColor(displayName);
+            const initials = getInitials(displayName);
+
+            const avatarHtml = photoURL ?
+                `<img class="profile-avatar" src="${photoURL}" alt="${displayName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                `<div class="profile-avatar" style="background:${avatarBg}; display:none;">${initials}</div>` :
+                `<div class="profile-avatar" style="background:${avatarBg};">${initials}</div>`;
+
+            navProfile.innerHTML = `
+                <button class="profile-btn" id="profileBtn" title="Your profile">
+                    ${avatarHtml}
+                    <span class="profile-name">${displayName}</span>
+                    <span class="profile-chevron" id="profileChevron">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                </button>
+            `;
+
+            const dropdownAvatarHtml = photoURL ?
+                `<img class="dropdown-avatar" src="${photoURL}" alt="${displayName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                `<div class="dropdown-avatar" style="background:${avatarBg}; display:none;">${initials}</div>` :
+                `<div class="dropdown-avatar" style="background:${avatarBg};">${initials}</div>`;
+
+            profileDropdown.innerHTML = `
+                <div class="dropdown-header">
+                    ${dropdownAvatarHtml}
+                    <div class="dropdown-info">
+                        <div class="dropdown-name">${displayName}</div>
+                        <div class="dropdown-email">${email}</div>
+                        <span class="dropdown-role">${roleLabel}</span>
+                    </div>
+                </div>
+                <div class="dropdown-body">
+                    <a href="${dashboardLink}" class="dropdown-item" id="dropdownDashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="find-blood.html" class="dropdown-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        Find Blood
+                    </a>
+                    <a href="register-donor.html" class="dropdown-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        Register as Donor
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item signout-item" id="dropdownSignOut">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Sign Out
+                    </button>
+                </div>
+            `;
+
+            // Attach event listeners
+            const profileBtn = document.getElementById('profileBtn');
+            const signOutBtn = document.getElementById('dropdownSignOut');
+
+            if (profileBtn) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleDropdown();
+                });
+            }
+
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    closeDropdown();
+                    const overlay = showAuthOverlay('Signing out...');
+                    try {
+                        await signOut(auth);
+                    } catch (err) {
+                        alert('Sign out failed: ' + err.message);
+                    } finally {
+                        removeAuthOverlay(overlay);
+                    }
+                });
+            }
+        }
+
+        // =============================================
+        // AUTH STATE WATCHER
+        // =============================================
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+
+            if (user) {
+                let userData = null;
+                try {
+                    const donorSnap = await getDoc(doc(db, 'donors', user.uid));
+                    if (donorSnap.exists()) {
+                        userData = { ...donorSnap.data(), role: 'donor' };
+                    } else {
+                        const finderSnap = await getDoc(doc(db, 'finders', user.uid));
+                        if (finderSnap.exists()) {
+                            userData = { ...finderSnap.data(), role: 'finder' };
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error fetching user data:', err);
+                }
+                renderNavProfile(user, userData);
+
+                // Handle pending redirect after sign-in
+                if (pendingAction) {
+                    const target = pendingAction === 'donor' ? 'register-donor.html' : 'find-blood.html';
+                    pendingAction = null;
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 300);
+                }
+            } else {
+                renderNavProfile(null, null);
+                pendingAction = null;
+            }
+        });
+
+        // =============================================
+        // LOAD DONORS ON PAGE LOAD
+        // =============================================
+        loadDonors();
+
+        // =============================================
+        // CLOSE DROPDOWN ON ESCAPE KEY
+        // =============================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dropdownOpen) {
+                closeDropdown();
+            }
+        });
+    </script>
+</body>
+</html>
