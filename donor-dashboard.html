@@ -6,8 +6,8 @@
     <title>BloodConnect - My Donations</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: DM Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: DM Sans + Bebas Neue -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         /* ===== BLOODCONNECT GLOBAL VARIABLES ===== */
         :root {
@@ -38,6 +38,8 @@
             --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.06);
             --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
+            --nav-height: 60px;
+            --slidebar-width: 290px;
         }
 
         * {
@@ -61,11 +63,14 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+        body.slidebar-open {
+            overflow: hidden;
+        }
         body.sidebar-open {
             overflow: hidden;
         }
 
-        /* ===== SIDEBAR (Breathable & Spacious) ===== */
+        /* ===== DESKTOP SIDEBAR (unchanged for desktop) ===== */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #ffffff;
@@ -143,6 +148,11 @@
             letter-spacing: 0.2px;
             white-space: nowrap;
             position: relative;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: "DM Sans", Roboto, sans-serif;
         }
         .nav-link i {
             font-size: 17px;
@@ -343,8 +353,8 @@
             }
         }
 
-        /* ===== MOBILE SIDEBAR OVERLAY ===== */
-        .sidebar-overlay {
+        /* ===== MOBILE SLIDEBAR OVERLAY ===== */
+        .slidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
@@ -355,12 +365,361 @@
             -webkit-backdrop-filter: blur(4px);
             backdrop-filter: blur(4px);
         }
-        .sidebar-overlay.active {
+        .slidebar-overlay.active {
             display: block;
             opacity: 1;
         }
 
-        /* ===== WRAPPER & TOPBAR ===== */
+        /* ===== MOBILE NAVBAR (hidden on desktop) ===== */
+        .mobile-navbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            align-items: center;
+        }
+        .mobile-navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+        .mobile-navbar .nav-container {
+            width: 100%;
+            height: 100%;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            position: relative;
+        }
+        .mobile-hamburger-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            padding: 9px 11px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            z-index: 1001;
+            color: #1d1e20;
+            font-size: 17px;
+            line-height: 1;
+        }
+        .mobile-hamburger-btn:hover {
+            background: #f8fafc;
+            border-color: #d1d5db;
+        }
+        .mobile-hamburger-btn:active {
+            transform: scale(0.95);
+        }
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .mobile-logo i {
+            font-size: 24px;
+            color: var(--brand-primary);
+        }
+        .mobile-logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 21px;
+            letter-spacing: 0.8px;
+            color: #0f172a;
+            white-space: nowrap;
+            line-height: 1;
+        }
+        .mobile-logo-text .accent {
+            color: var(--brand-primary);
+        }
+        .mobile-profile-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+            z-index: 1001;
+        }
+        .mobile-profile-btn:hover {
+            background: rgba(225, 29, 72, 0.08);
+        }
+        .mobile-profile-btn .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffe4e6;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: border-color 0.2s;
+        }
+        .mobile-profile-btn:hover .avatar-circle {
+            border-color: var(--brand-primary);
+        }
+
+        /* ===== MOBILE SLIDEBAR (like first code) ===== */
+        .mobile-slidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: var(--slidebar-width);
+            max-width: 85vw;
+            height: 100%;
+            background: #fff;
+            z-index: 999;
+            transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            border-radius: 0 20px 20px 0;
+            will-change: left;
+        }
+        .mobile-slidebar.active {
+            left: 0;
+        }
+        .mobile-slidebar-header {
+            padding: 18px 20px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+            flex-shrink: 0;
+        }
+        .mobile-slidebar-header .slidebar-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 1px;
+            color: #0f172a;
+            line-height: 1;
+        }
+        .mobile-slidebar-header .slidebar-title .accent {
+            color: var(--brand-primary);
+        }
+        .mobile-close-btn {
+            background: #f1f5f9;
+            border: none;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            color: #0f172a;
+            font-size: 16px;
+        }
+        .mobile-close-btn:hover {
+            background: #ffe4e6;
+            color: var(--brand-primary);
+        }
+        .mobile-slidebar-body {
+            flex: 1;
+            padding: 16px 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mobile-slidebar-footer {
+            padding: 16px 18px 18px;
+            border-top: 1px solid #f1f5f9;
+            flex-shrink: 0;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .slidebar-user-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .slidebar-user-info .slidebar-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffe4e6;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .slidebar-user-info .slidebar-user-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 2px;
+            letter-spacing: 0.3px;
+        }
+        .slidebar-user-info .slidebar-user-role {
+            font-size: 11px;
+            color: var(--brand-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .slidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: "DM Sans", Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            text-align: left;
+            flex-shrink: 0;
+            margin-bottom: 2px;
+        }
+        .slidebar-nav-item:hover {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+        .slidebar-nav-item.active {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.3);
+        }
+        .slidebar-nav-item i {
+            font-size: 18px;
+            width: 22px;
+            text-align: center;
+            flex-shrink: 0;
+            color: #94a3b8;
+            transition: all 0.15s ease;
+        }
+        .slidebar-nav-item.active i {
+            color: #ffffff;
+        }
+        .slidebar-nav-item:hover i {
+            color: var(--brand-primary);
+        }
+        .slidebar-nav-item.active:hover i {
+            color: #ffffff;
+        }
+        .slidebar-nav-item .badge {
+            margin-left: auto;
+            background-color: #f1f5f9;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 14px;
+            color: #64748b;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .slidebar-nav-item .badge.alert {
+            background-color: #ffe4e6;
+            color: var(--brand-primary);
+        }
+        .slidebar-nav-item.active .badge {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+        .slidebar-nav-item.active .badge.alert {
+            background-color: #ffffff;
+            color: var(--brand-primary);
+        }
+        .slidebar-email-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            word-break: break-all;
+            font-family: "DM Sans", Roboto, sans-serif;
+        }
+        .slidebar-email-link:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+        .slidebar-email-link i {
+            font-size: 16px;
+            color: var(--brand-primary);
+            flex-shrink: 0;
+            width: 18px;
+            text-align: center;
+        }
+        .mobile-logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #fecdd3;
+            background: #fff;
+            color: var(--brand-primary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: "DM Sans", Roboto, sans-serif;
+            transition: background 0.2s;
+        }
+        .mobile-logout-btn:hover {
+            background: #fff1f2;
+        }
+        .mobile-logout-btn i {
+            font-size: 16px;
+        }
+
+        /* ===== WRAPPER & TOPBAR (desktop) ===== */
         .wrapper {
             margin-left: var(--sidebar-width);
             flex-grow: 1;
@@ -368,6 +727,7 @@
             flex-direction: column;
             min-height: 100vh;
             transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 0;
         }
         .topbar {
             background-color: var(--header-bg);
@@ -421,26 +781,6 @@
         }
         .menu-toggle:active {
             transform: scale(0.95);
-        }
-
-        /* Mobile brand (visible only on mobile) */
-        .mobile-brand {
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-size: 19px;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.3px;
-            white-space: nowrap;
-            z-index: 5;
-        }
-        .mobile-brand i {
-            color: var(--brand-primary);
-            font-size: 22px;
-        }
-        .mobile-brand span {
-            color: var(--brand-primary);
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -554,6 +894,7 @@
             gap: 7px;
             white-space: nowrap;
             letter-spacing: 0.2px;
+            font-family: "DM Sans", Roboto, sans-serif;
         }
         .btn-certificate:hover {
             background: var(--brand-primary);
@@ -732,110 +1073,44 @@
             :root {
                 --sidebar-width: 290px;
                 --topbar-height: 60px;
+                --nav-height: 60px;
+                --slidebar-width: 290px;
             }
-            /* Sidebar hidden by default on mobile using transform */
+            /* Hide desktop sidebar on mobile */
             .sidebar {
                 transform: translateX(-100%);
                 box-shadow: var(--shadow-mobile-sidebar);
                 width: 290px;
                 left: 0;
                 z-index: 1000;
+                pointer-events: none;
             }
             .sidebar.active {
                 transform: translateX(0);
-            }
-            .sidebar-brand {
-                height: 60px;
-                padding: 18px 20px 16px;
-            }
-            .sidebar-brand h2 {
-                font-size: 19px;
-            }
-            .sidebar-brand i {
-                font-size: 24px;
-            }
-            .sidebar-menu {
-                padding: 16px 14px;
-            }
-            .sidebar-menu li {
-                margin-bottom: 6px;
-            }
-            .nav-link {
-                padding: 14px 14px;
-                font-size: 14px;
-                gap: 13px;
-                border-radius: 9px;
-            }
-            .nav-link i {
-                font-size: 16px;
-                width: 20px;
-            }
-            .user-profile {
-                padding: 16px 16px 14px;
-                gap: 12px;
-            }
-            .user-profile img {
-                width: 40px;
-                height: 40px;
-            }
-            .profile-popup {
-                left: 10px;
-                right: 10px;
-                bottom: calc(100% + 8px);
+                pointer-events: auto;
             }
 
+            /* Hide desktop topbar on mobile */
+            .topbar {
+                display: none !important;
+            }
+
+            /* Show mobile navbar */
+            .mobile-navbar {
+                display: flex;
+            }
+
+            /* Show mobile slidebar (hidden by default via left:-320px) */
+            .mobile-slidebar {
+                display: flex;
+            }
+
+            /* Wrapper no margin */
             .wrapper {
                 margin-left: 0;
+                padding-top: var(--nav-height);
             }
-            .topbar {
-                height: 60px;
-                padding: 0 16px;
-                justify-content: center;
-                position: sticky;
-                top: 0;
-                z-index: 999;
-            }
-            .topbar-left-section {
-                position: absolute;
-                left: 16px;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 10;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 9px 11px;
-                font-size: 17px;
-                border-radius: 8px;
-                background: #ffffff;
-                border: 1px solid var(--border-subtle);
-                cursor: pointer;
-                z-index: 11;
-            }
-            .topbar-title.desktop-title {
-                display: none;
-            }
-            .mobile-brand {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 17px;
-                font-weight: 700;
-                color: #0f172a;
-                letter-spacing: -0.3px;
-                white-space: nowrap;
-                z-index: 5;
-                pointer-events: none;
-            }
-            .mobile-brand i {
-                color: var(--brand-primary);
-                font-size: 20px;
-            }
+
             .content-inner {
                 padding: 16px 16px 32px;
             }
@@ -879,26 +1154,52 @@
             .empty-state i {
                 font-size: 40px;
             }
-            .sidebar-overlay.active {
+            .slidebar-overlay.active {
                 display: block;
+            }
+            .mobile-profile-btn .avatar-circle {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+            }
+            .mobile-logo {
+                gap: 6px;
+            }
+            .mobile-logo i {
+                font-size: 20px;
+            }
+            .mobile-logo-text {
+                font-size: 19px;
+                letter-spacing: 0.6px;
+            }
+            .mobile-slidebar {
+                width: 280px;
+                left: -300px;
+            }
+            .mobile-slidebar.active {
+                left: 0;
             }
         }
 
         @media (min-width: 769px) {
+            .mobile-navbar {
+                display: none !important;
+            }
+            .mobile-slidebar {
+                display: none !important;
+            }
+            .slidebar-overlay {
+                display: none !important;
+            }
             .mobile-only {
                 display: none !important;
             }
             .desktop-only {
                 display: block !important;
             }
-            .mobile-brand {
-                display: none !important;
-            }
             .sidebar {
                 transform: translateX(0) !important;
-            }
-            .sidebar-overlay {
-                display: none !important;
+                pointer-events: auto !important;
             }
         }
 
@@ -915,13 +1216,24 @@
             }
         }
 
-        @media (max-width: 380px) {
-            .mobile-brand {
-                font-size: 15px;
-                gap: 8px;
+        @media (max-width: 480px) {
+            .mobile-logo-text {
+                font-size: 17px;
+                letter-spacing: 0.4px;
             }
-            .mobile-brand i {
+            .mobile-logo i {
                 font-size: 18px;
+            }
+            .mobile-slidebar {
+                width: 260px;
+                left: -280px;
+            }
+            .mobile-slidebar.active {
+                left: 0;
+            }
+            .mobile-hamburger-btn {
+                padding: 8px 10px;
+                font-size: 15px;
             }
             .content-inner {
                 padding: 12px 10px 24px;
@@ -929,14 +1241,51 @@
             .mobile-card {
                 padding: 14px 12px;
             }
+            .slidebar-user-info {
+                padding: 12px 14px;
+                gap: 12px;
+            }
+            .slidebar-user-info .slidebar-avatar {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+            .slidebar-nav-item {
+                padding: 12px 14px;
+                gap: 12px;
+                font-size: 13px;
+            }
+            .slidebar-nav-item i {
+                font-size: 16px;
+                width: 20px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .mobile-logo-text {
+                font-size: 15px;
+            }
+            .mobile-logo i {
+                font-size: 16px;
+            }
+            .mobile-hamburger-btn {
+                padding: 7px 9px;
+                font-size: 14px;
+            }
+            .mobile-profile-btn .avatar-circle {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Overlay (mobile) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Left Sidebar Menu -->
+    <!-- ===== MOBILE SLIDEBAR OVERLAY ===== -->
+    <div class="slidebar-overlay" id="slidebarOverlay"></div>
+
+    <!-- ===== DESKTOP SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-heart-pulse"></i>
@@ -985,6 +1334,44 @@
         </div>
     </aside>
 
+    <!-- ===== MOBILE NAVBAR (hidden on desktop) ===== -->
+    <nav class="mobile-navbar" id="mobileNavbar">
+        <div class="nav-container">
+            <!-- Hamburger button -->
+            <button class="mobile-hamburger-btn" id="mobileHamburgerBtn" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Centered Logo -->
+            <div class="mobile-logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span class="mobile-logo-text">BLOOD<span class="accent">CONNECT</span></span>
+            </div>
+
+            <!-- Profile Avatar button -->
+            <button class="mobile-profile-btn" id="mobileProfileBtn" aria-label="Open profile menu">
+                <div class="avatar-circle" id="mobileAvatarCircle">?</div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MOBILE SLIDEBAR (like first code) ===== -->
+    <div class="mobile-slidebar" id="mobileSlidebar">
+        <div class="mobile-slidebar-header">
+            <span class="slidebar-title">BLOOD<span class="accent">CONNECT</span></span>
+            <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="mobile-slidebar-body" id="mobileSlidebarBody">
+            <!-- Populated by JS -->
+        </div>
+        <div class="mobile-slidebar-footer" id="mobileSlidebarFooter">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- ===== WRAPPER ===== -->
     <div class="wrapper">
         <header class="topbar">
             <div class="topbar-left-section">
@@ -996,10 +1383,6 @@
                     <p>Your donation history and certificates.</p>
                 </div>
             </div>
-            <div class="mobile-brand">
-                <i class="fa-solid fa-heart-pulse"></i>
-                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
-            </div>
             <div style="width:44px;"></div>
         </header>
 
@@ -1008,7 +1391,7 @@
         </main>
     </div>
 
-    <!-- Loading overlay -->
+    <!-- ===== LOADING OVERLAY ===== -->
     <div id="loading">
         <div class="loading-spinner">
             <div class="spinner-ring"></div>
@@ -1024,8 +1407,15 @@
         let donor = null;
         const mainContent = document.getElementById('mainContent');
         const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const menuToggle = document.getElementById('menuToggle');
+        const slidebarOverlay = document.getElementById('slidebarOverlay');
+        const mobileSlidebar = document.getElementById('mobileSlidebar');
+        const mobileNavbar = document.getElementById('mobileNavbar');
+        const mobileHamburgerBtn = document.getElementById('mobileHamburgerBtn');
+        const mobileCloseBtn = document.getElementById('mobileCloseBtn');
+        const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+        const mobileAvatarCircle = document.getElementById('mobileAvatarCircle');
+        const mobileSlidebarBody = document.getElementById('mobileSlidebarBody');
+        const mobileSlidebarFooter = document.getElementById('mobileSlidebarFooter');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
 
@@ -1051,6 +1441,191 @@
                 return { isRecovery: true, text: `Eligible after ${formatDate(eligibleDate)}`, tag: 'yellow' };
             }
             return { isRecovery: false, text: 'Eligible now', tag: 'green' };
+        }
+
+        function getAvatarColor(name) {
+            const colors = [
+                '#e11d48', '#2563eb', '#16a34a', '#9333ea',
+                '#ea580c', '#0891b2', '#dc2626', '#7c3aed'
+            ];
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
+        // ===== Mobile Slidebar Functions =====
+        function openMobileSlidebar() {
+            mobileSlidebar.classList.add('active');
+            slidebarOverlay.classList.add('active');
+            document.body.classList.add('slidebar-open');
+        }
+
+        function closeMobileSlidebar() {
+            mobileSlidebar.classList.remove('active');
+            slidebarOverlay.classList.remove('active');
+            document.body.classList.remove('slidebar-open');
+        }
+
+        function isMobileSlidebarOpen() {
+            return mobileSlidebar.classList.contains('active');
+        }
+
+        mobileHamburgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openMobileSlidebar();
+        });
+
+        mobileProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openMobileSlidebar();
+        });
+
+        mobileCloseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeMobileSlidebar();
+        });
+
+        slidebarOverlay.addEventListener('click', closeMobileSlidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMobileSlidebarOpen()) {
+                closeMobileSlidebar();
+            }
+        });
+
+        // Scroll effect for mobile navbar
+        window.addEventListener('scroll', () => {
+            mobileNavbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // ===== Desktop Sidebar Mobile Toggle (fallback, if needed) =====
+        function openDesktopSidebar() {
+            sidebar.classList.add('active');
+            slidebarOverlay.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeDesktopSidebar() {
+            sidebar.classList.remove('active');
+            slidebarOverlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        function isDesktopSidebarOpen() {
+            return sidebar.classList.contains('active');
+        }
+
+        // ===== Render Mobile Slidebar Content =====
+        function renderMobileSlidebar() {
+            if (!donor) {
+                mobileSlidebarBody.innerHTML = `
+                    <div style="text-align:center; padding:20px 10px; color:#6b7280;">
+                        <i class="fa-solid fa-circle-user" style="font-size:48px; color:#d1d5db; margin-bottom:16px;"></i>
+                        <p style="font-weight:600;">Loading profile...</p>
+                    </div>
+                `;
+                mobileSlidebarFooter.innerHTML = '';
+                return;
+            }
+
+            const displayName = donor.name || 'Donor';
+            const email = auth.currentUser?.email || 'No email';
+            const avatarBg = getAvatarColor(displayName);
+            const initials = getInitials(displayName);
+            const eligibility = getEligibilityInfo();
+            const statusText = eligibility.text;
+            const isActive = !eligibility.isRecovery;
+
+            // Update mobile avatar circle
+            if (auth.currentUser?.photoURL) {
+                mobileAvatarCircle.innerHTML = `<img src="${auth.currentUser.photoURL}" alt="${displayName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+            } else {
+                mobileAvatarCircle.textContent = initials;
+                mobileAvatarCircle.style.background = avatarBg;
+            }
+
+            // Slidebar body
+            mobileSlidebarBody.innerHTML = `
+                <div class="slidebar-user-info">
+                    ${auth.currentUser?.photoURL ? 
+                        `<img class="slidebar-avatar" src="${auth.currentUser.photoURL}" alt="${displayName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.textContent='${initials}'; this.nextElementSibling.style.background='${avatarBg}';">
+                         <div class="slidebar-avatar" style="background:${avatarBg}; display:none;">${initials}</div>` :
+                        `<div class="slidebar-avatar" style="background:${avatarBg};">${initials}</div>`
+                    }
+                    <div>
+                        <div class="slidebar-user-name">${displayName}</div>
+                        <div class="slidebar-user-role">Donor</div>
+                        <div style="font-size:11px; color:${isActive ? '#10B981' : '#f59e0b'}; margin-top:4px; font-weight:500;">
+                            <i class="fa-solid fa-circle" style="font-size:7px; margin-right:4px;"></i>${statusText}
+                        </div>
+                    </div>
+                </div>
+                <a href="dashboard.html" class="slidebar-nav-item">
+                    <i class="fa-solid fa-house-medical"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="emergency.html" class="slidebar-nav-item">
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <span>Emergency Alerts</span>
+                    <span class="badge alert" id="mobile-emergency-badge">0</span>
+                </a>
+                <a href="history.html" class="slidebar-nav-item active">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>My Donations</span>
+                </a>
+                <a href="donor-profile.html" class="slidebar-nav-item">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Profile & Location</span>
+                </a>
+            `;
+
+            // Slidebar footer
+            mobileSlidebarFooter.innerHTML = `
+                <a class="slidebar-email-link" href="mailto:${email}">
+                    <i class="fa-solid fa-envelope"></i>
+                    ${email}
+                </a>
+                <button class="mobile-logout-btn" id="mobileLogoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sign Out
+                </button>
+            `;
+
+            // Attach logout event
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    closeMobileSlidebar();
+                    showLoading('Signing out...');
+                    try {
+                        await fbSignOut(auth);
+                        hideLoading();
+                        window.location.href = 'index.html';
+                    } catch (err) {
+                        hideLoading();
+                        toast(err.message || 'Logout failed. Please try again.', 'error');
+                    }
+                });
+            }
+
+            // Close slidebar when nav item clicked
+            document.querySelectorAll('.slidebar-nav-item').forEach(link => {
+                link.addEventListener('click', () => {
+                    closeMobileSlidebar();
+                });
+            });
         }
 
         // ===== Render Donation History =====
@@ -1177,8 +1752,8 @@
             });
         }
 
-        // ===== Update Sidebar Profile =====
-        function updateSidebarProfile() {
+        // ===== Update Desktop Sidebar Profile =====
+        function updateDesktopSidebarProfile() {
             if (!donor) return;
             document.getElementById('dd-name').textContent = donor.name || 'Donor';
             const eligibility = getEligibilityInfo();
@@ -1192,50 +1767,7 @@
             document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email associated';
         }
 
-        // ===== Sidebar Mobile Toggle =====
-        function openSidebar() {
-            sidebar.classList.add('active');
-            sidebarOverlay.classList.add('active');
-            document.body.classList.add('sidebar-open');
-        }
-
-        function closeSidebar() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-            document.body.classList.remove('sidebar-open');
-        }
-
-        function isSidebarOpen() {
-            return sidebar.classList.contains('active');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (isSidebarOpen()) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
-
-        sidebarOverlay.addEventListener('click', closeSidebar);
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isSidebarOpen()) {
-                closeSidebar();
-            }
-        });
-
-        document.querySelectorAll('.sidebar .nav-link:not(.nav-link-logout)').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
-                    closeSidebar();
-                }
-            });
-        });
-
-        // ===== Profile Popup =====
+        // ===== Profile Popup (desktop) =====
         userProfileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             profilePopup.classList.toggle('active');
@@ -1246,7 +1778,7 @@
             }
         });
 
-        // ===== Logout =====
+        // ===== Logout (desktop sidebar) =====
         document.getElementById('logoutBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             showLoading('Signing out...');
@@ -1272,7 +1804,8 @@
                 return;
             }
             donor = { ...snap.data(), uid: user.uid };
-            updateSidebarProfile();
+            updateDesktopSidebarProfile();
+            renderMobileSlidebar();
             renderDonationHistory();
         });
 
@@ -1281,9 +1814,12 @@
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                if (donor) renderDonationHistory();
-                if (window.innerWidth >= 768 && isSidebarOpen()) {
-                    closeSidebar();
+                if (donor) {
+                    renderDonationHistory();
+                    renderMobileSlidebar();
+                }
+                if (window.innerWidth >= 768) {
+                    if (isMobileSlidebarOpen()) closeMobileSlidebar();
                 }
             }, 250);
         });
@@ -1303,7 +1839,7 @@
         }
         if (typeof window.toast !== 'function') {
             window.toast = (msg, type = 'info') => {
-                const toastContainer p= document.getElementById('toast');
+                const toastContainer = document.getElementById('toast');
                 const toastEl = document.createElement('div');
                 toastEl.className = `toast-item ${type}`;
                 const icons = {
@@ -1324,6 +1860,7 @@
 
         // Initial render
         renderDonationHistory();
+        renderMobileSlidebar();
     </script>
 </body>
 </html>
