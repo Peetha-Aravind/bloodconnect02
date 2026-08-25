@@ -7,16 +7,13 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: DM Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== VASTRAMAYA GLOBAL VARIABLES ===== */
+        /* ===== VASTRAMAYA GLOBAL VARIABLES (Main Content) ===== */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
-            --sidebar-bg: #ffffff;
             --text-color: rgb(24, 24, 26);
             --text-sub: #6b7280;
             --icon-color: #6b7280;
@@ -34,6 +31,20 @@
             --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             --radius-md: 8px;
             --radius-lg: 12px;
+        }
+
+        /* ===== ORIGINAL BLOODCONNECT SIDEBAR COLORS (Preserved) ===== */
+        :root {
+            --sidebar-primary: #e11d48;
+            --sidebar-primary-hover: #be123c;
+            --sidebar-bg: #ffffff;
+            --sidebar-hover-bg: #f1f5f9;
+            --sidebar-text-main: #64748b;
+            --sidebar-text-dark: #0f172a;
+            --sidebar-border: #e2e8f0;
+            --sidebar-active-bg: #e11d48;
+            --sidebar-icon-color: #94a3b8;
+            --sidebar-active-icon: #ffffff;
         }
 
         /* ===== RESET & BASE ===== */
@@ -54,17 +65,17 @@
             width: 100%;
         }
 
-        /* ===== SIDEBAR (unchanged structure, updated with variables) ===== */
+        /* ===== SIDEBAR (Original BloodConnect style) ===== */
         .sidebar {
             width: 270px;
             background-color: var(--sidebar-bg);
-            color: var(--text-sub);
+            color: var(--sidebar-text-main);
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
             z-index: 1000;
-            border-right: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--sidebar-border);
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
         }
         .sidebar-brand {
@@ -72,20 +83,20 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--text-color);
-            border-bottom: 1px solid var(--border-subtle);
+            color: var(--sidebar-text-dark);
+            border-bottom: 1px solid var(--sidebar-border);
             height: 70px;
         }
         .sidebar-brand i {
             font-size: 26px;
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .sidebar-brand h2 {
             font-size: 20px;
             font-weight: 600;
         }
         .sidebar-brand span {
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .sidebar-menu {
             list-style: none;
@@ -109,7 +120,7 @@
             align-items: center;
             gap: 12px;
             padding: 11px 14px;
-            color: var(--text-sub);
+            color: var(--sidebar-text-main);
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.25s ease-in-out;
@@ -121,34 +132,34 @@
             font-size: 16px;
             width: 20px;
             text-align: center;
-            color: var(--icon-color);
+            color: var(--sidebar-icon-color);
             transition: all 0.25s ease-in-out;
         }
         .nav-link:hover {
-            background-color: var(--hover-bg);
-            color: var(--text-color);
+            background-color: var(--sidebar-hover-bg);
+            color: var(--sidebar-text-dark);
             transform: translateX(3px);
         }
         .nav-link:hover i {
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .nav-link.active {
-            background-color: var(--brand-primary);
+            background-color: var(--sidebar-active-bg);
             color: #ffffff;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(81, 39, 186, 0.25);
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
         }
         .nav-link.active i {
             color: #ffffff;
         }
         .badge {
             margin-left: auto;
-            background-color: var(--active-bg);
+            background-color: #f1f5f9;
             padding: 2px 8px;
             font-size: 11px;
             font-weight: 600;
             border-radius: 12px;
-            color: var(--text-sub);
+            color: var(--sidebar-text-main);
         }
         .nav-link.active .badge {
             background-color: rgba(255, 255, 255, 0.2);
@@ -156,25 +167,25 @@
         }
         .badge.alert {
             background-color: #ffe4e6;
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .nav-link.active .badge.alert {
             background-color: #ffffff;
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .user-profile {
             padding: 16px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            background-color: var(--header-bg);
-            border-top: 1px solid var(--border-subtle);
+            background-color: #f8fafc;
+            border-top: 1px solid var(--sidebar-border);
             cursor: pointer;
             position: relative;
             transition: all 0.25s ease-in-out;
         }
         .user-profile:hover {
-            background-color: var(--hover-bg);
+            background-color: var(--sidebar-hover-bg);
         }
         .user-profile img {
             width: 40px;
@@ -186,7 +197,7 @@
         .user-info h4 {
             font-size: 13px;
             font-weight: 500;
-            color: var(--text-color);
+            color: var(--sidebar-text-dark);
         }
         .user-info p {
             font-size: 11px;
@@ -199,8 +210,8 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background-color: var(--success-color);
-            box-shadow: 0 0 6px var(--success-color);
+            background-color: #059669;
+            box-shadow: 0 0 6px #059669;
         }
         .status-dot.yellow {
             background-color: #ca8a04;
@@ -217,7 +228,7 @@
             left: 12px;
             right: 12px;
             background: #ffffff;
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--sidebar-border);
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             padding: 8px;
@@ -229,23 +240,23 @@
         }
         .popup-email {
             font-size: 13px;
-            color: var(--text-color);
+            color: var(--sidebar-text-dark);
             padding: 8px 10px 12px 10px;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid #f1f5f9;
             margin-bottom: 6px;
             font-weight: 500;
             word-break: break-all;
         }
         .nav-link-logout {
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .nav-link-logout i {
-            color: var(--brand-primary);
+            color: var(--sidebar-primary);
         }
         .nav-link-logout:hover,
         .nav-link-logout.active {
             background-color: #ffe4e6;
-            color: var(--brand-primary);
+            color: var(--sidebar-primary-hover);
             box-shadow: none;
         }
         @keyframes popupFadeIn {
@@ -820,7 +831,7 @@
 </head>
 <body>
 
-    <!-- Left Sidebar Menu (unchanged) -->
+    <!-- Left Sidebar Menu (Original BloodConnect style retained) -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-heart-pulse"></i>
@@ -962,7 +973,6 @@
             return donor?.[field] ?? fallback;
         }
 
-        // Toggle mobile/desktop rendering
         function isMobileView() {
             return window.innerWidth < 768;
         }
@@ -976,7 +986,6 @@
             const availabilityChecked = donor?.emergencyAvailable && !eligibility.isRecovery ? 'checked' : '';
             const availabilityDisabled = eligibility.isRecovery ? 'disabled' : '';
 
-            // Stats cards
             const statsHtml = `
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
                     <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
@@ -1005,10 +1014,8 @@
                 </div>
             `;
 
-            // Recent requests table/cards
             let requestContent = '';
             if (isMobileView()) {
-                // Mobile cards
                 let cards = '';
                 if (requests.length === 0) {
                     cards = `<div class="card" style="padding:20px; text-align:center;">No direct requests yet.</div>`;
@@ -1036,7 +1043,6 @@
                 }
                 requestContent = `<div class="mobile-product-cards">${cards}</div>`;
             } else {
-                // Desktop table
                 let rows = '';
                 if (requests.length === 0) {
                     rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No direct requests yet.</td></tr>`;
@@ -1113,7 +1119,6 @@
                     }
                 });
             });
-            // Kebab menus
             document.querySelectorAll('.kebab-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1121,7 +1126,6 @@
                     openKebabMenu(e, id);
                 });
             });
-            // Close popups on outside click
             document.addEventListener('click', closeAllPopups);
         }
 
@@ -1166,7 +1170,6 @@
             const pending = requests.filter(r => r.status === 'pending');
             let content = '';
             if (isMobileView()) {
-                // Mobile cards
                 if (pending.length === 0) {
                     content = `<div class="card" style="padding:20px; text-align:center;">No emergency alerts right now.</div>`;
                 } else {
@@ -1189,7 +1192,6 @@
                     content += '</div>';
                 }
             } else {
-                // Desktop table
                 let rows = '';
                 if (pending.length === 0) {
                     rows = `<tr><td colspan="5" style="text-align:center; padding:20px;">No emergency alerts right now.</td></tr>`;
@@ -1537,7 +1539,6 @@
             updateEmergencyBadge();
         }
 
-        // Auth
         onAuthStateChanged(auth, async user => {
             if (!user) { window.location.href = 'login-donor.html'; return; }
             const snap = await getDoc(doc(db, 'donors', user.uid));
@@ -1552,7 +1553,6 @@
             renderPage(currentTab);
         });
 
-        // Navigation
         document.addEventListener('click', function(e) {
             if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
                 profilePopup.classList.remove('active');
@@ -1584,7 +1584,6 @@
             }
         }
 
-        // Mobile toggle
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
         });
@@ -1593,7 +1592,6 @@
             profilePopup.classList.toggle('active');
         });
 
-        // Resize handler
         window.addEventListener('resize', () => {
             const newIsMobile = isMobileView();
             if (newIsMobile !== isMobile) {
@@ -1602,7 +1600,6 @@
             }
         });
 
-        // Fallback functions
         if (typeof showLoading !== 'function') {
             window.showLoading = (msg) => {
                 document.getElementById('loading').style.display = 'flex';
