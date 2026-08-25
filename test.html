@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloodConnect - Donor Dashboard (Vastramaya UI)</title>
+    <title>BloodConnect - Profile Settings (Vastramaya UI)</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: DM Sans -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
-
     <style>
         /* ===== VASTRAMAYA GLOBAL VARIABLES (Main Content) ===== */
         :root {
@@ -47,13 +46,13 @@
             --sidebar-active-icon: #ffffff;
         }
 
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             text-decoration: none !important;
         }
+
         body {
             font-family: "DM Sans", Roboto, sans-serif;
             font-weight: 500;
@@ -326,19 +325,6 @@
             overflow-x: hidden;
         }
 
-        /* Breadcrumbs */
-        .breadcrumbs {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 16px;
-        }
-        .breadcrumbs span {
-            color: #d1d5db;
-        }
-
         /* Cards */
         .card {
             background: #ffffff;
@@ -404,328 +390,6 @@
             background: #059669;
         }
 
-        /* Search Input */
-        .search-input-wrap {
-            background: #f9fafb;
-            border-radius: 999px;
-            border: 1px solid var(--border-subtle);
-            padding: 12px 16px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: border-color 0.15s ease;
-            width: 100%;
-        }
-        .search-input-wrap:focus-within {
-            border-color: #673de6;
-        }
-        .search-input-wrap i {
-            width: 16px;
-            color: #9ca3af;
-            font-size: 14px;
-        }
-        .search-input-wrap input {
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            color: var(--text-color);
-            width: 100%;
-        }
-
-        /* Toggle Switch */
-        .toggle-switch {
-            width: 44px;
-            height: 24px;
-            position: relative;
-            display: inline-block;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-switch .slider {
-            position: absolute;
-            inset: 0;
-            background-color: var(--switch-off);
-            border-radius: 24px;
-            transition: .4s;
-        }
-        .toggle-switch .slider::before {
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: .4s;
-            position: absolute;
-        }
-        .toggle-switch input:checked+.slider {
-            background-color: var(--brand-primary);
-        }
-        .toggle-switch input:checked+.slider::before {
-            transform: translateX(20px);
-        }
-
-        /* Kebab Menu */
-        .kebab {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--border-subtle);
-            background: #ffffff;
-            cursor: pointer;
-            position: relative;
-        }
-        .kebab:hover {
-            background: #f9fafb;
-            border-color: #d1d5db;
-        }
-        .kebab .dot {
-            width: 4px;
-            height: 4px;
-            background-color: #6b7280;
-            border-radius: 50%;
-            position: relative;
-        }
-        .kebab .dot::before,
-        .kebab .dot::after {
-            content: "";
-            width: 4px;
-            height: 4px;
-            background-color: #6b7280;
-            border-radius: 50%;
-            position: absolute;
-            left: 0;
-        }
-        .kebab .dot::before {
-            top: -6px;
-        }
-        .kebab .dot::after {
-            bottom: -6px;
-        }
-
-        /* Desktop Table */
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            overflow: visible !important;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            z-index: 1;
-            position: relative;
-        }
-        .data-table thead {
-            height: 48px;
-        }
-        .data-table th {
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 24px;
-            color: rgb(29, 30, 32);
-            text-align: left;
-            border-bottom: 1px solid var(--border-subtle);
-            white-space: nowrap;
-            background-color: #ffffff;
-            padding: 12px 20px;
-        }
-        .data-table tbody tr {
-            border-bottom: 1px solid #f3f4f6;
-            background-color: #ffffff;
-        }
-        .data-table tbody tr:hover {
-            background-color: #f9fafb;
-        }
-        .data-table tbody tr:last-child {
-            border-bottom: none;
-        }
-        .data-table td {
-            padding: 12px 20px;
-            vertical-align: middle;
-            text-align: left;
-        }
-        .product-thumb {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        /* Mobile Cards */
-        .mobile-product-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .mobile-card {
-            background: #ffffff;
-            border-radius: 16px;
-            border: 1px solid var(--border-subtle);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            width: 100%;
-        }
-        .mobile-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .mobile-card img {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-        .mobile-card .info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .mobile-card .info .title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-color);
-        }
-        .mobile-card .info .subtitle {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--brand-primary);
-        }
-        .mobile-card .info .meta {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-sub);
-        }
-        .mobile-card .actions {
-            margin-left: auto;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        .product-card-menu-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--border-subtle);
-            background: #ffffff;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        /* Popup / Overlays */
-        .desktop-popup {
-            position: fixed;
-            z-index: 10002;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            min-width: 180px;
-            animation: fadeInUp 0.2s ease-out;
-            padding: 8px;
-        }
-        .desktop-popup .popup-item {
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .desktop-popup .popup-item:hover {
-            background-color: var(--hover-bg);
-        }
-        .desktop-popup .popup-item.danger {
-            color: var(--danger-color);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Mobile Advanced Menu Bottom Sheet */
-        .advanced-menu {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border-radius: 24px 24px 0 0;
-            padding: 24px 0;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2000;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
-        }
-        .advanced-menu.open {
-            transform: translateY(0);
-        }
-        .drag-handle {
-            width: 40px;
-            height: 4px;
-            border-radius: 999px;
-            background-color: #e5e7eb;
-            margin: 0 auto 16px;
-        }
-
-        /* Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            max-width: 480px;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-premium);
-            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 24px;
-            width: 90%;
-        }
-        @keyframes modalPop {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
         /* Forms */
         .form-input {
             width: 100%;
@@ -741,59 +405,6 @@
             border-color: var(--brand-primary);
             box-shadow: 0 0 0 3px rgba(81, 39, 186, 0.1);
             outline: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                left: -270px;
-            }
-            .sidebar.active {
-                left: 0;
-            }
-            .wrapper {
-                margin-left: 0;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .topbar {
-                padding: 0 20px;
-            }
-            .content-inner {
-                padding: 16px;
-            }
-            .mobile-content-inner {
-                display: block;
-            }
-            .desktop-only {
-                display: none !important;
-            }
-            .mobile-only {
-                display: block !important;
-            }
-            .modal-content {
-                border-radius: 24px 24px 0 0;
-                animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                align-self: flex-end;
-            }
-            @keyframes slideUpModal {
-                from {
-                    transform: translateY(100%);
-                }
-                to {
-                    transform: translateY(0);
-                }
-            }
-        }
-
-        @media (min-width: 769px) {
-            .mobile-only {
-                display: none !important;
-            }
-            .desktop-only {
-                display: block !important;
-            }
         }
 
         /* Utility */
@@ -827,6 +438,46 @@
             background: #f1f5f9;
             color: #64748b;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -270px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .wrapper {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .topbar {
+                padding: 0 20px;
+            }
+            .content-inner {
+                padding: 16px;
+            }
+            .mobile-content-inner {
+                display: block;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-only {
+                display: block !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+            .desktop-only {
+                display: block !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -840,28 +491,28 @@
         <ul class="sidebar-menu">
             <li class="menu-category">Overview</li>
             <li>
-                <a data-target="dashboard" data-title="My Dashboard" data-desc="Welcome back! Here's your donation summary." class="nav-link active">
+                <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-house-medical"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="menu-category">Activity</li>
             <li>
-                <a data-target="emergency" data-title="Emergency Requests" data-desc="Urgent blood requirements based on your location filters." class="nav-link">
+                <a href="emergency.html" class="nav-link">
                     <i class="fa-solid fa-truck-medical"></i>
                     <span>Emergency Alerts</span>
                     <span class="badge alert" id="emergency-badge">0</span>
                 </a>
             </li>
             <li>
-                <a data-target="history" data-title="Donation History" data-desc="Track your past donations and health milestones." class="nav-link">
+                <a href="history.html" class="nav-link">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>My Donations</span>
                 </a>
             </li>
             <li class="menu-category">Settings</li>
             <li>
-                <a data-target="profile" data-title="Profile Settings" data-desc="Update your personal details and location preferences." class="nav-link">
+                <a href="profile-settings.html" class="nav-link active">
                     <i class="fa-solid fa-user-gear"></i>
                     <span>Profile & Location</span>
                 </a>
@@ -875,7 +526,7 @@
             </div>
             <div class="profile-popup" id="profilePopup">
                 <div class="popup-email" id="dd-email">Loading email...</div>
-                <a data-target="logout" data-title="Logout" data-desc="Session ended safely." class="nav-link nav-link-logout">
+                <a href="#" class="nav-link nav-link-logout" id="logoutBtn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -890,15 +541,15 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title">
-                    <h2 id="topbarTitle">My Dashboard</h2>
-                    <p id="topbarDesc">Welcome back! Here's your donation summary.</p>
+                    <h2>Profile Settings</h2>
+                    <p>Update your personal details and location preferences.</p>
                 </div>
             </div>
             <div class="topbar-right"></div>
         </header>
 
         <main class="content-inner" id="mainContent">
-            <!-- Rendered via JavaScript -->
+            <!-- Profile form injected by JS -->
         </main>
     </div>
 
@@ -911,42 +562,19 @@
     </div>
     <div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:4000;"></div>
 
-    <!-- Modal overlay for generic use -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content" id="modalContent">
-            <!-- filled by JS -->
-        </div>
-    </div>
-
-    <!-- Mobile advanced menu -->
-    <div class="advanced-menu" id="advancedMenu">
-        <div class="drag-handle"></div>
-        <div id="advancedMenuContent" style="padding: 0 20px;"></div>
-    </div>
-
     <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, collection, query, where, onSnapshot, updateDoc, fbSignOut } from "./firebase-config.js";
+        import { auth, onAuthStateChanged, db, doc, getDoc, updateDoc, fbSignOut } from "./firebase-config.js";
         import { showLoading, hideLoading, toast } from "./utils.js";
 
-        let requestsUnsub = null;
-        let currentTab = 'dashboard';
         let donor = null;
-        let requests = [];
-        let isEditingProfile = false;
-        let isMobile = window.innerWidth < 768;
-
+        let isEditing = false;
         const mainContent = document.getElementById('mainContent');
-        const topbarTitle = document.getElementById('topbarTitle');
-        const topbarDesc = document.getElementById('topbarDesc');
         const sidebar = document.getElementById('sidebar');
         const menuToggle = document.getElementById('menuToggle');
         const userProfileBtn = document.getElementById('userProfileBtn');
         const profilePopup = document.getElementById('profilePopup');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalContent = document.getElementById('modalContent');
-        const advancedMenu = document.getElementById('advancedMenu');
 
-        // Helper functions
+        // Helpers
         function formatDate(value) {
             if (!value) return 'No record';
             const date = value?.toDate ? value.toDate() : new Date(value);
@@ -973,364 +601,11 @@
             return donor?.[field] ?? fallback;
         }
 
-        function isMobileView() {
-            return window.innerWidth < 768;
-        }
-
-        // Render Dashboard Page
-        function renderDashboard() {
-            const eligibility = getEligibilityInfo();
-            const totalDonations = donor?.totalDonations || 0;
-            const bloodGroup = donor?.bloodGroup || '—';
-            const lastDonation = formatDate(donor?.lastDonationDate || donor?.lastDonation);
-            const availabilityChecked = donor?.emergencyAvailable && !eligibility.isRecovery ? 'checked' : '';
-            const availabilityDisabled = eligibility.isRecovery ? 'disabled' : '';
-
-            const statsHtml = `
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">My Blood Group</span>
-                        <span style="font-size:28px; font-weight:700; color:var(--brand-primary);">${bloodGroup}</span>
-                        <span class="tag red">${bloodGroup === 'O-' ? 'Universal Donor' : 'Donor'}</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Total Donations</span>
-                        <span style="font-size:28px; font-weight:700;">${totalDonations}</span>
-                        <span class="text-sub" style="font-size:12px;">Approx. ${totalDonations * 3} lives saved</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:8px;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Last Donation</span>
-                        <span style="font-size:22px; font-weight:700;">${lastDonation}</span>
-                        <span class="tag ${eligibility.tag}">${eligibility.text}</span>
-                    </div>
-                    <div class="card" style="padding:20px; display:flex; flex-direction:column; gap:12px; background-color:#f8fafc;">
-                        <span style="font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase;">Emergency Availability</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="availabilityToggle" ${availabilityChecked} ${availabilityDisabled}>
-                            <span class="slider"></span>
-                        </label>
-                        <span class="text-sub" style="font-size:12px;">${eligibility.isRecovery ? 'Disabled during recovery period' : 'You are available for emergency requests'}</span>
-                    </div>
-                </div>
-            `;
-
-            let requestContent = '';
-            if (isMobileView()) {
-                let cards = '';
-                if (requests.length === 0) {
-                    cards = `<div class="card" style="padding:20px; text-align:center;">No direct requests yet.</div>`;
-                } else {
-                    requests.forEach(r => {
-                        const status = r.status || 'pending';
-                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
-                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
-                        cards += `
-                            <div class="mobile-card">
-                                <div class="info">
-                                    <div class="title">${r.finderName || 'Anonymous'}</div>
-                                    <div class="subtitle">${urgency}</div>
-                                    <div class="meta">${r.location || '—'}</div>
-                                </div>
-                                <div class="actions">
-                                    ${status === 'pending' ? `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>` : `<span class="tag ${tagClass}">${urgency}</span>`}
-                                    <button class="product-card-menu-btn kebab-btn" data-id="${r.id}">
-                                        <span class="dot"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-                requestContent = `<div class="mobile-product-cards">${cards}</div>`;
-            } else {
-                let rows = '';
-                if (requests.length === 0) {
-                    rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No direct requests yet.</td></tr>`;
-                } else {
-                    requests.forEach(r => {
-                        const status = r.status || 'pending';
-                        const urgency = r.urgency || (status === 'pending' ? 'Needed' : status === 'approved' ? 'Scheduled' : 'Completed');
-                        const tagClass = status === 'pending' ? 'red' : status === 'approved' ? 'green' : 'gray';
-                        rows += `
-                            <tr>
-                                <td><strong>${r.finderName || 'Anonymous'}</strong></td>
-                                <td>${r.location || '—'}</td>
-                                <td><span class="tag ${tagClass}">${urgency}</span></td>
-                                <td>
-                                    ${status === 'pending' ? `<button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>` : `<span class="tag ${tagClass}">${urgency}</span>`}
-                                    <button class="kebab kebab-btn" data-id="${r.id}" style="margin-left:8px;"><span class="dot"></span></button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
-                requestContent = `
-                    <div class="table-wrapper">
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Patient Name</th><th>Hospital / Location</th><th>Urgency</th><th>Action</th></tr>
-                            </thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                    </div>
-                `;
-            }
-
-            const html = `
-                ${statsHtml}
-                <div class="card">
-                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
-                        <h3 style="font-size:16px; font-weight:700;">Recent Direct Requests</h3>
-                        <a href="#" class="btn-secondary" style="text-decoration:none;">View All</a>
-                    </div>
-                    ${requestContent}
-                </div>
-            `;
-            mainContent.innerHTML = html;
-            attachDashboardEvents();
-        }
-
-        function attachDashboardEvents() {
-            const toggle = document.getElementById('availabilityToggle');
-            if (toggle) {
-                toggle.addEventListener('change', async (e) => {
-                    if (!donor) return;
-                    const available = e.target.checked;
-                    try {
-                        await updateDoc(doc(db, 'donors', donor.uid), { emergencyAvailable: available });
-                        donor.emergencyAvailable = available;
-                        toast('Availability updated', 'success');
-                    } catch (err) {
-                        toast(err.message, 'error');
-                    }
-                });
-            }
-            document.querySelectorAll('.btn-approve').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const id = e.currentTarget.getAttribute('data-id');
-                    showLoading('Approving request…');
-                    try {
-                        await updateDoc(doc(db, 'requests', id), { status: 'approved' });
-                        hideLoading();
-                        toast('Request approved!', 'success');
-                    } catch (err) {
-                        hideLoading();
-                        toast(err.message, 'error');
-                    }
-                });
-            });
-            document.querySelectorAll('.kebab-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const id = btn.getAttribute('data-id');
-                    openKebabMenu(e, id);
-                });
-            });
-            document.addEventListener('click', closeAllPopups);
-        }
-
-        function closeAllPopups() {
-            document.querySelectorAll('.desktop-popup').forEach(p => p.remove());
-        }
-
-        function openKebabMenu(e, id) {
-            closeAllPopups();
-            const popup = document.createElement('div');
-            popup.className = 'desktop-popup';
-            popup.style.left = `${e.clientX}px`;
-            popup.style.top = `${e.clientY}px`;
-            popup.innerHTML = `
-                <div class="popup-item" data-action="approve" data-id="${id}"><i class="fa-solid fa-hand-holding-medical"></i> Approve</div>
-                <div class="popup-item" data-action="view" data-id="${id}"><i class="fa-solid fa-eye"></i> View Details</div>
-                <div class="popup-item danger" data-action="decline" data-id="${id}"><i class="fa-solid fa-xmark"></i> Decline</div>
-            `;
-            document.body.appendChild(popup);
-            popup.querySelectorAll('.popup-item').forEach(item => {
-                item.addEventListener('click', async () => {
-                    const action = item.getAttribute('data-action');
-                    const reqId = item.getAttribute('data-id');
-                    if (action === 'approve') {
-                        showLoading('Approving…');
-                        await updateDoc(doc(db, 'requests', reqId), { status: 'approved' });
-                        hideLoading();
-                        toast('Approved!', 'success');
-                    } else if (action === 'decline') {
-                        showLoading('Declining…');
-                        await updateDoc(doc(db, 'requests', reqId), { status: 'declined' });
-                        hideLoading();
-                        toast('Declined', 'info');
-                    }
-                    closeAllPopups();
-                });
-            });
-        }
-
-        // Render Emergency Page
-        function renderEmergency() {
-            const pending = requests.filter(r => r.status === 'pending');
-            let content = '';
-            if (isMobileView()) {
-                if (pending.length === 0) {
-                    content = `<div class="card" style="padding:20px; text-align:center;">No emergency alerts right now.</div>`;
-                } else {
-                    content = '<div class="mobile-product-cards">';
-                    pending.forEach(r => {
-                        content += `
-                            <div class="mobile-card">
-                                <div class="info">
-                                    <div class="title">${r.urgency || 'Emergency'}</div>
-                                    <div class="subtitle">${r.location || '—'}</div>
-                                    <div class="meta">${formatDate(r.createdAt)} &bull; ${r.bloodGroup || '—'}</div>
-                                </div>
-                                <div class="actions">
-                                    <button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>
-                                    <button class="product-card-menu-btn kebab-btn" data-id="${r.id}"><span class="dot"></span></button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    content += '</div>';
-                }
-            } else {
-                let rows = '';
-                if (pending.length === 0) {
-                    rows = `<tr><td colspan="5" style="text-align:center; padding:20px;">No emergency alerts right now.</td></tr>`;
-                } else {
-                    pending.forEach(r => {
-                        rows += `
-                            <tr>
-                                <td>${formatDate(r.createdAt)}</td>
-                                <td>${r.urgency || 'Emergency'}</td>
-                                <td><strong>${r.location || '—'}</strong></td>
-                                <td><span class="tag red">${r.bloodGroup || '—'}</span></td>
-                                <td>
-                                    <button class="primary-btn btn-approve" data-id="${r.id}" style="padding:6px 12px; font-size:13px;">Approve</button>
-                                    <button class="kebab kebab-btn" data-id="${r.id}" style="margin-left:8px;"><span class="dot"></span></button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
-                content = `
-                    <div class="table-wrapper">
-                        <table class="data-table">
-                            <thead><tr><th>Date Posted</th><th>Required For</th><th>Location Details</th><th>Blood Group</th><th>Status</th></tr></thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                    </div>
-                `;
-            }
-
-            mainContent.innerHTML = `
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
-                    <div class="search-input-wrap" style="max-width:300px;">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Search requests..." />
-                    </div>
-                    <select class="form-input" style="width:auto; min-width:140px;">
-                        <option>Radius: 10 KM</option>
-                        <option>Radius: 25 KM</option>
-                        <option>Radius: 50 KM</option>
-                    </select>
-                    <select class="form-input" style="width:auto; min-width:160px;">
-                        <option>Sort: Highest Urgency</option>
-                        <option>Sort: Nearest Location</option>
-                    </select>
-                    <button class="primary-btn"><i class="fa-solid fa-location-crosshairs"></i> Update My Location</button>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3 style="font-size:16px; font-weight:700;">Pending Emergency Requests</h3></div>
-                    ${content}
-                </div>
-            `;
-            attachEmergencyEvents();
-        }
-
-        function attachEmergencyEvents() {
-            document.querySelectorAll('.btn-approve').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const id = e.currentTarget.getAttribute('data-id');
-                    showLoading('Approving request…');
-                    try {
-                        await updateDoc(doc(db, 'requests', id), { status: 'approved' });
-                        hideLoading();
-                        toast('Request approved!', 'success');
-                    } catch (err) {
-                        hideLoading();
-                        toast(err.message, 'error');
-                    }
-                });
-            });
-            document.querySelectorAll('.kebab-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const id = btn.getAttribute('data-id');
-                    openKebabMenu(e, id);
-                });
-            });
-            document.addEventListener('click', closeAllPopups);
-        }
-
-        // Render History Page
-        function renderHistory() {
-            const history = donor?.donationHistory || [];
-            if (isMobileView()) {
-                let cards = '';
-                if (history.length === 0) {
-                    cards = `<div class="card" style="padding:20px; text-align:center;">No donation records yet.</div>`;
-                } else {
-                    cards = '<div class="mobile-product-cards">';
-                    history.forEach(h => {
-                        cards += `
-                            <div class="mobile-card">
-                                <div class="info">
-                                    <div class="title">${h.camp || '—'}</div>
-                                    <div class="subtitle">${formatDate(h.date)}</div>
-                                    <div class="meta">${h.units || '1 Unit (450ml)'}</div>
-                                </div>
-                                <div class="actions">
-                                    <button class="btn-secondary"><i class="fa-solid fa-download"></i> Download</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    cards += '</div>';
-                }
-                mainContent.innerHTML = `<div class="card"><div class="card-header"><h3>Donation History</h3></div>${cards}</div>`;
-            } else {
-                let rows = '';
-                if (history.length === 0) {
-                    rows = `<tr><td colspan="4" style="text-align:center; padding:20px;">No donation records yet.</td></tr>`;
-                } else {
-                    history.forEach(h => {
-                        rows += `
-                            <tr>
-                                <td>${formatDate(h.date)}</td>
-                                <td>${h.camp || '—'}</td>
-                                <td>${h.units || '1 Unit (450ml)'}</td>
-                                <td><button class="btn-secondary"><i class="fa-solid fa-download"></i> Download</button></td>
-                            </tr>
-                        `;
-                    });
-                }
-                mainContent.innerHTML = `
-                    <div class="card">
-                        <div class="card-header"><h3>Donation History</h3></div>
-                        <div class="table-wrapper">
-                            <table class="data-table">
-                                <thead><tr><th>Donation Date</th><th>Camp / Hospital Name</th><th>Units Donated</th><th>Certificate</th></tr></thead>
-                                <tbody>${rows}</tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // Render Profile Page
-        function renderProfile() {
-            const disabled = isEditingProfile ? '' : 'disabled';
-            const hint = isEditingProfile ? '' : '<span class="text-sub" style="font-size:12px;">Click "Edit Profile" to make changes</span>';
+        // Render profile form
+        function renderProfileForm() {
+            if (!donor) return;
+            const disabled = isEditing ? '' : 'disabled';
+            const hint = isEditing ? '' : '<span class="text-sub" style="font-size:12px;">Click "Edit Profile" to make changes</span>';
             const avatar = auth.currentUser?.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80';
 
             mainContent.innerHTML = `
@@ -1408,7 +683,7 @@
                         </div>
                         ${hint}
                         <div style="display:flex; gap:12px; margin-top:20px;">
-                            ${!isEditingProfile ? `
+                            ${!isEditing ? `
                                 <button class="primary-btn" id="btn-edit-profile"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
                             ` : `
                                 <button class="btn-success" id="btn-save-profile"><i class="fa-solid fa-check"></i> Save Changes</button>
@@ -1418,18 +693,15 @@
                     </div>
                 </div>
             `;
-            attachProfileEvents();
-        }
 
-        function attachProfileEvents() {
             document.getElementById('btn-edit-profile')?.addEventListener('click', () => {
-                isEditingProfile = true;
-                renderProfile();
+                isEditing = true;
+                renderProfileForm();
             });
             document.getElementById('btn-save-profile')?.addEventListener('click', saveProfile);
             document.getElementById('btn-cancel-edit')?.addEventListener('click', () => {
-                isEditingProfile = false;
-                renderProfile();
+                isEditing = false;
+                renderProfileForm();
             });
         }
 
@@ -1478,14 +750,15 @@
             try {
                 await updateDoc(doc(db, 'donors', donor.uid), updates);
                 donor = { ...donor, ...updates };
-                isEditingProfile = false;
+                isEditing = false;
                 hideLoading();
                 toast('Profile updated successfully!', 'success');
                 updateSidebarProfile();
-                renderProfile();
+                renderProfileForm();
             } catch (err) {
                 hideLoading();
                 toast('Failed to save: ' + err.message, 'error');
+                console.error(err);
             }
         }
 
@@ -1500,81 +773,43 @@
             document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email';
         }
 
-        function updateEmergencyBadge() {
-            const badge = document.getElementById('emergency-badge');
-            if (badge) {
-                const pending = requests.filter(r => r.status === 'pending').length;
-                badge.textContent = pending;
-                badge.style.display = pending > 0 ? 'inline-block' : 'none';
+        // Auth & data loading
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login-donor.html';
+                return;
             }
-        }
-
-        function renderPage(target) {
-            currentTab = target;
-            closeAllPopups();
-            switch (target) {
-                case 'dashboard':
-                    topbarTitle.innerText = 'My Dashboard';
-                    topbarDesc.innerText = 'Welcome back! Here\'s your donation summary.';
-                    renderDashboard();
-                    break;
-                case 'emergency':
-                    topbarTitle.innerText = 'Emergency Requests';
-                    topbarDesc.innerText = 'Urgent blood requirements based on your location filters.';
-                    renderEmergency();
-                    break;
-                case 'history':
-                    topbarTitle.innerText = 'Donation History';
-                    topbarDesc.innerText = 'Track your past donations and health milestones.';
-                    renderHistory();
-                    break;
-                case 'profile':
-                    topbarTitle.innerText = 'Profile Settings';
-                    topbarDesc.innerText = isEditingProfile ? 'Update your personal details and save changes.' : 'View and update your personal information.';
-                    renderProfile();
-                    break;
-                default:
-                    mainContent.innerHTML = '<p>Page not found.</p>';
-            }
-            updateEmergencyBadge();
-        }
-
-        onAuthStateChanged(auth, async user => {
-            if (!user) { window.location.href = 'login-donor.html'; return; }
             const snap = await getDoc(doc(db, 'donors', user.uid));
-            if (!snap.exists()) { window.location.href = 'onboarding.html'; return; }
+            if (!snap.exists()) {
+                window.location.href = 'onboarding.html';
+                return;
+            }
             donor = { ...snap.data(), uid: user.uid };
             updateSidebarProfile();
-            const q = query(collection(db, 'requests'), where('donorId', '==', user.uid));
-            requestsUnsub = onSnapshot(q, snap => {
-                requests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderPage(currentTab);
-            });
-            renderPage(currentTab);
+            renderProfileForm();
         });
 
-        document.addEventListener('click', function(e) {
+        // Sidebar mobile toggle
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Profile popup
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profilePopup.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
             if (!profilePopup.contains(e.target) && !userProfileBtn.contains(e.target)) {
                 profilePopup.classList.remove('active');
             }
-            const link = e.target.closest('.nav-link');
-            if (!link) return;
-            e.preventDefault();
-            const target = link.getAttribute('data-target');
-            if (target === 'logout') { signOut(); return; }
-            if (target === 'profile' && currentTab === 'profile' && isEditingProfile) {
-                isEditingProfile = false;
-            }
-            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-            link.classList.add('active');
-            renderPage(target);
-            if (window.innerWidth <= 768) sidebar.classList.remove('active');
         });
 
-        async function signOut() {
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
             showLoading('Signing out...');
             try {
-                if (requestsUnsub) requestsUnsub();
                 await fbSignOut(auth);
                 hideLoading();
                 window.location.href = 'index.html';
@@ -1582,24 +817,9 @@
                 hideLoading();
                 toast(err.message, 'error');
             }
-        }
-
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-        userProfileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profilePopup.classList.toggle('active');
         });
 
-        window.addEventListener('resize', () => {
-            const newIsMobile = isMobileView();
-            if (newIsMobile !== isMobile) {
-                isMobile = newIsMobile;
-                renderPage(currentTab);
-            }
-        });
-
+        // Fallback functions
         if (typeof showLoading !== 'function') {
             window.showLoading = (msg) => {
                 document.getElementById('loading').style.display = 'flex';
