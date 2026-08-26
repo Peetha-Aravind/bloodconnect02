@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BloodConnect - Dashboard</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,15 +51,17 @@
         
         body.sidebar-open { overflow: hidden; }
 
-        /* ===== NEW SIDEBAR DESIGN (Match Image) ===== */
+        /* ===== SIDEBAR DESIGN ===== */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
             position: fixed;
-            height: 100vh;
             top: 0;
+            bottom: 0;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Prevents mobile browser bar cutoff */
             left: 0;
             z-index: 1000;
             border-right: 1px solid var(--border-subtle);
@@ -68,7 +70,7 @@
             transform: translateX(0);
         }
         
-        /* 1. Header & Close Button */
+        /* Header & Close Button */
         .sidebar-brand {
             padding: 24px;
             display: flex;
@@ -89,7 +91,7 @@
         .sidebar-brand h2 span { color: var(--brand-primary); }
         
         .close-sidebar-btn {
-            display: none; /* Hidden on desktop */
+            display: none; 
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -105,7 +107,7 @@
         
         .close-sidebar-btn:active { transform: scale(0.9); }
 
-        /* 2. Top Profile Card */
+        /* Top Profile Card */
         .sidebar-profile-card {
             margin: 0 24px 20px;
             padding: 16px;
@@ -117,16 +119,16 @@
         }
         
         .avatar-circle {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background-color: #a855f7; /* Purple from image */
+            background-color: #0d9488; /* Teal matched to image */
             color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
@@ -145,13 +147,13 @@
         }
         
         .sidebar-profile-card .info h4 {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: #111827;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
         
         .sidebar-profile-card .info p {
@@ -162,26 +164,26 @@
             text-transform: uppercase;
         }
 
-        /* 3. Navigation Menu */
+        /* Navigation Menu (Increased Space) */
         .sidebar-menu {
             list-style: none;
-            padding: 0 16px;
+            padding: 0 16px 20px;
             flex-grow: 1;
             overflow-y: auto;
             overflow-x: hidden;
         }
         
-        .sidebar-menu li { margin-bottom: 6px; }
+        .sidebar-menu li { margin-bottom: 12px; } /* Breathable gap increased */
         
         .nav-link {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 14px 20px;
+            gap: 18px; /* Increased icon/text spacing */
+            padding: 16px 20px; /* Increased internal padding */
             color: #374151;
             border-radius: var(--radius-lg);
             transition: var(--transition-smooth);
-            font-size: 14px;
+            font-size: 15px; /* Slightly larger text */
             font-weight: 500;
             cursor: pointer;
         }
@@ -200,20 +202,21 @@
         }
         
         .nav-link.active {
-            background-color: #fff1f2; /* Light red tint */
+            background-color: #fff1f2; 
             color: var(--brand-primary);
             font-weight: 700;
         }
         
         .nav-link.active i { color: var(--brand-primary); }
 
-        /* 4. Footer (Email & Logout) */
+        /* Footer (Email & Logout) */
         .sidebar-footer {
-            padding: 24px;
+            padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px; /* Dynamic padding to prevent cutoff */
             display: flex;
             flex-direction: column;
             gap: 12px;
             flex-shrink: 0;
+            background-color: #ffffff;
         }
         
         .footer-badge, .logout-btn {
@@ -330,6 +333,34 @@
         .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
         .mobile-brand span { color: var(--brand-primary); }
 
+        /* Topbar Mobile Avatar */
+        .mobile-topbar-avatar {
+            display: none; /* Hidden on desktop */
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #0d9488;
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-subtle);
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .mobile-topbar-avatar img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
         /* ===== MAIN CONTENT ===== */
         .content-inner {
             max-width: 1110px;
@@ -361,11 +392,6 @@
             font-size: 17px;
             font-weight: 700;
             color: #1d1e20;
-        }
-        
-        .card-header .subtitle {
-            font-size: 13px;
-            color: var(--text-sub);
         }
 
         /* ===== TOAST & LOADER ===== */
@@ -440,30 +466,28 @@
                 --topbar-height: 60px;
             }
             
-            /* Sidebar styling perfectly matched to image */
             .sidebar {
                 transform: translateX(-100%);
-                border-radius: 0 24px 24px 0; /* Rounded right corners */
+                border-radius: 0 24px 24px 0; 
                 border-right: none;
                 box-shadow: var(--shadow-mobile-sidebar);
             }
             .sidebar.active { transform: translateX(0); }
             
-            .close-sidebar-btn { display: flex; } /* Show 'X' button on mobile */
+            .close-sidebar-btn { display: flex; }
 
             .wrapper { margin-left: 0; }
             
             .topbar {
                 height: 60px;
                 padding: 0 16px;
-                justify-content: center;
+                justify-content: space-between; /* Creates left-center-right layout */
             }
             
             .topbar-left-section {
-                position: absolute;
-                left: 16px;
-                top: 50%;
-                transform: translateY(-50%);
+                /* Reset for flexbox layout */
+                position: static;
+                transform: none;
             }
             
             .menu-toggle {
@@ -476,9 +500,14 @@
             
             .mobile-brand {
                 display: flex;
-                pointer-events: none;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                pointer-events: none; /* Allows clicking through the center if needed */
             }
             
+            .mobile-topbar-avatar { display: flex; } /* Shows the top right avatar */
+
             .content-inner { padding: 16px 16px 32px; }
             .sidebar-overlay.active { display: block; }
         }
@@ -558,6 +587,7 @@
 
     <div class="wrapper">
         <header class="topbar">
+            <!-- Left Side: Hamburger & Desktop Title -->
             <div class="topbar-left-section">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
@@ -567,11 +597,20 @@
                     <p>Overview of your blood donation journey.</p>
                 </div>
             </div>
+            
+            <!-- Center: Mobile Brand -->
             <div class="mobile-brand">
                 <i class="fa-solid fa-heart-pulse"></i>
                 <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
             </div>
-            <div style="width:44px;"></div>
+            
+            <!-- Right Side: Mobile Profile Avatar -->
+            <div class="topbar-right-section">
+                <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
+                    <span id="mobile-topbar-avatar-text">--</span>
+                    <img id="mobile-topbar-avatar-img" src="" alt="User">
+                </button>
+            </div>
         </header>
 
         <main class="content-inner" id="mainContent">
@@ -644,6 +683,7 @@
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const topbarAvatarBtn = document.getElementById('mobileTopbarAvatarBtn');
 
         // ===== SPA Routing Logic =====
         const navLinks = document.querySelectorAll('.nav-link[data-section]');
@@ -715,9 +755,16 @@
             return sidebar.classList.contains('active');
         }
 
+        // Event listener for hamburger toggle
         menuToggle.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
             isSidebarOpen() ? closeSidebar() : openSidebar();
+        });
+        
+        // Event listener for mobile topbar avatar
+        topbarAvatarBtn.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            openSidebar();
         });
         
         closeSidebarBtn.addEventListener('click', closeSidebar);
@@ -726,25 +773,42 @@
             if (e.key === 'Escape' && isSidebarOpen()) closeSidebar();
         });
 
-        // ===== Update Sidebar Profile Data =====
+        // ===== Update Sidebar & Topbar Profile Data =====
         function updateSidebarProfile() {
             if (!donor) return;
             
-            const fullName = donor.name || 'Unknown Donor';
+            const fullName = donor.name || 'Unknown';
             document.getElementById('dd-name').textContent = fullName;
             
-            // Extract Initials (e.g., "John Doe" -> "JD")
-            const initials = fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            const avatarText = document.getElementById('dd-avatar-text');
-            const avatarImg = document.getElementById('dd-avatar');
-            
-            avatarText.textContent = initials || '--';
+            // Generate exact Initials (e.g. "Aravind" -> "A", "John Doe" -> "JD")
+            let initials = '--';
+            if (fullName && fullName !== 'Unknown') {
+                const parts = fullName.trim().split(' ');
+                initials = parts.length > 1 
+                    ? (parts[0][0] + parts[1][0]).toUpperCase() 
+                    : fullName.substring(0, 1).toUpperCase();
+            }
 
-            // Show photo if exists, else keep initials
+            // Sync text initials across Sidebar and Topbar
+            const avatarText = document.getElementById('dd-avatar-text');
+            const topbarAvatarText = document.getElementById('mobile-topbar-avatar-text');
+            avatarText.textContent = initials;
+            if (topbarAvatarText) topbarAvatarText.textContent = initials;
+
+            // Handle Profile Image sync if Firebase photoURL exists
             if (auth.currentUser?.photoURL) {
+                const avatarImg = document.getElementById('dd-avatar');
+                const topbarAvatarImg = document.getElementById('mobile-topbar-avatar-img');
+                
                 avatarImg.src = auth.currentUser.photoURL;
                 avatarImg.style.display = 'block';
                 avatarText.style.display = 'none';
+
+                if (topbarAvatarImg) {
+                    topbarAvatarImg.src = auth.currentUser.photoURL;
+                    topbarAvatarImg.style.display = 'block';
+                    if (topbarAvatarText) topbarAvatarText.style.display = 'none';
+                }
             }
             
             document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email attached';
