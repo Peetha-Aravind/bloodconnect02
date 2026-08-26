@@ -1,152 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile & Location — BloodConnect</title>
-
-    <!-- Google Fonts -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BloodConnect — Profile & Location</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: DM Sans + Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+    
     <style>
+        /* (All styles from previous merged version are unchanged) */
+        /* ============================================================
+           MERGED STYLES
+           - Dashboard layout (sidebar, topbar)
+           - Profile page styles scoped under .profile-page-root
+           ============================================================ */
+        
         :root {
-            --primary: #e11d48;
-            --primary-hover: #be123c;
-            --text-dark: #0f172a;
-            --text-gray: #475569;
-            --text-light: #94a3b8;
-            --bg-glass: rgba(255, 255, 255, 0.88);
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            --radius: 16px;
+            --page-bg: #f4f5f7;
+            --header-bg: #ffffff;
+            --text-color: rgb(24, 24, 26);
+            --text-sub: #6b7280;
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
+            --border-subtle: #e5e7eb;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --sidebar-width: 280px;
+            --topbar-height: 70px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.04);
+            --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            text-decoration: none !important;
         }
-
+        
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
+            font-family: "DM Sans", Roboto, sans-serif;
+            background-color: var(--page-bg);
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body.sidebar-open { overflow: hidden; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            height: 100dvh;
+            left: 0;
+            z-index: 1000;
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sidebar);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease;
+            transform: translateX(0);
+        }
+        
+        .sidebar-brand {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-brand h2 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            text-transform: uppercase;
+        }
+        
+        .sidebar-brand h2 span { color: var(--brand-primary); }
+        
+        .close-sidebar-btn {
+            display: none; 
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f4f5f7;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a1a;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        
+        .close-sidebar-btn:active { transform: scale(0.9); }
+
+        .sidebar-profile-card {
+            margin: 0 24px 20px;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #0d9488;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .avatar-circle img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .sidebar-profile-card .info { flex: 1; min-width: 0; }
+        
+        .sidebar-profile-card .info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+        
+        .sidebar-profile-card .info p {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .profile-container {
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 16px 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .sidebar-menu li { margin-bottom: 12px; }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px 20px;
+            color: #374151;
+            border-radius: var(--radius-lg);
+            transition: var(--transition-smooth);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-link i {
+            font-size: 18px;
+            width: 22px;
+            text-align: center;
+            color: #6b7280;
+            transition: var(--transition-smooth);
+        }
+        
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        
+        .nav-link.active {
+            background-color: var(--brand-primary-hover);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
+        }
+        
+        .nav-link.active i { 
+            color: #ffffff;
+        }
+
+        .sidebar-footer {
+            padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+            background-color: #ffffff;
+        }
+        
+        .footer-badge, .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .footer-badge {
+            border: 1px solid var(--border-subtle);
+            color: #4b5563;
+            gap: 12px;
+        }
+        
+        .footer-badge i { color: var(--brand-primary); font-size: 15px; }
+        .footer-badge span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #fda4af;
+            color: var(--brand-primary);
+            cursor: pointer;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+        
+        .logout-btn:hover { background: #fff1f2; }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .wrapper {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .topbar {
+            background-color: var(--header-bg);
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .topbar-left-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .topbar-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
+        }
+        
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background-color: #ffffff;
+            color: #1d1e20;
+            border: 1px solid var(--border-subtle);
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .mobile-brand {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
+        .mobile-brand span { color: var(--brand-primary); }
+
+        .mobile-topbar-avatar {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #0d9488;
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-subtle);
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .mobile-topbar-avatar img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .content-inner {
+            padding: 28px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 300px;
+                --topbar-height: 60px;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                border-radius: 0 24px 24px 0; 
+                border-right: none;
+                box-shadow: var(--shadow-mobile-sidebar);
+            }
+            .sidebar.active { transform: translateX(0); }
+            
+            .close-sidebar-btn { display: flex; }
+
+            .wrapper { margin-left: 0; }
+            
+            .topbar {
+                height: 60px;
+                padding: 0 16px;
+                justify-content: space-between; 
+            }
+            
+            .topbar-left-section { position: static; transform: none; }
+            
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .topbar-title.desktop-title { display: none; }
+            
+            .mobile-brand {
+                display: flex;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                pointer-events: none;
+            }
+            
+            .mobile-topbar-avatar { display: flex; }
+            .sidebar-overlay.active { display: block; }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar { transform: translateX(0) !important; }
+            .sidebar-overlay { display: none !important; }
+        }
+
+        /* Profile page styles (scoped) */
+        .profile-page-root {
             width: 100%;
             max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 32px;
         }
 
-        .page-header {
+        .profile-page-root .page-header {
             text-align: center;
             margin-bottom: 8px;
         }
 
-        .page-header h1 {
+        .profile-page-root .page-header h1 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.2rem;
             letter-spacing: 2px;
-            color: var(--text-dark);
+            color: #0f172a;
             line-height: 1;
         }
 
-        .page-header h1 .accent {
-            color: var(--primary);
+        .profile-page-root .page-header h1 .accent {
+            color: #e11d48;
         }
 
-        .page-header p {
-            color: var(--text-gray);
+        .profile-page-root .page-header p {
+            color: #475569;
             font-size: 1.05rem;
             margin-top: 6px;
         }
 
-        /* Removed .card styles – now just a plain container with spacing */
-        .card {
+        .profile-page-root .card {
             background: transparent;
             border: none;
             box-shadow: none;
             padding: 0;
             margin-bottom: 24px;
-            transition: none;
         }
 
-        .card-header {
+        .profile-page-root .card-header {
             display: flex;
             flex-direction: column;
             gap: 4px;
             margin-bottom: 22px;
-            padding-bottom: 0;
-            border-bottom: none;
         }
 
-        .card-header h2 {
+        .profile-page-root .card-header h2 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: #0f172a;
         }
 
-        .card-header p {
+        .profile-page-root .card-header p {
             font-size: 13px;
-            color: var(--text-gray);
+            color: #475569;
             margin-top: 0;
         }
 
-        .form-group {
+        .profile-page-root .form-group {
             margin-bottom: 18px;
         }
 
-        .form-group label {
+        .profile-page-root .form-group label {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-gray);
+            color: #475569;
             margin-bottom: 6px;
             letter-spacing: 0.3px;
         }
 
-        .form-group input,
-        .form-group select {
+        .profile-page-root .form-group input,
+        .profile-page-root .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-family: 'DM Sans', sans-serif;
             font-size: 14px;
-            color: var(--text-dark);
+            color: #0f172a;
             background: #fff;
             transition: all 0.2s ease;
             outline: none;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--primary);
+        .profile-page-root .form-group input:focus,
+        .profile-page-root .form-group select:focus {
+            border-color: #e11d48;
             box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.08);
         }
 
-        .form-group input:disabled {
+        .profile-page-root .form-group input:disabled {
             background: #f8fafc;
-            color: var(--text-light);
+            color: #94a3b8;
             cursor: not-allowed;
         }
 
-        .form-row {
+        .profile-page-root .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
 
-        .btn {
+        .profile-page-root .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -161,48 +533,48 @@
             border: none;
         }
 
-        .btn-primary {
-            background: var(--primary);
+        .profile-page-root .btn-primary {
+            background: #e11d48;
             color: #fff;
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.25);
         }
 
-        .btn-primary:hover {
-            background: var(--primary-hover);
+        .profile-page-root .btn-primary:hover {
+            background: #be123c;
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
         }
 
-        .btn-outline {
+        .profile-page-root .btn-outline {
             background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            color: #e11d48;
+            border: 2px solid #e11d48;
         }
 
-        .btn-outline:hover {
-            background: var(--primary);
+        .profile-page-root .btn-outline:hover {
+            background: #e11d48;
             color: #fff;
         }
 
-        .btn-group {
+        .profile-page-root .btn-group {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
             margin-top: 0;
         }
 
-        .avatar-section {
+        .profile-page-root .avatar-section {
             display: flex;
             align-items: center;
             gap: 18px;
             margin-bottom: 22px;
         }
 
-        .avatar-preview {
+        .profile-page-root .avatar-preview {
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: var(--primary);
+            background: #e11d48;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -214,39 +586,39 @@
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
         }
 
-        .avatar-info h3 {
+        .profile-page-root .avatar-info h3 {
             font-size: 16px;
             font-weight: 700;
-            color: var(--text-dark);
+            color: #0f172a;
         }
 
-        .avatar-info p {
+        .profile-page-root .avatar-info p {
             font-size: 13px;
-            color: var(--text-gray);
+            color: #475569;
             margin-top: 2px;
         }
 
         @media (max-width: 600px) {
-            .page-header h1 {
+            .profile-page-root .page-header h1 {
                 font-size: 2.5rem;
             }
-            .form-row {
+            .profile-page-root .form-row {
                 grid-template-columns: 1fr;
                 gap: 0;
             }
-            .btn-group {
+            .profile-page-root .btn-group {
                 flex-direction: row;
                 gap: 10px;
                 justify-content: space-between;
             }
-            .btn {
+            .profile-page-root .btn {
                 flex: 1;
                 width: auto;
                 padding: 12px 16px;
                 font-size: 13px;
                 white-space: nowrap;
             }
-            .btn svg {
+            .profile-page-root .btn svg {
                 width: 14px;
                 height: 14px;
             }
@@ -254,146 +626,286 @@
     </style>
 </head>
 <body>
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div class="profile-container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1>PROFILE <span class="accent">& LOCATION</span></h1>
-            <p>Manage your personal information and address</p>
-        </div>
-
-        <!-- Profile Section (no card box) -->
-        <div class="card">
-            <div class="card-header">
-                <h2>Personal Information</h2>
-                <p>Update your basic details</p>
-            </div>
-
-            <div class="avatar-section">
-                <div class="avatar-preview" id="avatarPreview">JD</div>
-                <div class="avatar-info">
-                    <h3>John Doe</h3>
-                    <p>Donor • O+ Blood Type</p>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" value="John Doe" placeholder="Enter full name">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" value="+1 (555) 123-4567" placeholder="Enter phone number">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" value="john.doe@example.com" disabled>
-                <p style="font-size: 12px; color: var(--text-light); margin-top: 6px;">Email cannot be changed. Contact support for updates.</p>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="bloodType">Blood Type</label>
-                    <select id="bloodType">
-                        <option value="O+" selected>O+</option>
-                        <option value="O-">O-</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender">
-                        <option value="male" selected>Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                        <option value="prefer-not">Prefer not to say</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" value="1990-05-15">
-            </div>
-        </div>
-
-        <!-- Location Section (no card box) -->
-        <div class="card">
-            <div class="card-header">
-                <h2>Location Details</h2>
-                <p>Your current address for emergency contact</p>
-            </div>
-
-            <div class="form-group">
-                <label for="address">Street Address</label>
-                <input type="text" id="address" value="123 Main Street, Apt 4B" placeholder="Enter street address">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" value="New York" placeholder="Enter city">
-                </div>
-                <div class="form-group">
-                    <label for="state">State / Province</label>
-                    <input type="text" id="state" value="NY" placeholder="Enter state">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="zipCode">ZIP / Postal Code</label>
-                    <input type="text" id="zipCode" value="10001" placeholder="Enter ZIP code">
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <select id="country">
-                        <option value="US" selected>United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="UK">United Kingdom</option>
-                        <option value="IN">India</option>
-                        <option value="AU">Australia</option>
-                        <option value="DE">Germany</option>
-                        <option value="FR">France</option>
-                        <option value="JP">Japan</option>
-                        <option value="BR">Brazil</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="landmark">Landmark (Optional)</label>
-                <input type="text" id="landmark" placeholder="Nearby landmark for easier identification">
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="btn-group">
-            <button class="btn btn-outline" id="cancelBtn">Cancel</button>
-            <button class="btn btn-primary" id="saveBtn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                    <polyline points="17 21 17 13 7 13 7 21"/>
-                    <polyline points="7 3 7 8 15 8"/>
-                </svg>
-                Save Changes
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>BLOOD<span>CONNECT</span></h2>
+            <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Menu">
+                <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
+        
+        <div class="sidebar-profile-card">
+            <div class="avatar-circle">
+                <span id="dd-avatar-text">A</span>
+                <img id="dd-avatar" src="" alt="User Avatar">
+            </div>
+            <div class="info">
+                <h4 id="dd-name">Aravind</h4>
+                <p>DONOR</p>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="emergency-alerts.html" class="nav-link">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Emergency Alerts</span>
+                </a>
+            </li>
+            <li>
+                <a href="my-donation.html" class="nav-link">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>My Donation</span>
+                </a>
+            </li>
+            <li>
+                <a href="#profile" class="nav-link active" id="profileLink">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Profile & Location</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="footer-badge">
+                <i class="fa-regular fa-envelope"></i>
+                <span id="dd-email">aravind@example.com</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
+    <div class="wrapper">
+        <header class="topbar">
+            <div class="topbar-left-section">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title desktop-title">
+                    <h2>Profile & Location</h2>
+                    <p>Manage your account settings.</p>
+                </div>
+            </div>
+            
+            <div class="mobile-brand">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
+            </div>
+            
+            <div class="topbar-right-section">
+                <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
+                    <span id="mobile-topbar-avatar-text">A</span>
+                    <img id="mobile-topbar-avatar-img" src="" alt="User">
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA: Profile & Location only -->
+        <main class="content-inner" id="mainContent">
+            <div class="profile-page-root">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>PROFILE <span class="accent">& LOCATION</span></h1>
+                    <p>Manage your personal information and address</p>
+                </div>
+
+                <!-- Profile Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Personal Information</h2>
+                        <p>Update your basic details</p>
+                    </div>
+
+                    <div class="avatar-section">
+                        <div class="avatar-preview" id="avatarPreview">JD</div>
+                        <div class="avatar-info">
+                            <h3>John Doe</h3>
+                            <p>Donor • O+ Blood Type</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="John Doe" placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="+1 (555) 123-4567" placeholder="Enter phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" value="john.doe@example.com" disabled>
+                        <p style="font-size: 12px; color: #94a3b8; margin-top: 6px;">Email cannot be changed. Contact support for updates.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bloodType">Blood Type</label>
+                            <select id="bloodType">
+                                <option value="O+" selected>O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" value="1990-05-15">
+                    </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Location Details</h2>
+                        <p>Your current address for emergency contact</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Street Address</label>
+                        <input type="text" id="address" value="123 Main Street, Apt 4B" placeholder="Enter street address">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" value="New York" placeholder="Enter city">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State / Province</label>
+                            <input type="text" id="state" value="NY" placeholder="Enter state">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zipCode">ZIP / Postal Code</label>
+                            <input type="text" id="zipCode" value="10001" placeholder="Enter ZIP code">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country">
+                                <option value="US" selected>United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="IN">India</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="JP">Japan</option>
+                                <option value="BR">Brazil</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="landmark">Landmark (Optional)</label>
+                        <input type="text" id="landmark" placeholder="Nearby landmark for easier identification">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="cancelBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
-        // ========== Profile & Location Page Logic ==========
+        // ========== SIDEBAR TOGGLE & UI LOGIC ==========
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const menuToggle = document.getElementById('menuToggle');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const topbarAvatarBtn = document.getElementById('mobileTopbarAvatarBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-        // DOM references
+        function openSidebar() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        function isSidebarOpen() {
+            return sidebar.classList.contains('active');
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            isSidebarOpen() ? closeSidebar() : openSidebar();
+        });
+        
+        topbarAvatarBtn.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            openSidebar();
+        });
+        
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768 && isSidebarOpen()) {
+                closeSidebar();
+            }
+        });
+
+        // ========== SIGN OUT (now functional) ==========
+        logoutBtn.addEventListener('click', () => {
+            // In a real app, you would redirect to a login page or clear session.
+            // For demonstration:
+            alert('You have been signed out.');
+            // window.location.href = 'login.html';  // Uncomment and set your login page.
+        });
+
+        // ========== PROFILE FORM LOGIC ==========
         const fullNameInput = document.getElementById('fullName');
         const phoneInput = document.getElementById('phone');
         const bloodTypeSelect = document.getElementById('bloodType');
@@ -409,7 +921,6 @@
         const saveBtn = document.getElementById('saveBtn');
         const cancelBtn = document.getElementById('cancelBtn');
 
-        // Update avatar initials when name changes
         fullNameInput.addEventListener('input', () => {
             const name = fullNameInput.value.trim();
             if (name) {
@@ -421,9 +932,7 @@
             }
         });
 
-        // Save button action
         saveBtn.addEventListener('click', () => {
-            // Collect all form data
             const profileData = {
                 fullName: fullNameInput.value,
                 phone: phoneInput.value,
@@ -438,10 +947,7 @@
                 landmark: landmarkInput.value
             };
 
-            // Here you would typically save to Firebase Firestore
             console.log('Saving profile data:', profileData);
-
-            // Show success feedback
             saveBtn.textContent = '✓ Saved!';
             saveBtn.style.background = '#16a34a';
             saveBtn.style.boxShadow = '0 4px 15px rgba(22, 163, 74, 0.3)';
@@ -460,23 +966,16 @@
             }, 2000);
         });
 
-        // Cancel button action
         cancelBtn.addEventListener('click', () => {
             if (confirm('Discard all changes?')) {
-                // Reset form or navigate back
                 window.history.back();
             }
         });
 
-        // Optional: Live validation for phone number
         phoneInput.addEventListener('input', () => {
             const phone = phoneInput.value;
             const phoneRegex = /^[+\d\s()-]{10,}$/;
-            if (phone && !phoneRegex.test(phone)) {
-                phoneInput.style.borderColor = '#e11d48';
-            } else {
-                phoneInput.style.borderColor = '#e2e8f0';
-            }
+            phoneInput.style.borderColor = (phone && !phoneRegex.test(phone)) ? '#e11d48' : '#e2e8f0';
         });
     </script>
 </body>
