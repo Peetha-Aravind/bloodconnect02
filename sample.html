@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BloodConnect - Dashboard</title>
+    <title>BloodConnect - Navigation</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: DM Sans -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
     <style>
-        /* ===== BLOODCONNECT GLOBAL VARIABLES ===== */
+        /* ===== GLOBAL VARIABLES ===== */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
             --text-color: rgb(24, 24, 26);
             --text-sub: #6b7280;
-            --brand-primary: #e11d48;
-            --brand-primary-hover: #be123c;
+            --brand-primary: #e11d48; /* Red */
+            --brand-primary-hover: #be123c; /* Dark Red */
             --border-subtle: #e5e7eb;
             --radius-md: 8px;
             --radius-lg: 12px;
@@ -35,14 +35,8 @@
             text-decoration: none !important;
         }
         
-        html { scroll-behavior: smooth; }
-        
         body {
             font-family: "DM Sans", Roboto, sans-serif;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            color: var(--text-color);
             background-color: var(--page-bg);
             overflow-x: hidden;
             width: 100%;
@@ -60,8 +54,7 @@
             position: fixed;
             top: 0;
             bottom: 0;
-            height: 100vh; /* Fallback */
-            height: 100dvh; /* Prevents mobile browser bar cutoff */
+            height: 100dvh;
             left: 0;
             z-index: 1000;
             border-right: 1px solid var(--border-subtle);
@@ -70,7 +63,6 @@
             transform: translateX(0);
         }
         
-        /* Header & Close Button */
         .sidebar-brand {
             padding: 24px;
             display: flex;
@@ -85,7 +77,6 @@
             letter-spacing: 0.5px;
             color: #1a1a1a;
             text-transform: uppercase;
-            white-space: nowrap;
         }
         
         .sidebar-brand h2 span { color: var(--brand-primary); }
@@ -122,7 +113,7 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background-color: #0d9488; /* Teal matched to image */
+            background-color: #0d9488;
             color: #ffffff;
             display: flex;
             align-items: center;
@@ -130,8 +121,8 @@
             font-weight: 700;
             font-size: 18px;
             flex-shrink: 0;
-            position: relative;
             overflow: hidden;
+            position: relative;
         }
         
         .avatar-circle img {
@@ -139,12 +130,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: none;
         }
         
-        .sidebar-profile-card .info {
-            flex: 1;
-            min-width: 0;
-        }
+        .sidebar-profile-card .info { flex: 1; min-width: 0; }
         
         .sidebar-profile-card .info h4 {
             font-size: 16px;
@@ -164,7 +153,7 @@
             text-transform: uppercase;
         }
 
-        /* Navigation Menu (Increased Space) */
+        /* Navigation Menu */
         .sidebar-menu {
             list-style: none;
             padding: 0 16px 20px;
@@ -173,17 +162,17 @@
             overflow-x: hidden;
         }
         
-        .sidebar-menu li { margin-bottom: 12px; } /* Breathable gap increased */
+        .sidebar-menu li { margin-bottom: 12px; }
         
         .nav-link {
             display: flex;
             align-items: center;
-            gap: 18px; /* Increased icon/text spacing */
-            padding: 16px 20px; /* Increased internal padding */
+            gap: 18px;
+            padding: 16px 20px;
             color: #374151;
             border-radius: var(--radius-lg);
             transition: var(--transition-smooth);
-            font-size: 15px; /* Slightly larger text */
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
         }
@@ -201,17 +190,21 @@
             color: #111827;
         }
         
+        /* 1. DARK RED ACTIVE STATE */
         .nav-link.active {
-            background-color: #fff1f2; 
-            color: var(--brand-primary);
+            background-color: var(--brand-primary-hover); /* Dark Red Background */
+            color: #ffffff; /* White Text */
             font-weight: 700;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
         }
         
-        .nav-link.active i { color: var(--brand-primary); }
+        .nav-link.active i { 
+            color: #ffffff; /* White Icon */
+        }
 
         /* Footer (Email & Logout) */
         .sidebar-footer {
-            padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px; /* Dynamic padding to prevent cutoff */
+            padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -250,7 +243,7 @@
         
         .logout-btn:hover { background: #fff1f2; }
 
-        /* ===== MOBILE SIDEBAR OVERLAY ===== */
+        /* ===== MOBILE OVERLAY ===== */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -333,9 +326,8 @@
         .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
         .mobile-brand span { color: var(--brand-primary); }
 
-        /* Topbar Mobile Avatar */
         .mobile-topbar-avatar {
-            display: none; /* Hidden on desktop */
+            display: none;
             width: 38px;
             height: 38px;
             border-radius: 50%;
@@ -361,102 +353,10 @@
             display: none;
         }
 
-        /* ===== MAIN CONTENT ===== */
+        /* ===== MAIN CONTENT AREA (Empty for now) ===== */
         .content-inner {
-            max-width: 1110px;
-            margin: 0 auto;
-            padding: 28px 28px 48px;
+            padding: 28px;
             width: 100%;
-        }
-        
-        .page-section { width: 100%; }
-
-        .card {
-            background: #ffffff;
-            border-radius: var(--radius-xl);
-            border: 1px solid var(--border-subtle);
-            overflow: hidden;
-            width: 100%;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-        }
-        
-        .card-header {
-            padding: 26px 28px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .card-header h3 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1d1e20;
-        }
-
-        /* ===== TOAST & LOADER ===== */
-        #loading {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-        
-        .loading-spinner {
-            background: #ffffff;
-            padding: 28px 36px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border: 1px solid var(--border-subtle);
-        }
-        
-        .spinner-ring {
-            width: 44px;
-            height: 44px;
-            border: 3.5px solid #f1f5f9;
-            border-top-color: var(--brand-primary);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto 14px;
-        }
-        
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        #toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 4000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .toast-item {
-            padding: 14px 20px;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            animation: toastIn 0.3s ease-out;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .toast-item.success { background: #059669; }
-        .toast-item.error { background: #e11d48; }
-        .toast-item.info { background: #334155; }
-        
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== RESPONSIVE MOBILE ADJUSTMENTS ===== */
@@ -481,14 +381,10 @@
             .topbar {
                 height: 60px;
                 padding: 0 16px;
-                justify-content: space-between; /* Creates left-center-right layout */
+                justify-content: space-between; 
             }
             
-            .topbar-left-section {
-                /* Reset for flexbox layout */
-                position: static;
-                transform: none;
-            }
+            .topbar-left-section { position: static; transform: none; }
             
             .menu-toggle {
                 display: flex;
@@ -503,12 +399,10 @@
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
-                pointer-events: none; /* Allows clicking through the center if needed */
+                pointer-events: none;
             }
             
-            .mobile-topbar-avatar { display: flex; } /* Shows the top right avatar */
-
-            .content-inner { padding: 16px 16px 32px; }
+            .mobile-topbar-avatar { display: flex; }
             .sidebar-overlay.active { display: block; }
         }
 
@@ -522,7 +416,7 @@
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== REDESIGNED LEFT SIDEBAR ===== -->
+    <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <!-- Brand & Close Button -->
         <div class="sidebar-brand">
@@ -535,11 +429,11 @@
         <!-- Top Profile Card -->
         <div class="sidebar-profile-card">
             <div class="avatar-circle">
-                <span id="dd-avatar-text">--</span>
-                <img id="dd-avatar" src="" alt="User Avatar" style="display:none;">
+                <span id="dd-avatar-text">A</span>
+                <img id="dd-avatar" src="" alt="User Avatar">
             </div>
             <div class="info">
-                <h4 id="dd-name">Loading...</h4>
+                <h4 id="dd-name">Aravind</h4>
                 <p>DONOR</p>
             </div>
         </div>
@@ -576,7 +470,7 @@
         <div class="sidebar-footer">
             <div class="footer-badge">
                 <i class="fa-regular fa-envelope"></i>
-                <span id="dd-email">Loading...</span>
+                <span id="dd-email">aravind@example.com</span>
             </div>
             <button class="logout-btn" id="logoutBtn">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -585,6 +479,7 @@
         </div>
     </aside>
 
+    <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
     <div class="wrapper">
         <header class="topbar">
             <!-- Left Side: Hamburger & Desktop Title -->
@@ -607,90 +502,31 @@
             <!-- Right Side: Mobile Profile Avatar -->
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
-                    <span id="mobile-topbar-avatar-text">--</span>
+                    <span id="mobile-topbar-avatar-text">A</span>
                     <img id="mobile-topbar-avatar-img" src="" alt="User">
                 </button>
             </div>
         </header>
 
+        <!-- 2. MAIN CONTENT AREA (Emptied as requested) -->
         <main class="content-inner" id="mainContent">
-            <!-- Dashboard Section -->
-            <section id="section-dashboard" class="page-section" style="display: block;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Dashboard</h3>
-                    </div>
-                    <div style="padding: 28px;">
-                        <!-- Content -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Emergency Alerts Section -->
-            <section id="section-emergency" class="page-section" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Emergency Alerts</h3>
-                    </div>
-                    <div style="padding: 28px;">
-                        <!-- Content -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- History Section -->
-            <section id="section-history" class="page-section" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>My Donation</h3>
-                    </div>
-                    <div style="padding: 28px;">
-                        <!-- Content -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Profile Section -->
-            <section id="section-profile" class="page-section" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Profile & Location</h3>
-                    </div>
-                    <div style="padding: 28px;">
-                        <!-- Content -->
-                    </div>
-                </div>
-            </section>
+            <!-- Page content boxes will be injected/displayed here -->
         </main>
     </div>
 
-    <!-- Loading overlay -->
-    <div id="loading">
-        <div class="loading-spinner">
-            <div class="spinner-ring"></div>
-            <p id="loading-msg"></p>
-        </div>
-    </div>
-    
-    <div id="toast"></div>
-
-    <script type="module">
-        import { auth, onAuthStateChanged, db, doc, getDoc, fbSignOut } from "./firebase-config.js";
-        import { showLoading, hideLoading, toast } from "./utils.js";
-
-        let donor = null;
+    <!-- ===== JAVASCRIPT FOR UI TOGGLING & NAVIGATION ===== -->
+    <script>
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
         const topbarAvatarBtn = document.getElementById('mobileTopbarAvatarBtn');
-
-        // ===== SPA Routing Logic =====
         const navLinks = document.querySelectorAll('.nav-link[data-section]');
-        const pageSections = document.querySelectorAll('.page-section');
+        
         const topbarTitle = document.querySelector('.topbar-title.desktop-title h2');
         const topbarDesc = document.querySelector('.topbar-title.desktop-title p');
 
+        // Titles configuration
         const sectionMeta = {
             'dashboard': { title: 'Dashboard', desc: 'Overview of your blood donation journey.' },
             'emergency': { title: 'Emergency Alerts', desc: 'Urgent blood requests in your area.' },
@@ -698,9 +534,11 @@
             'profile': { title: 'Profile & Location', desc: 'Manage your account settings.' }
         };
 
+        // Navigation UI logic
         function navigateTo(sectionId) {
             if (!sectionMeta[sectionId]) return;
 
+            // Manage Active State Classes
             navLinks.forEach(link => {
                 if (link.dataset.section === sectionId) {
                     link.classList.add('active');
@@ -709,36 +547,27 @@
                 }
             });
 
-            pageSections.forEach(sec => {
-                sec.style.display = (sec.id === `section-${sectionId}`) ? 'block' : 'none';
-            });
-
+            // Update Topbar
             if (topbarTitle) topbarTitle.textContent = sectionMeta[sectionId].title;
             if (topbarDesc) topbarDesc.textContent = sectionMeta[sectionId].desc;
-            document.title = `BloodConnect - ${sectionMeta[sectionId].title}`;
         }
 
+        // Attach click events to nav links
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = link.dataset.section;
-                history.pushState(null, null, `#${section}`);
+                
                 navigateTo(section);
+                
+                // Auto-close sidebar on mobile
                 if (window.innerWidth < 768 && isSidebarOpen()) {
                     closeSidebar();
                 }
             });
         });
 
-        window.addEventListener('popstate', () => {
-            const hash = window.location.hash.replace('#', '') || 'dashboard';
-            navigateTo(hash);
-        });
-
-        const initialHash = window.location.hash.replace('#', '') || 'dashboard';
-        navigateTo(initialHash);
-
-        // ===== Sidebar Toggle Logic =====
+        // Sidebar Toggle Logic
         function openSidebar() {
             sidebar.classList.add('active');
             sidebarOverlay.classList.add('active');
@@ -755,13 +584,11 @@
             return sidebar.classList.contains('active');
         }
 
-        // Event listener for hamburger toggle
         menuToggle.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
             isSidebarOpen() ? closeSidebar() : openSidebar();
         });
         
-        // Event listener for mobile topbar avatar
         topbarAvatarBtn.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
             openSidebar();
@@ -769,124 +596,13 @@
         
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isSidebarOpen()) closeSidebar();
-        });
-
-        // ===== Update Sidebar & Topbar Profile Data =====
-        function updateSidebarProfile() {
-            if (!donor) return;
-            
-            const fullName = donor.name || 'Unknown';
-            document.getElementById('dd-name').textContent = fullName;
-            
-            // Generate exact Initials (e.g. "Aravind" -> "A", "John Doe" -> "JD")
-            let initials = '--';
-            if (fullName && fullName !== 'Unknown') {
-                const parts = fullName.trim().split(' ');
-                initials = parts.length > 1 
-                    ? (parts[0][0] + parts[1][0]).toUpperCase() 
-                    : fullName.substring(0, 1).toUpperCase();
-            }
-
-            // Sync text initials across Sidebar and Topbar
-            const avatarText = document.getElementById('dd-avatar-text');
-            const topbarAvatarText = document.getElementById('mobile-topbar-avatar-text');
-            avatarText.textContent = initials;
-            if (topbarAvatarText) topbarAvatarText.textContent = initials;
-
-            // Handle Profile Image sync if Firebase photoURL exists
-            if (auth.currentUser?.photoURL) {
-                const avatarImg = document.getElementById('dd-avatar');
-                const topbarAvatarImg = document.getElementById('mobile-topbar-avatar-img');
-                
-                avatarImg.src = auth.currentUser.photoURL;
-                avatarImg.style.display = 'block';
-                avatarText.style.display = 'none';
-
-                if (topbarAvatarImg) {
-                    topbarAvatarImg.src = auth.currentUser.photoURL;
-                    topbarAvatarImg.style.display = 'block';
-                    if (topbarAvatarText) topbarAvatarText.style.display = 'none';
-                }
-            }
-            
-            document.getElementById('dd-email').textContent = auth.currentUser?.email || 'No email attached';
-        }
-
-        // ===== Logout =====
-        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            showLoading('');
-            try {
-                await fbSignOut(auth);
-                hideLoading();
-                window.location.href = 'index.html';
-            } catch (err) {
-                hideLoading();
-                toast(err.message || 'Logout failed.', 'error');
-            }
-        });
-
-        // ===== Auth & Data Loading =====
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'login-donor.html';
-                return;
-            }
-            const snap = await getDoc(doc(db, 'donors', user.uid));
-            if (!snap.exists()) {
-                window.location.href = 'onboarding.html';
-                return;
-            }
-            donor = { ...snap.data(), uid: user.uid };
-            updateSidebarProfile();
-        });
-
-        // ===== Responsive Re-render =====
-        let resizeTimer;
+        
+        // Resize listener to prevent glitches
         window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (window.innerWidth >= 768 && isSidebarOpen()) {
-                    closeSidebar();
-                }
-            }, 250);
+            if (window.innerWidth >= 768 && isSidebarOpen()) {
+                closeSidebar();
+            }
         });
-
-        // ===== Fallback Utilities =====
-        if (typeof window.showLoading !== 'function') {
-            window.showLoading = (msg) => {
-                const loadingEl = document.getElementById('loading');
-                loadingEl.style.display = 'flex';
-                document.getElementById('loading-msg').textContent = msg || '';
-            };
-        }
-        if (typeof window.hideLoading !== 'function') {
-            window.hideLoading = () => {
-                document.getElementById('loading').style.display = 'none';
-            };
-        }
-        if (typeof window.toast !== 'function') {
-            window.toast = (msg, type = 'info') => {
-                const toastContainer = document.getElementById('toast');
-                const toastEl = document.createElement('div');
-                toastEl.className = `toast-item ${type}`;
-                const icons = {
-                    success: 'fa-solid fa-check-circle',
-                    error: 'fa-solid fa-exclamation-circle',
-                    info: 'fa-solid fa-info-circle'
-                };
-                toastEl.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size:16px;"></i> ${msg}`;
-                toastContainer.appendChild(toastEl);
-                setTimeout(() => {
-                    toastEl.style.opacity = '0';
-                    toastEl.style.transform = 'translateY(10px)';
-                    toastEl.style.transition = 'all 0.3s ease';
-                    setTimeout(() => toastEl.remove(), 300);
-                }, 3000);
-            };
-        }
     </script>
 </body>
 </html>
