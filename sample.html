@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BloodConnect - Navigation</title>
+    <title>BloodConnect — Profile & Location</title>
+    
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: DM Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: DM Sans + Bebas Neue -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+    
     <style>
-        /* ===== GLOBAL VARIABLES ===== */
+        /* ============================================================
+           MERGED STYLES
+           - Dashboard layout (sidebar, topbar) from file 1
+           - Profile page styles from file 2 (scoped under .profile-page-root)
+           All duplicates removed, remaining scoped to avoid conflicts.
+           ============================================================ */
+        
+        /* ---------- DASHBOARD VARIABLES (file 1) ---------- */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
             --text-color: rgb(24, 24, 26);
             --text-sub: #6b7280;
-            --brand-primary: #e11d48; /* Red */
-            --brand-primary-hover: #be123c; /* Dark Red */
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
             --border-subtle: #e5e7eb;
             --radius-md: 8px;
             --radius-lg: 12px;
@@ -28,6 +39,7 @@
             --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
         }
 
+        /* ---------- GLOBAL RESET & BASE (from file 1) ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -45,7 +57,7 @@
         
         body.sidebar-open { overflow: hidden; }
 
-        /* ===== SIDEBAR DESIGN ===== */
+        /* ---------- SIDEBAR (file 1) ---------- */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #ffffff;
@@ -98,7 +110,6 @@
         
         .close-sidebar-btn:active { transform: scale(0.9); }
 
-        /* Top Profile Card */
         .sidebar-profile-card {
             margin: 0 24px 20px;
             padding: 16px;
@@ -153,7 +164,6 @@
             text-transform: uppercase;
         }
 
-        /* Navigation Menu */
         .sidebar-menu {
             list-style: none;
             padding: 0 16px 20px;
@@ -190,19 +200,17 @@
             color: #111827;
         }
         
-        /* 1. DARK RED ACTIVE STATE */
         .nav-link.active {
-            background-color: var(--brand-primary-hover); /* Dark Red Background */
-            color: #ffffff; /* White Text */
+            background-color: var(--brand-primary-hover);
+            color: #ffffff;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
         }
         
         .nav-link.active i { 
-            color: #ffffff; /* White Icon */
+            color: #ffffff;
         }
 
-        /* Footer (Email & Logout) */
         .sidebar-footer {
             padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px;
             display: flex;
@@ -243,7 +251,6 @@
         
         .logout-btn:hover { background: #fff1f2; }
 
-        /* ===== MOBILE OVERLAY ===== */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -261,7 +268,7 @@
             opacity: 1;
         }
 
-        /* ===== WRAPPER & TOPBAR ===== */
+        /* ---------- WRAPPER & TOPBAR (file 1) ---------- */
         .wrapper {
             margin-left: var(--sidebar-width);
             flex-grow: 1;
@@ -353,13 +360,12 @@
             display: none;
         }
 
-        /* ===== MAIN CONTENT AREA (Empty for now) ===== */
         .content-inner {
             padding: 28px;
             width: 100%;
         }
 
-        /* ===== RESPONSIVE MOBILE ADJUSTMENTS ===== */
+        /* ---------- RESPONSIVE DASHBOARD (file 1) ---------- */
         @media (max-width: 768px) {
             :root {
                 --sidebar-width: 300px;
@@ -410,15 +416,229 @@
             .sidebar { transform: translateX(0) !important; }
             .sidebar-overlay { display: none !important; }
         }
+
+        /* ---------- PROFILE PAGE STYLES (from file 2, scoped under .profile-page-root) ---------- */
+        .profile-page-root {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .profile-page-root .page-header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .profile-page-root .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.2rem;
+            letter-spacing: 2px;
+            color: #0f172a;
+            line-height: 1;
+        }
+
+        .profile-page-root .page-header h1 .accent {
+            color: #e11d48;
+        }
+
+        .profile-page-root .page-header p {
+            color: #475569;
+            font-size: 1.05rem;
+            margin-top: 6px;
+        }
+
+        .profile-page-root .card {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 24px;
+            transition: none;
+        }
+
+        .profile-page-root .card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 22px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .profile-page-root .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .profile-page-root .card-header p {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 0;
+        }
+
+        .profile-page-root .form-group {
+            margin-bottom: 18px;
+        }
+
+        .profile-page-root .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .profile-page-root .form-group input,
+        .profile-page-root .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: #0f172a;
+            background: #fff;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .profile-page-root .form-group input:focus,
+        .profile-page-root .form-group select:focus {
+            border-color: #e11d48;
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.08);
+        }
+
+        .profile-page-root .form-group input:disabled {
+            background: #f8fafc;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .profile-page-root .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .profile-page-root .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .profile-page-root .btn-primary {
+            background: #e11d48;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.25);
+        }
+
+        .profile-page-root .btn-primary:hover {
+            background: #be123c;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
+        }
+
+        .profile-page-root .btn-outline {
+            background: transparent;
+            color: #e11d48;
+            border: 2px solid #e11d48;
+        }
+
+        .profile-page-root .btn-outline:hover {
+            background: #e11d48;
+            color: #fff;
+        }
+
+        .profile-page-root .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 0;
+        }
+
+        .profile-page-root .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .profile-page-root .avatar-preview {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #e11d48;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+        }
+
+        .profile-page-root .avatar-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .profile-page-root .avatar-info p {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .profile-page-root .page-header h1 {
+                font-size: 2.5rem;
+            }
+            .profile-page-root .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .profile-page-root .btn-group {
+                flex-direction: row;
+                gap: 10px;
+                justify-content: space-between;
+            }
+            .profile-page-root .btn {
+                flex: 1;
+                width: auto;
+                padding: 12px 16px;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            .profile-page-root .btn svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR ===== -->
+    <!-- ===== LEFT SIDEBAR (dashboard navigation) ===== -->
     <aside class="sidebar" id="sidebar">
-        <!-- Brand & Close Button -->
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
             <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Menu">
@@ -426,7 +646,6 @@
             </button>
         </div>
         
-        <!-- Top Profile Card -->
         <div class="sidebar-profile-card">
             <div class="avatar-circle">
                 <span id="dd-avatar-text">A</span>
@@ -438,10 +657,9 @@
             </div>
         </div>
 
-        <!-- Navigation Links -->
         <ul class="sidebar-menu">
             <li>
-                <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                <a href="#dashboard" class="nav-link" data-section="dashboard">
                     <i class="fa-solid fa-border-all"></i>
                     <span>Dashboard</span>
                 </a>
@@ -459,14 +677,13 @@
                 </a>
             </li>
             <li>
-                <a href="#profile" class="nav-link" data-section="profile">
+                <a href="#profile" class="nav-link active" data-section="profile">
                     <i class="fa-solid fa-location-dot"></i>
                     <span>Profile & Location</span>
                 </a>
             </li>
         </ul>
 
-        <!-- Bottom Footer (Email & Sign Out) -->
         <div class="sidebar-footer">
             <div class="footer-badge">
                 <i class="fa-regular fa-envelope"></i>
@@ -482,24 +699,21 @@
     <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
     <div class="wrapper">
         <header class="topbar">
-            <!-- Left Side: Hamburger & Desktop Title -->
             <div class="topbar-left-section">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title desktop-title">
-                    <h2>Dashboard</h2>
-                    <p>Overview of your blood donation journey.</p>
+                    <h2>Profile & Location</h2>
+                    <p>Manage your account settings.</p>
                 </div>
             </div>
             
-            <!-- Center: Mobile Brand -->
             <div class="mobile-brand">
                 <i class="fa-solid fa-heart-pulse"></i>
                 <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
             </div>
             
-            <!-- Right Side: Mobile Profile Avatar -->
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
                     <span id="mobile-topbar-avatar-text">A</span>
@@ -508,14 +722,147 @@
             </div>
         </header>
 
-        <!-- 2. MAIN CONTENT AREA (Emptied as requested) -->
+        <!-- MAIN CONTENT AREA: now contains the Profile & Location page -->
         <main class="content-inner" id="mainContent">
-            <!-- Page content boxes will be injected/displayed here -->
+            <div class="profile-page-root">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>PROFILE <span class="accent">& LOCATION</span></h1>
+                    <p>Manage your personal information and address</p>
+                </div>
+
+                <!-- Profile Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Personal Information</h2>
+                        <p>Update your basic details</p>
+                    </div>
+
+                    <div class="avatar-section">
+                        <div class="avatar-preview" id="avatarPreview">JD</div>
+                        <div class="avatar-info">
+                            <h3>John Doe</h3>
+                            <p>Donor • O+ Blood Type</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="John Doe" placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="+1 (555) 123-4567" placeholder="Enter phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" value="john.doe@example.com" disabled>
+                        <p style="font-size: 12px; color: #94a3b8; margin-top: 6px;">Email cannot be changed. Contact support for updates.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bloodType">Blood Type</label>
+                            <select id="bloodType">
+                                <option value="O+" selected>O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" value="1990-05-15">
+                    </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Location Details</h2>
+                        <p>Your current address for emergency contact</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Street Address</label>
+                        <input type="text" id="address" value="123 Main Street, Apt 4B" placeholder="Enter street address">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" value="New York" placeholder="Enter city">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State / Province</label>
+                            <input type="text" id="state" value="NY" placeholder="Enter state">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zipCode">ZIP / Postal Code</label>
+                            <input type="text" id="zipCode" value="10001" placeholder="Enter ZIP code">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country">
+                                <option value="US" selected>United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="IN">India</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="JP">Japan</option>
+                                <option value="BR">Brazil</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="landmark">Landmark (Optional)</label>
+                        <input type="text" id="landmark" placeholder="Nearby landmark for easier identification">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="cancelBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
         </main>
     </div>
 
-    <!-- ===== JAVASCRIPT FOR UI TOGGLING & NAVIGATION ===== -->
     <script>
+        // ================= DASHBOARD UI LOGIC (file 1) =================
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -526,7 +873,6 @@
         const topbarTitle = document.querySelector('.topbar-title.desktop-title h2');
         const topbarDesc = document.querySelector('.topbar-title.desktop-title p');
 
-        // Titles configuration
         const sectionMeta = {
             'dashboard': { title: 'Dashboard', desc: 'Overview of your blood donation journey.' },
             'emergency': { title: 'Emergency Alerts', desc: 'Urgent blood requests in your area.' },
@@ -534,11 +880,9 @@
             'profile': { title: 'Profile & Location', desc: 'Manage your account settings.' }
         };
 
-        // Navigation UI logic
         function navigateTo(sectionId) {
             if (!sectionMeta[sectionId]) return;
 
-            // Manage Active State Classes
             navLinks.forEach(link => {
                 if (link.dataset.section === sectionId) {
                     link.classList.add('active');
@@ -547,27 +891,21 @@
                 }
             });
 
-            // Update Topbar
             if (topbarTitle) topbarTitle.textContent = sectionMeta[sectionId].title;
             if (topbarDesc) topbarDesc.textContent = sectionMeta[sectionId].desc;
         }
 
-        // Attach click events to nav links
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = link.dataset.section;
-                
                 navigateTo(section);
-                
-                // Auto-close sidebar on mobile
                 if (window.innerWidth < 768 && isSidebarOpen()) {
                     closeSidebar();
                 }
             });
         });
 
-        // Sidebar Toggle Logic
         function openSidebar() {
             sidebar.classList.add('active');
             sidebarOverlay.classList.add('active');
@@ -597,11 +935,83 @@
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
         
-        // Resize listener to prevent glitches
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768 && isSidebarOpen()) {
                 closeSidebar();
             }
+        });
+
+        // ================= PROFILE PAGE LOGIC (file 2, kept as is) =================
+        const fullNameInput = document.getElementById('fullName');
+        const phoneInput = document.getElementById('phone');
+        const bloodTypeSelect = document.getElementById('bloodType');
+        const genderSelect = document.getElementById('gender');
+        const dobInput = document.getElementById('dob');
+        const addressInput = document.getElementById('address');
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const zipCodeInput = document.getElementById('zipCode');
+        const countrySelect = document.getElementById('country');
+        const landmarkInput = document.getElementById('landmark');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        fullNameInput.addEventListener('input', () => {
+            const name = fullNameInput.value.trim();
+            if (name) {
+                const parts = name.split(/\s+/);
+                const initials = parts.length > 1 ?
+                    (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase() :
+                    parts[0].charAt(0).toUpperCase();
+                avatarPreview.textContent = initials;
+            }
+        });
+
+        saveBtn.addEventListener('click', () => {
+            const profileData = {
+                fullName: fullNameInput.value,
+                phone: phoneInput.value,
+                bloodType: bloodTypeSelect.value,
+                gender: genderSelect.value,
+                dob: dobInput.value,
+                address: addressInput.value,
+                city: cityInput.value,
+                state: stateInput.value,
+                zipCode: zipCodeInput.value,
+                country: countrySelect.value,
+                landmark: landmarkInput.value
+            };
+
+            console.log('Saving profile data:', profileData);
+            saveBtn.textContent = '✓ Saved!';
+            saveBtn.style.background = '#16a34a';
+            saveBtn.style.boxShadow = '0 4px 15px rgba(22, 163, 74, 0.3)';
+
+            setTimeout(() => {
+                saveBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save Changes
+                `;
+                saveBtn.style.background = '';
+                saveBtn.style.boxShadow = '';
+            }, 2000);
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            if (confirm('Discard all changes?')) {
+                window.history.back();
+            }
+        });
+
+        phoneInput.addEventListener('input', () => {
+            const phone = phoneInput.value;
+            const phoneRegex = /^[+\d\s()-]{10,}$/;
+            phoneInput.style.borderColor = (phone && !phoneRegex.test(phone)) ? '#e11d48' : '#e2e8f0';
         });
     </script>
 </body>
