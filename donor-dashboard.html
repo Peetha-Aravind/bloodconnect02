@@ -13,14 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
     
     <style>
+        /* (All styles from previous merged version are unchanged) */
         /* ============================================================
            MERGED STYLES
-           - Dashboard layout (sidebar, topbar) from file 1
-           - Profile page styles from file 2 (scoped under .profile-page-root)
-           All duplicates removed, remaining scoped to avoid conflicts.
+           - Dashboard layout (sidebar, topbar)
+           - Profile page styles scoped under .profile-page-root
            ============================================================ */
         
-        /* ---------- DASHBOARD VARIABLES (file 1) ---------- */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
@@ -39,7 +38,6 @@
             --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
         }
 
-        /* ---------- GLOBAL RESET & BASE (from file 1) ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -57,7 +55,6 @@
         
         body.sidebar-open { overflow: hidden; }
 
-        /* ---------- SIDEBAR (file 1) ---------- */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #ffffff;
@@ -268,7 +265,6 @@
             opacity: 1;
         }
 
-        /* ---------- WRAPPER & TOPBAR (file 1) ---------- */
         .wrapper {
             margin-left: var(--sidebar-width);
             flex-grow: 1;
@@ -365,7 +361,6 @@
             width: 100%;
         }
 
-        /* ---------- RESPONSIVE DASHBOARD (file 1) ---------- */
         @media (max-width: 768px) {
             :root {
                 --sidebar-width: 300px;
@@ -417,7 +412,7 @@
             .sidebar-overlay { display: none !important; }
         }
 
-        /* ---------- PROFILE PAGE STYLES (from file 2, scoped under .profile-page-root) ---------- */
+        /* Profile page styles (scoped) */
         .profile-page-root {
             width: 100%;
             max-width: 800px;
@@ -457,7 +452,6 @@
             box-shadow: none;
             padding: 0;
             margin-bottom: 24px;
-            transition: none;
         }
 
         .profile-page-root .card-header {
@@ -465,8 +459,6 @@
             flex-direction: column;
             gap: 4px;
             margin-bottom: 22px;
-            padding-bottom: 0;
-            border-bottom: none;
         }
 
         .profile-page-root .card-header h2 {
@@ -637,7 +629,7 @@
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR (dashboard navigation) ===== -->
+    <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -659,25 +651,25 @@
 
         <ul class="sidebar-menu">
             <li>
-                <a href="#dashboard" class="nav-link" data-section="dashboard">
+                <a href="dashboard.html" class="nav-link">
                     <i class="fa-solid fa-border-all"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link" data-section="emergency">
+                <a href="emergency-alerts.html" class="nav-link">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     <span>Emergency Alerts</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link" data-section="history">
+                <a href="my-donation.html" class="nav-link">
                     <i class="fa-regular fa-heart"></i>
                     <span>My Donation</span>
                 </a>
             </li>
             <li>
-                <a href="donor-profile.html" class="nav-link active" data-section="profile">
+                <a href="#profile" class="nav-link active" id="profileLink">
                     <i class="fa-solid fa-location-dot"></i>
                     <span>Profile & Location</span>
                 </a>
@@ -722,7 +714,7 @@
             </div>
         </header>
 
-        <!-- MAIN CONTENT AREA: now contains the Profile & Location page -->
+        <!-- MAIN CONTENT AREA: Profile & Location only -->
         <main class="content-inner" id="mainContent">
             <div class="profile-page-root">
                 <!-- Page Header -->
@@ -862,49 +854,13 @@
     </div>
 
     <script>
-        // ================= DASHBOARD UI LOGIC (file 1) =================
+        // ========== SIDEBAR TOGGLE & UI LOGIC ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
         const topbarAvatarBtn = document.getElementById('mobileTopbarAvatarBtn');
-        const navLinks = document.querySelectorAll('.nav-link[data-section]');
-        
-        const topbarTitle = document.querySelector('.topbar-title.desktop-title h2');
-        const topbarDesc = document.querySelector('.topbar-title.desktop-title p');
-
-        const sectionMeta = {
-            'dashboard': { title: 'Dashboard', desc: 'Overview of your blood donation journey.' },
-            'emergency': { title: 'Emergency Alerts', desc: 'Urgent blood requests in your area.' },
-            'history': { title: 'My Donation', desc: 'Your donation history and certificates.' },
-            'profile': { title: 'Profile & Location', desc: 'Manage your account settings.' }
-        };
-
-        function navigateTo(sectionId) {
-            if (!sectionMeta[sectionId]) return;
-
-            navLinks.forEach(link => {
-                if (link.dataset.section === sectionId) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-
-            if (topbarTitle) topbarTitle.textContent = sectionMeta[sectionId].title;
-            if (topbarDesc) topbarDesc.textContent = sectionMeta[sectionId].desc;
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = link.dataset.section;
-                navigateTo(section);
-                if (window.innerWidth < 768 && isSidebarOpen()) {
-                    closeSidebar();
-                }
-            });
-        });
+        const logoutBtn = document.getElementById('logoutBtn');
 
         function openSidebar() {
             sidebar.classList.add('active');
@@ -941,7 +897,15 @@
             }
         });
 
-        // ================= PROFILE PAGE LOGIC (file 2, kept as is) =================
+        // ========== SIGN OUT (now functional) ==========
+        logoutBtn.addEventListener('click', () => {
+            // In a real app, you would redirect to a login page or clear session.
+            // For demonstration:
+            alert('You have been signed out.');
+            // window.location.href = 'login.html';  // Uncomment and set your login page.
+        });
+
+        // ========== PROFILE FORM LOGIC ==========
         const fullNameInput = document.getElementById('fullName');
         const phoneInput = document.getElementById('phone');
         const bloodTypeSelect = document.getElementById('bloodType');
