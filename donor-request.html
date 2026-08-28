@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BloodConnect — My Requests</title>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: DM Sans + Bebas Neue -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========== GLOBAL VARIABLES (same as donor dashboard) ========== */
+        :root {
+            --page-bg: #f4f5f7;
+            --header-bg: #ffffff;
+            --text-color: rgb(24, 24, 26);
+            --text-sub: #6b7280;
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
+            --border-subtle: #e5e7eb;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --sidebar-width: 280px;
+            --topbar-height: 70px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.04);
+            --shadow-mobile-sidebar: 12px 0 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none !important;
+        }
+
+        body {
+            font-family: "DM Sans", Roboto, sans-serif;
+            background-color: var(--page-bg);
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.sidebar-open { overflow: hidden; }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            height: 100dvh;
+            left: 0;
+            z-index: 1000;
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sidebar);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease;
+            transform: translateX(0);
+        }
+
+        .sidebar-brand {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            text-transform: uppercase;
+        }
+
+        .sidebar-brand h2 span { color: var(--brand-primary); }
+
+        .close-sidebar-btn {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f4f5f7;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a1a;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .close-sidebar-btn:active { transform: scale(0.9); }
+
+        .sidebar-profile-card {
+            margin: 0 24px 20px;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #0d9488;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .avatar-circle img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .sidebar-profile-card .info { flex: 1; min-width: 0; }
+
+        .sidebar-profile-card .info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-profile-card .info p {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 16px 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-menu li { margin-bottom: 12px; }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px 20px;
+            color: #374151;
+            border-radius: var(--radius-lg);
+            transition: var(--transition-smooth);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-link i {
+            font-size: 18px;
+            width: 22px;
+            text-align: center;
+            color: #6b7280;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+
+        .nav-link.active {
+            background-color: var(--brand-primary-hover);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
+        }
+
+        .nav-link.active i {
+            color: #ffffff;
+        }
+
+        .sidebar-footer {
+            padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px)) 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+            background-color: #ffffff;
+        }
+
+        .footer-badge, .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .footer-badge {
+            border: 1px solid var(--border-subtle);
+            color: #4b5563;
+            gap: 12px;
+        }
+
+        .footer-badge i { color: var(--brand-primary); font-size: 15px; }
+        .footer-badge span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #fda4af;
+            color: var(--brand-primary);
+            cursor: pointer;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .logout-btn:hover { background: #fff1f2; }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ========== WRAPPER & TOPBAR ========== */
+        .wrapper {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .topbar {
+            background-color: var(--header-bg);
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .topbar-left-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1d1e20;
+            letter-spacing: -0.2px;
+        }
+
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background-color: #ffffff;
+            color: #1d1e20;
+            border: 1px solid var(--border-subtle);
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .mobile-brand {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
+        .mobile-brand span { color: var(--brand-primary); }
+
+        .mobile-topbar-avatar {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #0d9488;
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-subtle);
+            padding: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .mobile-topbar-avatar img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .content-inner {
+            padding: 28px;
+            width: 100%;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 300px;
+                --topbar-height: 60px;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                border-radius: 0 24px 24px 0;
+                border-right: none;
+                box-shadow: var(--shadow-mobile-sidebar);
+            }
+            .sidebar.active { transform: translateX(0); }
+
+            .close-sidebar-btn { display: flex; }
+
+            .wrapper { margin-left: 0; }
+
+            .topbar {
+                height: 60px;
+                padding: 0 16px;
+                justify-content: space-between;
+            }
+
+            .topbar-left-section { position: static; transform: none; }
+
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .topbar-title.desktop-title { display: none; }
+
+            .mobile-brand {
+                display: flex;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                pointer-events: none;
+            }
+
+            .mobile-topbar-avatar { display: flex; }
+            .sidebar-overlay.active { display: block; }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar { transform: translateX(0) !important; }
+            .sidebar-overlay { display: none !important; }
+        }
+
+        /* ========== MY REQUESTS CONTENT ========== */
+        .requests-section {
+            background: #fff;
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .requests-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .requests-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .request-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+        }
+        .request-card:last-child { border-bottom: none; }
+
+        .request-info { flex: 1; min-width: 200px; }
+        .request-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .request-info p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+        .request-info .blood-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .request-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-mark-donated {
+            background: #16a34a;
+            color: #fff;
+        }
+        .btn-mark-donated:hover {
+            background: #15803d;
+        }
+
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-status.pending { background: #fef3c7; color: #d97706; }
+        .badge-status.accepted { background: #d1fae5; color: #065f46; }
+        .badge-status.donated { background: #dcfce7; color: #16a34a; }
+        .badge-status.rejected { background: #fee2e2; color: #dc2626; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>BLOOD<span>CONNECT</span></h2>
+            <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-profile-card">
+            <div class="avatar-circle">
+                <span id="dd-avatar-text">A</span>
+                <img id="dd-avatar" src="" alt="User Avatar">
+            </div>
+            <div class="info">
+                <h4 id="dd-name">Loading...</h4>
+                <p>DONOR</p>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a href="donor-dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="donor-request.html" class="nav-link active">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>My Requests</span>
+                </a>
+            </li>
+            <li>
+                <a href="emergency-alerts.html" class="nav-link">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Emergency Alerts</span>
+                </a>
+            </li>
+            <li>
+                <a href="my-donation.html" class="nav-link">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>My Donation</span>
+                </a>
+            </li>
+            <li>
+                <a href="donor-profile.html" class="nav-link">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Profile & Location</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="footer-badge">
+                <i class="fa-regular fa-envelope"></i>
+                <span id="dd-email">Loading...</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
+    <div class="wrapper">
+        <header class="topbar">
+            <div class="topbar-left-section">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title desktop-title">
+                    <h2>My Requests</h2>
+                    <p>Track the status of your blood requests.</p>
+                </div>
+            </div>
+
+            <div class="mobile-brand">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
+            </div>
+
+            <div class="topbar-right-section">
+                <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
+                    <span id="mobile-topbar-avatar-text">A</span>
+                    <img id="mobile-topbar-avatar-img" src="" alt="User">
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="content-inner" id="mainContent">
+            <div class="requests-section">
+                <div class="requests-header">
+                    <h2>All Requests</h2>
+                    <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">0 total</span>
+                </div>
+                <div id="requestsList">
+                    <p style="text-align:center; color:var(--text-sub); padding:20px;">Loading your requests...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== Firebase + App Script ===== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
+            authDomain: "blood-connect-608b2.firebaseapp.com",
+            projectId: "blood-connect-608b2",
+            storageBucket: "blood-connect-608b2.firebasestorage.app",
+            messagingSenderId: "60567900670",
+            appId: "1:60567900670:web:e1ae781c4674c12e5e30af",
+            measurementId: "G-B23VQKDGY5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ========== SIDEBAR TOGGLE ==========
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const menuToggle = document.getElementById('menuToggle');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const topbarAvatarBtn = document.getElementById('mobileTopbarAvatarBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        function openSidebar() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+        function isSidebarOpen() { return sidebar.classList.contains('active'); }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            isSidebarOpen() ? closeSidebar() : openSidebar();
+        });
+        topbarAvatarBtn.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            openSidebar();
+        });
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar();
+        });
+
+        // ========== SIGN OUT ==========
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert('Sign out failed: ' + error.message);
+            }
+        });
+
+        // ========== DOM ELEMENTS ==========
+        const requestsList = document.getElementById('requestsList');
+        const requestCount = document.getElementById('requestCount');
+
+        // ========== HELPER FUNCTIONS ==========
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
+        function getAvatarColor(name) {
+            const colors = ['#e11d48', '#2563eb', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#dc2626', '#7c3aed', '#0d9488', '#ca8a04', '#4f46e5', '#be123c'];
+            let hash = 0;
+            for (let i = 0; i < (name || '?').length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function getBloodTypeStyle(bloodType) {
+            const styles = {
+                'O-': { bg: '#dc2626', color: '#fff' },
+                'O+': { bg: '#ef4444', color: '#fff' },
+                'A-': { bg: '#2563eb', color: '#fff' },
+                'A+': { bg: '#3b82f6', color: '#fff' },
+                'B-': { bg: '#16a34a', color: '#fff' },
+                'B+': { bg: '#22c55e', color: '#fff' },
+                'AB-': { bg: '#7c3aed', color: '#fff' },
+                'AB+': { bg: '#9333ea', color: '#fff' },
+            };
+            return styles[bloodType] || { bg: '#6b7280', color: '#fff' };
+        }
+
+        // ========== UPDATE USER INFO IN SIDEBAR ==========
+        function updateUserInfo(user) {
+            const name = user.displayName || user.email || 'User';
+            const email = user.email || 'No email';
+            document.getElementById('dd-name').textContent = name;
+            document.getElementById('dd-email').textContent = email;
+            const initials = getInitials(name);
+            document.getElementById('dd-avatar-text').textContent = initials;
+            document.getElementById('mobile-topbar-avatar-text').textContent = initials;
+
+            const color = getAvatarColor(name);
+            document.querySelector('.avatar-circle').style.backgroundColor = color;
+            document.querySelector('.mobile-topbar-avatar').style.backgroundColor = color;
+
+            if (user.photoURL) {
+                const avatarImg = document.getElementById('dd-avatar');
+                avatarImg.src = user.photoURL;
+                avatarImg.style.display = 'block';
+                document.getElementById('dd-avatar-text').style.display = 'none';
+
+                const mobileAvatarImg = document.getElementById('mobile-topbar-avatar-img');
+                mobileAvatarImg.src = user.photoURL;
+                mobileAvatarImg.style.display = 'block';
+                document.getElementById('mobile-topbar-avatar-text').style.display = 'none';
+            }
+        }
+
+        // ========== RENDER REQUESTS ==========
+        function renderRequests(requests) {
+            if (requests.length === 0) {
+                requestsList.innerHTML = '<div class="empty-state">You haven\'t sent any blood requests yet.</div>';
+                requestCount.textContent = '0 total';
+                return;
+            }
+
+            // Sort: pending first, then accepted, then donated, then rejected
+            requests.sort((a, b) => {
+                const order = { 'pending': 0, 'accepted': 1, 'donated': 2, 'rejected': 3 };
+                return (order[a.status] || 4) - (order[b.status] || 4);
+            });
+
+            requestCount.textContent = requests.length + ' total';
+
+            requestsList.innerHTML = requests.map(req => {
+                const bloodStyle = getBloodTypeStyle(req.donorBloodType || '');
+                const status = req.status || 'pending';
+                let actionHTML = '';
+
+                if (status === 'accepted') {
+                    actionHTML = `<button class="btn btn-mark-donated" data-id="${req.id}" data-action="mark-donated">✅ Mark as Donated</button>`;
+                } else if (status === 'pending') {
+                    actionHTML = `<span class="badge-status pending">Pending</span>`;
+                } else if (status === 'donated') {
+                    actionHTML = `<span class="badge-status donated">Donated</span>`;
+                } else if (status === 'rejected') {
+                    actionHTML = `<span class="badge-status rejected">Declined</span>`;
+                }
+
+                return `
+                    <div class="request-card" data-id="${req.id}">
+                        <div class="request-info">
+                            <h4>${req.donorName || 'Unknown Donor'}</h4>
+                            <p>
+                                <span class="blood-badge" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${req.donorBloodType || '?'}</span>
+                                ${req.donorCity ? '📍 ' + req.donorCity : ''}
+                            </p>
+                        </div>
+                        <div class="request-actions">
+                            ${actionHTML}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== MARK AS DONATED ==========
+        async function markAsDonated(requestId) {
+            try {
+                const requestRef = doc(db, 'requests', requestId);
+                await updateDoc(requestRef, { status: 'donated' });
+
+                // Increment donor's total donations
+                const requestSnap = await getDoc(requestRef);
+                if (requestSnap.exists()) {
+                    const data = requestSnap.data();
+                    const donorId = data.donorId;
+                    if (donorId) {
+                        const donorRef = doc(db, 'donors', donorId);
+                        const donorSnap = await getDoc(donorRef);
+                        if (donorSnap.exists()) {
+                            const donorData = donorSnap.data();
+                            const totalDonations = (donorData.totalDonations || 0) + 1;
+                            const today = new Date();
+                            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                            const lastDonation = today.toLocaleDateString('en-US', options);
+                            await updateDoc(donorRef, {
+                                totalDonations: totalDonations,
+                                lastDonation: lastDonation
+                            });
+                        }
+                    }
+                }
+                // UI will update automatically via onSnapshot
+            } catch (error) {
+                console.error('Error marking as donated:', error);
+                alert('Failed to mark as donated: ' + error.message);
+            }
+        }
+
+        // Event delegation for mark-donated buttons
+        requestsList.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-action="mark-donated"]');
+            if (btn) {
+                const requestId = btn.dataset.id;
+                if (confirm('Confirm that the donor has donated blood?')) {
+                    markAsDonated(requestId);
+                }
+            }
+        });
+
+        // ========== AUTH & DATA LISTENER ==========
+        let unsubscribe = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            updateUserInfo(user);
+            const q = query(collection(db, 'requests'), where('requesterId', '==', user.uid));
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                const requests = [];
+                snapshot.forEach(doc => {
+                    requests.push({ id: doc.id, ...doc.data() });
+                });
+                renderRequests(requests);
+            }, (error) => {
+                console.error('Error fetching requests:', error);
+                requestsList.innerHTML = '<div class="empty-state">Error loading requests. Please try again.</div>';
+            });
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribe) unsubscribe();
+        });
+    </script>
+</body>
+</html>
