@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BloodConnect — Dashboard</title>
+    <title>BloodConnect — Donor Dashboard</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -416,7 +416,6 @@
             gap: 28px;
         }
 
-        /* Stats Row: 4 columns on desktop, 2 on mobile */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -461,7 +460,6 @@
             color: var(--brand-primary);
         }
 
-        /* Toggle Switch */
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -502,7 +500,6 @@
             transform: translateX(24px);
         }
 
-        /* Requests List */
         .requests-section {
             background: #fff;
             border-radius: var(--radius-xl);
@@ -763,27 +760,40 @@
 
         // ========== SIGN OUT ==========
         logoutBtn.addEventListener('click', () => {
+            // If you are using Firebase, uncomment the following lines and import Firebase Auth
+            // import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+            // const auth = getAuth();
+            // signOut(auth).then(() => {
+            //     window.location.href = 'index.html';
+            // }).catch((error) => {
+            //     alert('Sign out failed: ' + error.message);
+            // });
+            
+            // For now, simply redirect to index.html
             alert('You have been signed out.');
-            // window.location.href = 'login.html';
+            window.location.href = 'index.html';
         });
 
         // ========== DASHBOARD DATA & LOGIC ==========
-        // User data (simulated)
+        // Simulated user data (replace with Firebase Firestore data when ready)
         const userData = {
             bloodGroup: 'O+',
             totalDonations: 12,
             lastDonation: 'Aug 15, 2026',
-            emergencyAvailable: true
+            emergencyAvailable: true,
+            name: 'Aravind',
+            email: 'aravind@example.com',
+            avatarColor: '#0d9488'
         };
 
-        // Requests array (simulated)
+        // Simulated requests array (replace with Firestore collection)
         let requests = [
             {
                 id: 1,
                 requesterName: 'Rahul Sharma',
                 bloodGroup: 'O+',
                 location: 'City Hospital, 2.5 km',
-                status: 'pending' // pending, accepted, donated
+                status: 'pending'
             },
             {
                 id: 2,
@@ -815,6 +825,14 @@
             totalDonationsDisplay.textContent = userData.totalDonations;
             lastDonationDisplay.textContent = userData.lastDonation;
             emergencyToggle.checked = userData.emergencyAvailable;
+            
+            // Update sidebar user info
+            document.getElementById('dd-name').textContent = userData.name;
+            document.getElementById('dd-email').textContent = userData.email;
+            const avatarText = document.getElementById('dd-avatar-text');
+            avatarText.textContent = userData.name.charAt(0).toUpperCase();
+            document.getElementById('mobile-topbar-avatar-text').textContent = userData.name.charAt(0).toUpperCase();
+            
             renderRequests();
         }
 
@@ -866,9 +884,7 @@
                 request.status = 'accepted';
             } else if (action === 'donated') {
                 request.status = 'donated';
-                // Increment total donations
                 userData.totalDonations += 1;
-                // Update last donation date to today (simulated)
                 const today = new Date();
                 const options = { month: 'short', day: 'numeric', year: 'numeric' };
                 userData.lastDonation = today.toLocaleDateString('en-US', options);
