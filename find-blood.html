@@ -13,8 +13,14 @@
             --text-gray: #475569;
             --bg-glass: rgba(255, 255, 255, 0.88);
             --radius: 12px;
+            --success: #10b981;
+            --pending: #f59e0b;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'DM Sans', sans-serif;
             color: var(--text-dark);
@@ -24,7 +30,10 @@
         }
         .bg-art {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: url('blood.jpg');
             background-size: cover;
             background-position: center;
@@ -32,23 +41,26 @@
         }
         .bg-grid {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-glass);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: -1;
         }
         .search-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
         .badge {
             display: inline-block;
-            background: rgba(99,102,241,0.1);
+            background: rgba(99, 102, 241, 0.1);
             color: #818cf8;
             padding: 6px 14px;
             border-radius: 20px;
@@ -82,13 +94,17 @@
             font-size: 14px;
             margin-bottom: 6px;
         }
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 15px;
             font-family: inherit;
+            background: #fff;
+            appearance: auto;
+            -webkit-appearance: auto;
         }
         .btn {
             padding: 12px 20px;
@@ -99,16 +115,60 @@
             cursor: pointer;
             background-color: var(--primary);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(225,29,72,0.3);
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
             transition: all 0.2s;
+            white-space: nowrap;
+            align-self: flex-end;
         }
         .btn:hover {
             background-color: var(--primary-hover);
             transform: translateY(-2px);
         }
+        .btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .btn-request {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: #fff;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        .btn-request:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        .btn-request:disabled {
+            background-color: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .btn-request.pending {
+            background-color: #fef3c7;
+            color: #d97706;
+            cursor: not-allowed;
+        }
+        .btn-request.accepted {
+            background-color: #d1fae5;
+            color: #065f46;
+            cursor: default;
+        }
+        .btn-request.rejected {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 16px;
             margin-top: 20px;
         }
@@ -116,14 +176,17 @@
             background: white;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             text-align: center;
             border: 1px solid #f1f5f9;
             transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
         .donor-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         .donor-avatar {
             width: 50px;
@@ -141,6 +204,7 @@
         .donor-name {
             font-weight: 700;
             margin-bottom: 5px;
+            font-size: 16px;
         }
         .blood-type {
             display: inline-block;
@@ -153,6 +217,49 @@
         .contact {
             font-size: 13px;
             color: var(--text-gray);
+            margin-bottom: 4px;
+        }
+        .phone-hidden {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+        }
+        .phone-visible {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            background: #fff1f2;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-badge.accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .status-badge.rejected {
+            background: #fee2e2;
+            color: #dc2626;
         }
         .empty-state {
             text-align: center;
@@ -161,8 +268,11 @@
         }
         .loading-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
@@ -173,7 +283,7 @@
             background: white;
             padding: 20px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
         .spinner {
@@ -185,7 +295,11 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
         .back-link {
             display: inline-block;
             margin-top: 20px;
@@ -193,7 +307,61 @@
             text-decoration: none;
             font-size: 14px;
         }
-        .back-link:hover { color: var(--primary); }
+        .back-link:hover {
+            color: var(--primary);
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            color: #fff;
+        }
+        .toast.success {
+            background: var(--success);
+        }
+        .toast.error {
+            background: #ef4444;
+        }
+        .toast.info {
+            background: #3b82f6;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .donor-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 2px;
+        }
+        .donor-info-row svg {
+            flex-shrink: 0;
+        }
+        .card-spacer {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -222,7 +390,9 @@
             </div>
             <div class="form-group">
                 <label for="searchLocation">Location</label>
-                <input type="text" id="searchLocation" placeholder="City or area">
+                <select id="searchLocation">
+                    <option value="">Any Location</option>
+                </select>
             </div>
             <button class="btn" id="searchBtn">Search</button>
         </div>
@@ -238,15 +408,48 @@
         </div>
     </div>
 
-    <script type="module">
-        import { auth, db, collection, query, where, getDocs, onAuthStateChanged } from "./firebase-config.js";
-        import { showLoading, hideLoading, toast } from "./utils.js";
+    <div class="toast-container" id="toastContainer"></div>
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'index.html';
-            }
-        });
+    <script type="module">
+        import {
+            auth,
+            db,
+            collection,
+            query,
+            where,
+            getDocs,
+            addDoc,
+            onAuthStateChanged
+        } from "./firebase-config.js";
+
+        // ---- State ----
+        let currentUser = null;
+        let allDonors = []; // cached list of donor docs with .id
+        let requestStatusMap = new Map(); // donorId -> 'pending' | 'accepted' | 'rejected' | null
+        let uniqueCities = new Set();
+
+        // ---- Utilities ----
+        function showLoading(msg) {
+            document.getElementById('loading-msg').textContent = msg || 'Loading...';
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function toast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.textContent = message;
+            container.appendChild(el);
+            setTimeout(() => {
+                el.style.opacity = '0';
+                el.style.transition = 'opacity 0.3s';
+                setTimeout(() => el.remove(), 300);
+            }, 3000);
+        }
 
         function getBloodTypeStyle(bloodType) {
             const styles = {
@@ -262,79 +465,264 @@
             return styles[bloodType] || { bg: '#6b7280', color: '#fff' };
         }
 
+        // ---- Fetch donor data with IDs ----
+        async function fetchAllDonors() {
+            const snapshot = await getDocs(collection(db, 'donors'));
+            const donors = [];
+            const cities = new Set();
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                data.id = doc.id;
+                donors.push(data);
+                if (data.city && data.city.trim()) {
+                    cities.add(data.city.trim());
+                }
+            });
+            return { donors, cities };
+        }
+
+        // ---- Fetch request statuses for current user ----
+        async function fetchUserRequests(userId) {
+            const requestsQuery = query(
+                collection(db, 'requests'),
+                where('requesterId', '==', userId)
+            );
+            const snapshot = await getDocs(requestsQuery);
+            const statusMap = new Map();
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const donorId = data.donorId;
+                const status = data.status || 'pending';
+                // If multiple requests exist, prefer accepted > pending > rejected
+                const existing = statusMap.get(donorId);
+                if (!existing) {
+                    statusMap.set(donorId, status);
+                } else {
+                    const priority = { 'accepted': 3, 'pending': 2, 'rejected': 1 };
+                    if (priority[status] > priority[existing]) {
+                        statusMap.set(donorId, status);
+                    }
+                }
+            });
+            return statusMap;
+        }
+
+        // ---- Populate location dropdown ----
+        function populateLocationDropdown(cities) {
+            const select = document.getElementById('searchLocation');
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">Any Location</option>';
+            const sorted = Array.from(cities).sort();
+            sorted.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                select.appendChild(option);
+            });
+            // Restore previous selection if still valid
+            if (currentValue && sorted.includes(currentValue)) {
+                select.value = currentValue;
+            }
+        }
+
+        // ---- Render donor cards ----
         function renderDonorCard(donor) {
             const bloodStyle = getBloodTypeStyle(donor.bloodType);
-            const initials = donor.name?.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase() || '?';
+            const initials = donor.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || '?';
+            const requestStatus = requestStatusMap.get(donor.id) || null;
+            const cityDisplay = donor.city || 'Unknown';
+
             const card = document.createElement('div');
             card.className = 'donor-card';
+            card.dataset.donorId = donor.id;
+
+            // Status badge
+            let statusBadgeHTML = '';
+            if (requestStatus === 'accepted') {
+                statusBadgeHTML = `<span class="status-badge accepted">Accepted</span>`;
+            } else if (requestStatus === 'pending') {
+                statusBadgeHTML = `<span class="status-badge pending">Pending</span>`;
+            } else if (requestStatus === 'rejected') {
+                statusBadgeHTML = `<span class="status-badge rejected">Declined</span>`;
+            }
+
+            // Phone display logic
+            let phoneHTML = '';
+            if (requestStatus === 'accepted') {
+                phoneHTML = `
+                    <div class="phone-visible">📞 ${donor.phone || 'Not provided'}</div>
+                `;
+            } else {
+                phoneHTML = `
+                    <div class="phone-hidden">🔒 Phone number will be shared after donor accepts your request</div>
+                `;
+            }
+
+            // Request button logic
+            let buttonHTML = '';
+            if (requestStatus === 'pending') {
+                buttonHTML = `<button class="btn-request pending" disabled>⏳ Request Pending</button>`;
+            } else if (requestStatus === 'accepted') {
+                buttonHTML = `<button class="btn-request accepted" disabled>✅ Request Accepted</button>`;
+            } else if (requestStatus === 'rejected') {
+                buttonHTML = `<button class="btn-request rejected" data-action="send-request">↻ Send Request Again</button>`;
+            } else {
+                buttonHTML = `<button class="btn-request" data-action="send-request">📨 Send Request</button>`;
+            }
+
             card.innerHTML = `
+                ${statusBadgeHTML}
                 <div class="donor-avatar" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${initials}</div>
                 <div class="donor-name">${donor.name || 'Anonymous'}</div>
                 <span class="blood-type" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${donor.bloodType}</span>
-                <div class="contact">
-                    📍 ${donor.city || 'Unknown'}<br>
-                    📞 ${donor.phone || 'Not provided'}
+                <div class="donor-info-row">
+                    <span>📍</span>
+                    <span>${cityDisplay}</span>
                 </div>
+                ${phoneHTML}
+                <div class="card-spacer"></div>
+                ${buttonHTML}
             `;
+
+            // Attach event listener to the request button
+            const btn = card.querySelector('[data-action="send-request"]');
+            if (btn) {
+                btn.addEventListener('click', () => handleSendRequest(donor, btn, card));
+            }
+
             return card;
         }
 
-        document.getElementById('searchBtn').addEventListener('click', async () => {
-            const bloodType = document.getElementById('searchBloodType').value;
-            const location = document.getElementById('searchLocation').value.trim().toLowerCase();
+        function renderAllDonors(donors) {
+            const resultsDiv = document.getElementById('results');
+            if (donors.length === 0) {
+                resultsDiv.innerHTML = `<div class="empty-state">No donors found. Try different filters.</div>`;
+                return;
+            }
+            resultsDiv.innerHTML = '';
+            donors.forEach(d => resultsDiv.appendChild(renderDonorCard(d)));
+        }
 
-            showLoading('Searching donors...');
+        // ---- Handle Send Request ----
+        async function handleSendRequest(donor, button, card) {
+            if (!currentUser) {
+                toast('You must be logged in to send a request.', 'error');
+                return;
+            }
+
+            // Double-check no existing pending request
+            const existingStatus = requestStatusMap.get(donor.id);
+            if (existingStatus === 'pending') {
+                toast('You already have a pending request for this donor.', 'info');
+                return;
+            }
+            if (existingStatus === 'accepted') {
+                toast('This donor has already accepted your request.', 'info');
+                return;
+            }
+
+            // Disable button immediately to prevent double-clicks
+            button.disabled = true;
+            button.textContent = '⏳ Sending...';
+
             try {
-                let q = collection(db, 'donors');
-                let constraints = [];
-                if (bloodType) {
-                    constraints.push(where('bloodType', '==', bloodType));
-                }
+                const requestData = {
+                    donorId: donor.id,
+                    donorName: donor.name || 'Anonymous',
+                    donorBloodType: donor.bloodType || '',
+                    donorCity: donor.city || '',
+                    requesterId: currentUser.uid,
+                    requesterName: currentUser.displayName || currentUser.email || 'Unknown',
+                    requesterEmail: currentUser.email || '',
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+
+                const docRef = await addDoc(collection(db, 'requests'), requestData);
+
+                // Update local state
+                requestStatusMap.set(donor.id, 'pending');
+
+                // Re-render the card with updated status
+                const newCard = renderDonorCard(donor);
+                card.replaceWith(newCard);
+
+                toast('Request sent successfully! 🎉', 'success');
+            } catch (err) {
+                console.error('Send request error:', err);
+                toast('Failed to send request: ' + err.message, 'error');
+                // Restore button
+                button.disabled = false;
+                button.textContent = '📨 Send Request';
+            }
+        }
+
+        // ---- Search Logic ----
+        function filterDonors(bloodType, location) {
+            return allDonors.filter(donor => {
+                if (bloodType && donor.bloodType !== bloodType) return false;
                 if (location) {
-                    // Firestore doesn't support case-insensitive contains, so we filter after fetching
-                    // For simplicity, fetch all and filter in JS
-                    const donorsQuery = query(q, ...constraints);
-                    const snapshot = await getDocs(donorsQuery);
-                    let donors = [];
-                    snapshot.forEach(doc => donors.push(doc.data()));
-                    donors = donors.filter(d => (d.city || '').toLowerCase().includes(location));
-                } else {
-                    const donorsQuery = query(q, ...constraints);
-                    const snapshot = await getDocs(donorsQuery);
-                    snapshot.forEach(doc => donors.push(doc.data()));
+                    const donorCity = (donor.city || '').trim().toLowerCase();
+                    if (donorCity !== location.toLowerCase()) return false;
+                }
+                return true;
+            });
+        }
+
+        // ---- Load all data ----
+        async function loadData() {
+            showLoading('Loading donors...');
+            try {
+                // Fetch donors
+                const { donors, cities } = await fetchAllDonors();
+                allDonors = donors;
+                uniqueCities = cities;
+                populateLocationDropdown(cities);
+
+                // Fetch user requests
+                if (currentUser) {
+                    requestStatusMap = await fetchUserRequests(currentUser.uid);
                 }
 
-                const resultsDiv = document.getElementById('results');
-                if (donors.length === 0) {
-                    resultsDiv.innerHTML = `<div class="empty-state">No donors found. Try different filters.</div>`;
-                } else {
-                    resultsDiv.innerHTML = '';
-                    donors.forEach(d => resultsDiv.appendChild(renderDonorCard(d)));
-                }
+                // Render all donors
+                renderAllDonors(donors);
             } catch (err) {
-                toast('Search failed: ' + err.message, 'error');
+                console.error('Load error:', err);
+                toast('Failed to load donors: ' + err.message, 'error');
+                document.getElementById('results').innerHTML = `<div class="empty-state">Error loading donors. Please try again.</div>`;
             } finally {
                 hideLoading();
             }
+        }
+
+        // ---- Auth State ----
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = user;
+            loadData();
         });
 
-        // Load all donors initially
-        (async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'donors'));
-                const donors = [];
-                snapshot.forEach(doc => donors.push(doc.data()));
-                const resultsDiv = document.getElementById('results');
-                if (donors.length === 0) {
-                    resultsDiv.innerHTML = `<div class="empty-state">No donors registered yet.</div>`;
-                } else {
-                    resultsDiv.innerHTML = '';
-                    donors.forEach(d => resultsDiv.appendChild(renderDonorCard(d)));
-                }
-            } catch (err) {
-                console.error(err);
+        // ---- Search Button ----
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            const bloodType = document.getElementById('searchBloodType').value;
+            const location = document.getElementById('searchLocation').value;
+            const filtered = filterDonors(bloodType, location);
+            renderAllDonors(filtered);
+        });
+
+        // ---- Initial Load (if already logged in - auth state might fire before or after) ----
+        // The onAuthStateChanged above handles both cases. If user is already logged in,
+        // the callback fires immediately with the user object.
+
+        // ---- Also refresh data when user comes back to the page ----
+        window.addEventListener('focus', () => {
+            if (currentUser) {
+                loadData();
             }
-        })();
+        });
     </script>
 </body>
 </html>
