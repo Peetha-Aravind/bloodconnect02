@@ -510,21 +510,13 @@
             from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--text-sub);
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .back-link:hover { color: var(--brand-primary); }
     </style>
 </head>
 <body>
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR (identical to donor-dashboard.html) ===== -->
+    <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -540,33 +532,33 @@
             </div>
             <div class="info">
                 <h4 id="dd-name">Loading...</h4>
-                <p id="dd-role">DONOR</p>
+                <p>REQUESTER</p>
             </div>
         </div>
 
         <ul class="sidebar-menu">
             <li>
-                <a href="donor-dashboard.html" class="nav-link">
+                <a href="finder-dashboard.html" class="nav-link">
                     <i class="fa-solid fa-border-all"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="donor-request.html" class="nav-link">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>My requests</span>
+                <a href="find-blood.html" class="nav-link">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Find Blood</span>
                 </a>
             </li>
             <li>
-                <a href="my-donation.html" class="nav-link">
-                    <i class="fa-regular fa-heart"></i>
-                    <span>My Donation</span>
+                <a href="donor-request.html" class="nav-link active">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>My Requests</span>
                 </a>
             </li>
             <li>
-                <a href="donor-profile.html" class="nav-link">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Profile & Location</span>
+                <a href="finder-profile.html" class="nav-link">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
                 </a>
             </li>
         </ul>
@@ -614,7 +606,6 @@
             <div id="requestsList" class="requests-list">
                 <p style="text-align:center; color:var(--text-sub);">Loading your requests...</p>
             </div>
-            <a href="find-blood.html" class="back-link">← Back to Find Donors</a>
         </main>
     </div>
 
@@ -635,7 +626,7 @@
             signOut
         } from "./firebase-config.js";
 
-        // ========== SIDEBAR TOGGLE (same as donor-dashboard) ==========
+        // ========== SIDEBAR TOGGLE ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -716,6 +707,7 @@
                 return;
             }
 
+            // Sort: pending first, then accepted, then donated, then rejected
             requests.sort((a, b) => {
                 const order = { 'pending': 0, 'accepted': 1, 'donated': 2, 'rejected': 3 };
                 return (order[a.status] || 4) - (order[b.status] || 4);
@@ -812,76 +804,30 @@
             });
         }
 
-        // Fetch user details from Firestore (same as donor-dashboard)
-        async function fetchUserProfile(userId) {
-            try {
-                const donorSnap = await getDoc(doc(db, 'donors', userId));
-                if (donorSnap.exists()) {
-                    return { ...donorSnap.data(), role: 'donor' };
-                }
-                const finderSnap = await getDoc(doc(db, 'finders', userId));
-                if (finderSnap.exists()) {
-                    return { ...finderSnap.data(), role: 'finder' };
-                }
-                return null;
-            } catch (error) {
-                console.error('Error fetching user profile:', error);
-                return null;
-            }
-        }
-
-        function updateUserUI(authUser, profileData) {
-            let name = authUser.displayName || 'User';
-            let email = authUser.email || 'No email';
-            let role = 'DONOR';
-            let photoURL = authUser.photoURL || '';
-
-            if (profileData) {
-                if (profileData.name) name = profileData.name;
-                if (profileData.email) email = profileData.email;
-                if (profileData.role) role = profileData.role.toUpperCase();
-                if (profileData.photoURL) photoURL = profileData.photoURL;
-            }
-
+        function updateUserUI(user) {
+            const name = user.displayName || 'User';
+            const email = user.email || 'No email';
             document.getElementById('dd-name').textContent = name;
             document.getElementById('dd-email').textContent = email;
-            document.getElementById('dd-role').textContent = role;
-
             const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
             document.getElementById('dd-avatar-text').textContent = initials;
             document.getElementById('mobile-topbar-avatar-text').textContent = initials;
-
-            if (photoURL) {
-                document.getElementById('dd-avatar').src = photoURL;
+            if (user.photoURL) {
+                document.getElementById('dd-avatar').src = user.photoURL;
                 document.getElementById('dd-avatar').style.display = 'block';
                 document.getElementById('dd-avatar-text').style.display = 'none';
-                document.getElementById('mobile-topbar-avatar-img').src = photoURL;
+                document.getElementById('mobile-topbar-avatar-img').src = user.photoURL;
                 document.getElementById('mobile-topbar-avatar-img').style.display = 'block';
                 document.getElementById('mobile-topbar-avatar-text').style.display = 'none';
-            } else {
-                const colors = ['#e11d48', '#2563eb', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#dc2626', '#7c3aed'];
-                let hash = 0;
-                for (let i = 0; i < name.length; i++) {
-                    hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
-                }
-                const color = colors[Math.abs(hash) % colors.length];
-                document.querySelector('.avatar-circle').style.backgroundColor = color;
-                document.querySelector('.mobile-topbar-avatar').style.backgroundColor = color;
             }
         }
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = 'index.html';
                 return;
             }
-
-            updateUserUI(user, null);
-            const profile = await fetchUserProfile(user.uid);
-            if (profile) {
-                updateUserUI(user, profile);
-            }
-
+            updateUserUI(user);
             loadRequests(user.uid);
         });
 
