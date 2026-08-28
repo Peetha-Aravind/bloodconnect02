@@ -6,7 +6,7 @@
     <title>Find Blood - BloodConnect</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
-        /* (Same styles as before, no changes needed) */
+        /* (Same styles as the previous version) */
         :root {
             --primary: #e11d48;
             --primary-hover: #be123c;
@@ -188,18 +188,11 @@
             border-radius: 50%; animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .nav-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+        .back-link {
+            display: inline-block; margin-top: 20px;
+            color: var(--text-gray); text-decoration: none; font-size: 14px;
         }
-        .nav-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .nav-links a:hover { text-decoration: underline; }
+        .back-link:hover { color: var(--primary); }
         .toast-container {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             display: flex; flex-direction: column; gap: 10px;
@@ -223,6 +216,18 @@
         }
         .donor-info-row svg { flex-shrink: 0; }
         .card-spacer { flex: 1; }
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .nav-links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -299,17 +304,21 @@
         function hideLoading() {
             document.getElementById('loading').style.display = 'none';
         }
-        function toast(message, type = 'info') {
+        function toast(message, type = 'info', link = null) {
             const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
             el.className = `toast ${type}`;
-            el.textContent = message;
+            if (link) {
+                el.innerHTML = `${message} <a href="${link}" style="color:#fff; text-decoration:underline;">View</a>`;
+            } else {
+                el.textContent = message;
+            }
             container.appendChild(el);
             setTimeout(() => {
                 el.style.opacity = '0';
                 el.style.transition = 'opacity 0.3s';
                 setTimeout(() => el.remove(), 300);
-            }, 3000);
+            }, 4000);
         }
 
         function getBloodTypeStyle(bloodType) {
@@ -487,15 +496,11 @@
                 await addDoc(collection(db, 'requests'), requestData);
                 requestStatusMap.set(donor.id, 'pending');
 
-                // Show success toast and redirect to My Requests page after short delay
-                toast('Request sent successfully! 🎉', 'success');
+                // Show toast and redirect to My Requests
+                toast('Request sent successfully! Redirecting...', 'success');
                 setTimeout(() => {
                     window.location.href = 'donor-request.html';
-                }, 1000); // 1 second delay
-
-                // Optionally re-render card (but we'll redirect anyway)
-                const newCard = renderDonorCard(donor);
-                card.replaceWith(newCard);
+                }, 1500);
 
             } catch (err) {
                 console.error('Send request error:', err);
