@@ -1751,7 +1751,7 @@
             } else {
                 const isDonor = userData?.role === 'donor' || userData?.donorId;
                 const isFinder = userData?.role === 'finder' || userData?.finderId;
-                const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : 'dashboard.html';
+                const dashboardLink = isDonor ? 'donor-dashboard.html' : isFinder ? 'finder-dashboard.html' : 'donor-dashboard.html';
                 const roleLabel = isDonor ? 'Donor' : isFinder ? 'Finder' : 'Member';
                 const displayName = userData?.name || user.displayName || 'User';
                 const email = user.email || 'No email available';
