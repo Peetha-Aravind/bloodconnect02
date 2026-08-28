@@ -510,13 +510,21 @@
             from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { color: var(--brand-primary); }
     </style>
 </head>
 <body>
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR ===== -->
+    <!-- ===== LEFT SIDEBAR (same as donor dashboard) ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -532,33 +540,33 @@
             </div>
             <div class="info">
                 <h4 id="dd-name">Loading...</h4>
-                <p>REQUESTER</p>
+                <p>DONOR</p>
             </div>
         </div>
 
         <ul class="sidebar-menu">
             <li>
-                <a href="finder-dashboard.html" class="nav-link">
+                <a href="donor-dashboard.html" class="nav-link">
                     <i class="fa-solid fa-border-all"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="find-blood.html" class="nav-link">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Find Blood</span>
+                <a href="emergency-alerts.html" class="nav-link">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Emergency Alerts</span>
                 </a>
             </li>
             <li>
-                <a href="donor-request.html" class="nav-link active">
-                    <i class="fa-solid fa-list-check"></i>
-                    <span>My Requests</span>
+                <a href="my-donation.html" class="nav-link">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>My Donation</span>
                 </a>
             </li>
             <li>
-                <a href="finder-profile.html" class="nav-link">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profile</span>
+                <a href="donor-profile.html" class="nav-link">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Profile & Location</span>
                 </a>
             </li>
         </ul>
@@ -606,6 +614,7 @@
             <div id="requestsList" class="requests-list">
                 <p style="text-align:center; color:var(--text-sub);">Loading your requests...</p>
             </div>
+            <a href="find-blood.html" class="back-link">← Back to Find Donors</a>
         </main>
     </div>
 
