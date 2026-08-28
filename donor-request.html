@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
     
     <style>
-        /* (All styles remain the same as previous version) */
+        /* ========== GLOBAL VARIABLES ========== */
         :root {
             --page-bg: #f4f5f7;
             --header-bg: #ffffff;
@@ -49,6 +49,7 @@
         
         body.sidebar-open { overflow: hidden; }
 
+        /* ========== SIDEBAR ========== */
         .sidebar {
             width: var(--sidebar-width);
             background-color: #ffffff;
@@ -259,6 +260,7 @@
             opacity: 1;
         }
 
+        /* ========== WRAPPER & TOPBAR ========== */
         .wrapper {
             margin-left: var(--sidebar-width);
             flex-grow: 1;
@@ -355,11 +357,13 @@
             width: 100%;
         }
 
+        /* ========== RESPONSIVE (common) ========== */
         @media (max-width: 768px) {
             :root {
                 --sidebar-width: 300px;
                 --topbar-height: 60px;
             }
+            
             .sidebar {
                 transform: translateX(-100%);
                 border-radius: 0 24px 24px 0; 
@@ -367,20 +371,27 @@
                 box-shadow: var(--shadow-mobile-sidebar);
             }
             .sidebar.active { transform: translateX(0); }
+            
             .close-sidebar-btn { display: flex; }
+
             .wrapper { margin-left: 0; }
+            
             .topbar {
                 height: 60px;
                 padding: 0 16px;
                 justify-content: space-between; 
             }
+            
             .topbar-left-section { position: static; transform: none; }
+            
             .menu-toggle {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
+            
             .topbar-title.desktop-title { display: none; }
+            
             .mobile-brand {
                 display: flex;
                 position: absolute;
@@ -388,6 +399,7 @@
                 transform: translateX(-50%);
                 pointer-events: none;
             }
+            
             .mobile-topbar-avatar { display: flex; }
             .sidebar-overlay.active { display: block; }
         }
@@ -397,7 +409,7 @@
             .sidebar-overlay { display: none !important; }
         }
 
-        /* Requests content styles (same as before) */
+        /* ========== REQUESTS CONTENT ========== */
         .requests-list {
             display: flex;
             flex-direction: column;
@@ -512,7 +524,7 @@
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR (same as donor dashboard) ===== -->
+    <!-- ===== LEFT SIDEBAR (identical to donor-dashboard.html) ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -540,13 +552,13 @@
                 </a>
             </li>
             <li>
-                <a href="donor-request.html" class="nav-link">
+                <a href="emergency-alerts.html" class="nav-link">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>My requests</span>
+                    <span>Emergency Alerts</span>
                 </a>
             </li>
             <li>
-                <a href="donor-donation.html" class="nav-link">
+                <a href="my-donation.html" class="nav-link">
                     <i class="fa-regular fa-heart"></i>
                     <span>My Donation</span>
                 </a>
@@ -623,7 +635,7 @@
             signOut
         } from "./firebase-config.js";
 
-        // ========== SIDEBAR TOGGLE ==========
+        // ========== SIDEBAR TOGGLE (same as donor-dashboard) ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -800,15 +812,13 @@
             });
         }
 
-        // Fetch user details from Firestore (donor or finder)
+        // Fetch user details from Firestore (same as donor-dashboard)
         async function fetchUserProfile(userId) {
             try {
-                // Check donors collection
                 const donorSnap = await getDoc(doc(db, 'donors', userId));
                 if (donorSnap.exists()) {
                     return { ...donorSnap.data(), role: 'donor' };
                 }
-                // Check finders collection
                 const finderSnap = await getDoc(doc(db, 'finders', userId));
                 if (finderSnap.exists()) {
                     return { ...finderSnap.data(), role: 'finder' };
@@ -821,18 +831,15 @@
         }
 
         function updateUserUI(authUser, profileData) {
-            // Determine name, email, avatar
             let name = authUser.displayName || 'User';
             let email = authUser.email || 'No email';
-            let role = 'DONOR'; // default
+            let role = 'DONOR';
             let photoURL = authUser.photoURL || '';
 
             if (profileData) {
-                // Prefer profile data if available
                 if (profileData.name) name = profileData.name;
                 if (profileData.email) email = profileData.email;
                 if (profileData.role) role = profileData.role.toUpperCase();
-                // If profile has photoURL (some apps store it), use it
                 if (profileData.photoURL) photoURL = profileData.photoURL;
             }
 
@@ -852,7 +859,6 @@
                 document.getElementById('mobile-topbar-avatar-img').style.display = 'block';
                 document.getElementById('mobile-topbar-avatar-text').style.display = 'none';
             } else {
-                // Use a colored background with initials
                 const colors = ['#e11d48', '#2563eb', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#dc2626', '#7c3aed'];
                 let hash = 0;
                 for (let i = 0; i < name.length; i++) {
@@ -870,16 +876,12 @@
                 return;
             }
 
-            // Show basic auth data immediately
             updateUserUI(user, null);
-
-            // Fetch additional profile from Firestore (donor or finder)
             const profile = await fetchUserProfile(user.uid);
             if (profile) {
                 updateUserUI(user, profile);
             }
 
-            // Load requests (real-time)
             loadRequests(user.uid);
         });
 
