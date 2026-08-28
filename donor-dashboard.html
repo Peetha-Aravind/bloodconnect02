@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BloodConnect — Donor Dashboard</title>
-    
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: DM Sans + Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
-    
+
     <style>
         /* ========== GLOBAL VARIABLES ========== */
         :root {
@@ -38,7 +38,7 @@
             box-sizing: border-box;
             text-decoration: none !important;
         }
-        
+
         body {
             font-family: "DM Sans", Roboto, sans-serif;
             background-color: var(--page-bg);
@@ -46,7 +46,7 @@
             width: 100%;
             -webkit-font-smoothing: antialiased;
         }
-        
+
         body.sidebar-open { overflow: hidden; }
 
         /* ========== SIDEBAR ========== */
@@ -66,7 +66,7 @@
             transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease;
             transform: translateX(0);
         }
-        
+
         .sidebar-brand {
             padding: 24px;
             display: flex;
@@ -74,7 +74,7 @@
             justify-content: space-between;
             flex-shrink: 0;
         }
-        
+
         .sidebar-brand h2 {
             font-size: 18px;
             font-weight: 800;
@@ -82,11 +82,11 @@
             color: #1a1a1a;
             text-transform: uppercase;
         }
-        
+
         .sidebar-brand h2 span { color: var(--brand-primary); }
-        
+
         .close-sidebar-btn {
-            display: none; 
+            display: none;
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -99,7 +99,7 @@
             cursor: pointer;
             transition: var(--transition-smooth);
         }
-        
+
         .close-sidebar-btn:active { transform: scale(0.9); }
 
         .sidebar-profile-card {
@@ -111,7 +111,7 @@
             align-items: center;
             gap: 14px;
         }
-        
+
         .avatar-circle {
             width: 48px;
             height: 48px;
@@ -127,7 +127,7 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .avatar-circle img {
             position: absolute;
             width: 100%;
@@ -135,9 +135,9 @@
             object-fit: cover;
             display: none;
         }
-        
+
         .sidebar-profile-card .info { flex: 1; min-width: 0; }
-        
+
         .sidebar-profile-card .info h4 {
             font-size: 16px;
             font-weight: 700;
@@ -147,7 +147,7 @@
             text-overflow: ellipsis;
             margin-bottom: 4px;
         }
-        
+
         .sidebar-profile-card .info p {
             font-size: 11px;
             font-weight: 700;
@@ -163,9 +163,9 @@
             overflow-y: auto;
             overflow-x: hidden;
         }
-        
+
         .sidebar-menu li { margin-bottom: 12px; }
-        
+
         .nav-link {
             display: flex;
             align-items: center;
@@ -178,7 +178,7 @@
             font-weight: 500;
             cursor: pointer;
         }
-        
+
         .nav-link i {
             font-size: 18px;
             width: 22px;
@@ -186,20 +186,20 @@
             color: #6b7280;
             transition: var(--transition-smooth);
         }
-        
+
         .nav-link:hover {
             background-color: #f3f4f6;
             color: #111827;
         }
-        
+
         .nav-link.active {
             background-color: var(--brand-primary-hover);
             color: #ffffff;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
         }
-        
-        .nav-link.active i { 
+
+        .nav-link.active i {
             color: #ffffff;
         }
 
@@ -211,7 +211,7 @@
             flex-shrink: 0;
             background-color: #ffffff;
         }
-        
+
         .footer-badge, .logout-btn {
             display: flex;
             align-items: center;
@@ -220,16 +220,16 @@
             font-size: 13px;
             font-weight: 500;
         }
-        
+
         .footer-badge {
             border: 1px solid var(--border-subtle);
             color: #4b5563;
             gap: 12px;
         }
-        
+
         .footer-badge i { color: var(--brand-primary); font-size: 15px; }
         .footer-badge span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
+
         .logout-btn {
             background: transparent;
             border: 1px solid #fda4af;
@@ -240,7 +240,7 @@
             font-weight: 600;
             transition: var(--transition-smooth);
         }
-        
+
         .logout-btn:hover { background: #fff1f2; }
 
         .sidebar-overlay {
@@ -254,7 +254,7 @@
             -webkit-backdrop-filter: blur(4px);
             backdrop-filter: blur(4px);
         }
-        
+
         .sidebar-overlay.active {
             display: block;
             opacity: 1;
@@ -269,7 +269,7 @@
             min-height: 100vh;
             transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .topbar {
             background-color: var(--header-bg);
             height: var(--topbar-height);
@@ -282,26 +282,26 @@
             top: 0;
             z-index: 999;
         }
-        
+
         .topbar-left-section {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-        
+
         .topbar-title h2 {
             font-size: 20px;
             font-weight: 700;
             color: #1d1e20;
             letter-spacing: -0.2px;
         }
-        
+
         .topbar-title p {
             font-size: 13px;
             color: var(--text-sub);
             margin-top: 2px;
         }
-        
+
         .menu-toggle {
             display: none;
             background-color: #ffffff;
@@ -321,7 +321,7 @@
             font-weight: 700;
             color: #0f172a;
         }
-        
+
         .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
         .mobile-brand span { color: var(--brand-primary); }
 
@@ -343,7 +343,7 @@
             padding: 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        
+
         .mobile-topbar-avatar img {
             position: absolute;
             width: 100%;
@@ -363,35 +363,35 @@
                 --sidebar-width: 300px;
                 --topbar-height: 60px;
             }
-            
+
             .sidebar {
                 transform: translateX(-100%);
-                border-radius: 0 24px 24px 0; 
+                border-radius: 0 24px 24px 0;
                 border-right: none;
                 box-shadow: var(--shadow-mobile-sidebar);
             }
             .sidebar.active { transform: translateX(0); }
-            
+
             .close-sidebar-btn { display: flex; }
 
             .wrapper { margin-left: 0; }
-            
+
             .topbar {
                 height: 60px;
                 padding: 0 16px;
-                justify-content: space-between; 
+                justify-content: space-between;
             }
-            
+
             .topbar-left-section { position: static; transform: none; }
-            
+
             .menu-toggle {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            
+
             .topbar-title.desktop-title { display: none; }
-            
+
             .mobile-brand {
                 display: flex;
                 position: absolute;
@@ -399,7 +399,7 @@
                 transform: translateX(-50%);
                 pointer-events: none;
             }
-            
+
             .mobile-topbar-avatar { display: flex; }
             .sidebar-overlay.active { display: block; }
         }
@@ -595,14 +595,14 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
-        
+
         <div class="sidebar-profile-card">
             <div class="avatar-circle">
                 <span id="dd-avatar-text">A</span>
                 <img id="dd-avatar" src="" alt="User Avatar">
             </div>
             <div class="info">
-                <h4 id="dd-name">Aravind</h4>
+                <h4 id="dd-name">Loading...</h4>
                 <p>DONOR</p>
             </div>
         </div>
@@ -637,7 +637,7 @@
         <div class="sidebar-footer">
             <div class="footer-badge">
                 <i class="fa-regular fa-envelope"></i>
-                <span id="dd-email">aravind@example.com</span>
+                <span id="dd-email">Loading...</span>
             </div>
             <button class="logout-btn" id="logoutBtn">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -658,12 +658,12 @@
                     <p>Overview of your blood donation journey.</p>
                 </div>
             </div>
-            
+
             <div class="mobile-brand">
                 <i class="fa-solid fa-heart-pulse"></i>
                 <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
             </div>
-            
+
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
                     <span id="mobile-topbar-avatar-text">A</span>
@@ -679,21 +679,21 @@
                 <div class="stats-row">
                     <div class="stat-box">
                         <div class="stat-label">Blood Group</div>
-                        <div class="stat-value blood-group" id="bloodGroupDisplay">O+</div>
+                        <div class="stat-value blood-group" id="bloodGroupDisplay">--</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Total Donations</div>
-                        <div class="stat-value" id="totalDonationsDisplay">12</div>
+                        <div class="stat-value" id="totalDonationsDisplay">0</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Last Donation</div>
-                        <div class="stat-value" id="lastDonationDisplay" style="font-size: 20px;">Aug 15, 2026</div>
+                        <div class="stat-value" id="lastDonationDisplay" style="font-size: 20px;">Never</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Emergency Availability</div>
                         <div class="stat-value" style="display: flex; justify-content: center;">
                             <label class="toggle-switch">
-                                <input type="checkbox" id="emergencyToggle" checked>
+                                <input type="checkbox" id="emergencyToggle">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -704,17 +704,39 @@
                 <div class="requests-section">
                     <div class="requests-header">
                         <h2>Recent Direct Requests</h2>
-                        <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">3 pending</span>
+                        <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">0 pending</span>
                     </div>
                     <div id="requestsList">
-                        <!-- Requests will be rendered here by JavaScript -->
+                        <p style="text-align:center; color:var(--text-sub); padding:20px;">Loading requests...</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script>
+    <!-- ===== Firebase + App Script ===== -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your Firebase config (must match the one in index.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
+            authDomain: "blood-connect-608b2.firebaseapp.com",
+            projectId: "blood-connect-608b2",
+            storageBucket: "blood-connect-608b2.firebasestorage.app",
+            messagingSenderId: "60567900670",
+            appId: "1:60567900670:web:e1ae781c4674c12e5e30af",
+            measurementId: "G-B23VQKDGY5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
         // ========== SIDEBAR TOGGLE & UI LOGIC ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -743,15 +765,15 @@
             e.preventDefault(); e.stopPropagation();
             isSidebarOpen() ? closeSidebar() : openSidebar();
         });
-        
+
         topbarAvatarBtn.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
             openSidebar();
         });
-        
+
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
-        
+
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768 && isSidebarOpen()) {
                 closeSidebar();
@@ -759,59 +781,16 @@
         });
 
         // ========== SIGN OUT ==========
-        logoutBtn.addEventListener('click', () => {
-            // If you are using Firebase, uncomment the following lines and import Firebase Auth
-            // import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-            // const auth = getAuth();
-            // signOut(auth).then(() => {
-            //     window.location.href = 'index.html';
-            // }).catch((error) => {
-            //     alert('Sign out failed: ' + error.message);
-            // });
-            
-            // For now, simply redirect to index.html
-            alert('You have been signed out.');
-            window.location.href = 'index.html';
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert('Sign out failed: ' + error.message);
+            }
         });
 
-        // ========== DASHBOARD DATA & LOGIC ==========
-        // Simulated user data (replace with Firebase Firestore data when ready)
-        const userData = {
-            bloodGroup: 'O+',
-            totalDonations: 12,
-            lastDonation: 'Aug 15, 2026',
-            emergencyAvailable: true,
-            name: 'Aravind',
-            email: 'aravind@example.com',
-            avatarColor: '#0d9488'
-        };
-
-        // Simulated requests array (replace with Firestore collection)
-        let requests = [
-            {
-                id: 1,
-                requesterName: 'Rahul Sharma',
-                bloodGroup: 'O+',
-                location: 'City Hospital, 2.5 km',
-                status: 'pending'
-            },
-            {
-                id: 2,
-                requesterName: 'Priya Patel',
-                bloodGroup: 'A+',
-                location: 'Apollo Clinic, 5 km',
-                status: 'pending'
-            },
-            {
-                id: 3,
-                requesterName: 'Arun Kumar',
-                bloodGroup: 'B+',
-                location: 'Red Cross Center, 3 km',
-                status: 'pending'
-            }
-        ];
-
-        // DOM elements
+        // ========== DOM ELEMENTS ==========
         const bloodGroupDisplay = document.getElementById('bloodGroupDisplay');
         const totalDonationsDisplay = document.getElementById('totalDonationsDisplay');
         const lastDonationDisplay = document.getElementById('lastDonationDisplay');
@@ -819,26 +798,73 @@
         const requestsList = document.getElementById('requestsList');
         const requestCount = document.getElementById('requestCount');
 
-        // Initialize display
-        function updateDashboardDisplay() {
-            bloodGroupDisplay.textContent = userData.bloodGroup;
-            totalDonationsDisplay.textContent = userData.totalDonations;
-            lastDonationDisplay.textContent = userData.lastDonation;
-            emergencyToggle.checked = userData.emergencyAvailable;
-            
-            // Update sidebar user info
-            document.getElementById('dd-name').textContent = userData.name;
-            document.getElementById('dd-email').textContent = userData.email;
-            const avatarText = document.getElementById('dd-avatar-text');
-            avatarText.textContent = userData.name.charAt(0).toUpperCase();
-            document.getElementById('mobile-topbar-avatar-text').textContent = userData.name.charAt(0).toUpperCase();
-            
-            renderRequests();
+        // ========== USER & DATA STATE ==========
+        let currentUser = null;
+        let donorDocRef = null;
+        let requestsUnsubscribe = null;
+
+        // Helper to get avatar color from name (same as index page)
+        function getAvatarColor(name) {
+            const colors = [
+                '#e11d48', '#2563eb', '#16a34a', '#9333ea',
+                '#ea580c', '#0891b2', '#dc2626', '#7c3aed',
+                '#0d9488', '#ca8a04', '#4f46e5', '#be123c'
+            ];
+            let hash = 0;
+            for (let i = 0; i < (name || '?').length; i++) {
+                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
+            }
+            return colors[Math.abs(hash) % colors.length];
         }
 
-        // Render requests list
-        function renderRequests() {
-            if (!requestsList) return;
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
+        // ========== UPDATE UI WITH DONOR DATA ==========
+        function updateDonorUI(donorData) {
+            const bloodGroup = donorData.bloodType || donorData.bloodGroup || '?';
+            const totalDonations = donorData.totalDonations || 0;
+            const lastDonation = donorData.lastDonation || 'Never';
+            const emergencyAvailable = donorData.emergencyAvailable !== false; // default true
+
+            bloodGroupDisplay.textContent = bloodGroup;
+            totalDonationsDisplay.textContent = totalDonations;
+            lastDonationDisplay.textContent = lastDonation;
+            emergencyToggle.checked = emergencyAvailable;
+
+            // Update sidebar user info
+            const name = donorData.name || currentUser.displayName || 'User';
+            const email = currentUser.email || donorData.email || 'No email';
+            document.getElementById('dd-name').textContent = name;
+            document.getElementById('dd-email').textContent = email;
+            document.getElementById('dd-avatar-text').textContent = getInitials(name);
+            document.getElementById('mobile-topbar-avatar-text').textContent = getInitials(name);
+
+            // Set avatar color
+            const color = getAvatarColor(name);
+            document.querySelector('.avatar-circle').style.backgroundColor = color;
+            document.querySelector('.mobile-topbar-avatar').style.backgroundColor = color;
+
+            // If user has photo, show it
+            if (currentUser.photoURL) {
+                const avatarImg = document.getElementById('dd-avatar');
+                avatarImg.src = currentUser.photoURL;
+                avatarImg.style.display = 'block';
+                document.getElementById('dd-avatar-text').style.display = 'none';
+
+                const mobileAvatarImg = document.getElementById('mobile-topbar-avatar-img');
+                mobileAvatarImg.src = currentUser.photoURL;
+                mobileAvatarImg.style.display = 'block';
+                document.getElementById('mobile-topbar-avatar-text').style.display = 'none';
+            }
+        }
+
+        // ========== RENDER REQUESTS ==========
+        function renderRequests(requests) {
             const pendingCount = requests.filter(r => r.status === 'pending').length;
             requestCount.textContent = pendingCount + ' pending';
 
@@ -860,8 +886,8 @@
                 return `
                     <div class="request-card" data-id="${req.id}">
                         <div class="request-info">
-                            <h4>${req.requesterName}</h4>
-                            <p>Needs ${req.bloodGroup} blood • ${req.location}</p>
+                            <h4>${req.requesterName || 'Unknown'}</h4>
+                            <p>Needs ${req.bloodGroup || '?'} blood • ${req.location || 'Unknown location'}</p>
                         </div>
                         <div class="request-actions">
                             ${actionHTML}
@@ -871,36 +897,118 @@
             }).join('');
         }
 
-        // Handle request actions (event delegation)
-        requestsList.addEventListener('click', (e) => {
+        // ========== LOAD DONOR DATA & REQUESTS ==========
+        async function loadDonorDashboard(user) {
+            try {
+                // Reference to donor document in Firestore
+                donorDocRef = doc(db, 'donors', user.uid);
+                const donorSnap = await getDoc(donorDocRef);
+
+                if (!donorSnap.exists()) {
+                    // No donor profile found
+                    alert('No donor profile found. Please register as a donor first.');
+                    window.location.href = 'register-donor.html';
+                    return;
+                }
+
+                const donorData = donorSnap.data();
+                updateDonorUI(donorData);
+
+                // Set up real-time listener for requests where donorId = user.uid
+                const requestsQuery = query(
+                    collection(db, 'requests'),
+                    where('donorId', '==', user.uid)
+                );
+
+                requestsUnsubscribe = onSnapshot(requestsQuery, (snapshot) => {
+                    const requests = [];
+                    snapshot.forEach((docSnap) => {
+                        requests.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    // Sort by status (pending first) then by creation date (if available)
+                    requests.sort((a, b) => {
+                        if (a.status === 'pending' && b.status !== 'pending') return -1;
+                        if (a.status !== 'pending' && b.status === 'pending') return 1;
+                        return 0;
+                    });
+                    renderRequests(requests);
+                }, (error) => {
+                    console.error('Error listening to requests:', error);
+                    requestsList.innerHTML = '<p style="text-align:center; color:red;">Error loading requests.</p>';
+                });
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                alert('Failed to load dashboard: ' + error.message);
+            }
+        }
+
+        // ========== HANDLE REQUEST ACTIONS ==========
+        requestsList.addEventListener('click', async (e) => {
             const button = e.target.closest('button[data-action]');
             if (!button) return;
-            const id = parseInt(button.dataset.id);
+            const requestId = button.dataset.id;
             const action = button.dataset.action;
-            const request = requests.find(r => r.id === id);
-            if (!request) return;
 
-            if (action === 'accept') {
-                request.status = 'accepted';
-            } else if (action === 'donated') {
-                request.status = 'donated';
-                userData.totalDonations += 1;
-                const today = new Date();
-                const options = { month: 'short', day: 'numeric', year: 'numeric' };
-                userData.lastDonation = today.toLocaleDateString('en-US', options);
+            try {
+                const requestRef = doc(db, 'requests', requestId);
+                if (action === 'accept') {
+                    await updateDoc(requestRef, { status: 'accepted' });
+                } else if (action === 'donated') {
+                    // Update request status and increment donor's total donations
+                    await updateDoc(requestRef, { status: 'donated' });
+
+                    // Update donor stats
+                    const donorSnap = await getDoc(donorDocRef);
+                    if (donorSnap.exists()) {
+                        const donorData = donorSnap.data();
+                        const totalDonations = (donorData.totalDonations || 0) + 1;
+                        const today = new Date();
+                        const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                        const lastDonation = today.toLocaleDateString('en-US', options);
+                        await updateDoc(donorDocRef, {
+                            totalDonations: totalDonations,
+                            lastDonation: lastDonation
+                        });
+                    }
+                }
+                // The onSnapshot listener will automatically update the UI
+            } catch (error) {
+                console.error('Error updating request:', error);
+                alert('Failed to update request: ' + error.message);
             }
-            updateDashboardDisplay();
         });
 
-        // Emergency toggle listener
-        emergencyToggle.addEventListener('change', () => {
-            userData.emergencyAvailable = emergencyToggle.checked;
-            // Could send update to server here
-            console.log('Emergency availability:', userData.emergencyAvailable);
+        // ========== EMERGENCY TOGGLE ==========
+        emergencyToggle.addEventListener('change', async () => {
+            if (!donorDocRef) return;
+            try {
+                await updateDoc(donorDocRef, {
+                    emergencyAvailable: emergencyToggle.checked
+                });
+            } catch (error) {
+                console.error('Error updating availability:', error);
+                alert('Failed to update availability: ' + error.message);
+                // Revert toggle if update fails
+                emergencyToggle.checked = !emergencyToggle.checked;
+            }
         });
 
-        // Initial render
-        updateDashboardDisplay();
+        // ========== AUTH STATE WATCHER ==========
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadDonorDashboard(user);
+            } else {
+                // User not logged in, redirect to index
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Clean up listener when page unloads (optional)
+        window.addEventListener('beforeunload', () => {
+            if (requestsUnsubscribe) requestsUnsubscribe();
+        });
     </script>
 </body>
 </html>
