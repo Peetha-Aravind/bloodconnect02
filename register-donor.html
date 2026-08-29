@@ -25,7 +25,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* changed from center to avoid extra gap */
             padding: 0 20px;
             position: relative;
             overflow-x: hidden;
@@ -424,7 +424,7 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* will be increased in mobile */
+            gap: 10px;
         }
         .mobile-slidebar-footer {
             padding: 16px 18px 20px;
@@ -591,7 +591,7 @@
         .slidebar-google-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
         .slidebar-google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        /* ========== FORM STYLES (no outer card) ========== */
+        /* ========== FORM STYLES ========== */
         .form-wrapper {
             max-width: 480px;
             width: 100%;
@@ -600,7 +600,7 @@
         }
         h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 3rem;
+            font-size: 3.5rem; /* match find blood page */
             letter-spacing: 2px;
             line-height: 1;
             margin-bottom: 10px;
@@ -718,11 +718,13 @@
             .signin-btn { padding: 8px 14px; font-size: 12px; gap: 5px; }
             .signin-btn svg { width: 16px; height: 16px; }
             .profile-dropdown { display: none; }
-            .form-wrapper { margin-top: calc(var(--nav-height) + 20px); padding: 0 15px; }
-            h1 { font-size: 2.2rem; }
-            /* Mobile left menu breathing space increased by 20% */
+            .form-wrapper {
+                margin-top: calc(var(--nav-height) + 10px); /* reduced gap */
+                padding: 0 15px;
+            }
+            h1 { font-size: 3.5rem; } /* same size as find blood */
             .mobile-slidebar-body {
-                padding: 20px 16px;
+                padding: 20px 16px; /* increased breathing space */
                 gap: 12px;
             }
             .slidebar-user-info {
@@ -872,7 +874,6 @@
         let currentUserData = null;
         let dropdownOpen = false;
 
-        // Toast function
         function toast(message, type = 'info') {
             const existing = document.querySelector('.toast-container');
             if (!existing) {
@@ -897,13 +898,11 @@
             loadingOverlay.style.display = 'none';
         }
 
-        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) navbar.classList.add('scrolled');
             else navbar.classList.remove('scrolled');
         });
 
-        // Dropdown handling
         document.addEventListener('click', (e) => {
             if (dropdownOpen && !navbar.contains(e.target)) closeDropdown();
         });
@@ -920,7 +919,6 @@
             if (chevron) chevron.classList.toggle('open', dropdownOpen);
         }
 
-        // Mobile slidebar
         function openMobileSlidebar() {
             mobileOverlay.classList.add('active');
             mobileSlidebar.classList.add('active');
@@ -938,7 +936,6 @@
             if (e.key === 'Escape') { closeDropdown(); closeMobileSlidebar(); }
         });
 
-        // Auth overlay
         function showAuthOverlay(message) {
             const existing = document.querySelector('.auth-overlay');
             if (existing) existing.remove();
@@ -981,7 +978,6 @@
             }
         }
 
-        // Helper functions for avatar
         function getAvatarColor(name) {
             const colors = ['#e11d48','#2563eb','#16a34a','#9333ea','#ea580c','#0891b2','#dc2626','#7c3aed','#0d9488','#ca8a04','#4f46e5','#be123c'];
             let hash = 0;
@@ -995,7 +991,6 @@
             return (parts[0].charAt(0)+parts[parts.length-1].charAt(0)).toUpperCase();
         }
 
-        // Render navbar profile
         function renderNavProfile(user, userData) {
             currentUserData = userData;
             if (!user) {
@@ -1155,17 +1150,14 @@
             }
         }
 
-        // Auth state
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (!user) {
-                // Not logged in, redirect to index after a short delay
                 renderNavProfile(null, null);
                 setTimeout(() => { window.location.href = 'index.html'; }, 1000);
                 return;
             }
 
-            // Fetch user data to determine role
             let userData = null;
             try {
                 const donorSnap = await getDoc(doc(db, 'donors', user.uid));
@@ -1182,18 +1174,15 @@
             }
             renderNavProfile(user, userData);
 
-            // Prefill name if available
             if (user.displayName) {
                 document.getElementById('name').value = user.displayName;
             }
         });
 
-        // Cancel button
         document.getElementById('cancelBtn')?.addEventListener('click', () => {
             window.location.href = 'index.html';
         });
 
-        // Form submission
         document.getElementById('donorForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const user = auth.currentUser;
