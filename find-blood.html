@@ -43,7 +43,7 @@
             z-index: -1;
         }
 
-        /* ========== NAVBAR ========== */
+        /* ========== NAVBAR (identical to index) ========== */
         .navbar {
             position: fixed;
             top: 0;
@@ -587,7 +587,7 @@
         .slidebar-google-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
         .slidebar-google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        /* ========== MAIN CONTENT (no outer card) ========== */
+        /* ========== MAIN CONTENT ========== */
         .search-container {
             max-width: 1000px;
             margin: calc(var(--nav-height) + 40px) auto 40px;
@@ -787,6 +787,28 @@
             font-size: 14px;
         }
         .nav-links a:hover { text-decoration: underline; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            :root { --nav-height: 58px; }
+            .hamburger-btn { display: flex; }
+            .nav-container { padding: 0 12px; gap: 8px; }
+            .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); gap: 6px; }
+            .nav-logo-icon { width: 30px; height: 30px; }
+            .nav-logo-text { font-size: 21px; letter-spacing: 0.8px; }
+            .nav-profile { margin-left: auto; }
+            .profile-btn { padding: 4px 8px; gap: 6px; }
+            .profile-btn .profile-avatar { width: 34px; height: 34px; font-size: 14px; }
+            .profile-btn .profile-name,
+            .profile-btn .profile-chevron { display: none; }
+            .signin-btn { padding: 8px 14px; font-size: 12px; gap: 5px; }
+            .signin-btn svg { width: 16px; height: 16px; }
+            .profile-dropdown { display: none; }
+            .mobile-slidebar-body { padding: 16px 12px; gap: 8px; }
+            .slidebar-user-info { padding: 16px 16px; gap: 14px; margin-bottom: 12px; }
+            .slidebar-nav-item { padding: 14px 16px; gap: 14px; font-size: 15px; margin-bottom: 4px; }
+            .mobile-slidebar-footer { padding: 14px 16px 18px; gap: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -904,7 +926,6 @@
         let uniqueCities = new Set();
         let dropdownOpen = false;
 
-        // DOM elements
         const navbar = document.getElementById('navbar');
         const navProfile = document.getElementById('navProfile');
         const profileDropdown = document.getElementById('profileDropdown');
@@ -917,7 +938,6 @@
         const loadingOverlay = document.getElementById('loading');
         const loadingMsg = document.getElementById('loading-msg');
 
-        // Toast function
         function toast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
