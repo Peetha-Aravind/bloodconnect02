@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BloodConnect — Donor Dashboard</title>
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: DM Sans + Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
@@ -46,7 +44,6 @@
             width: 100%;
             -webkit-font-smoothing: antialiased;
         }
-
         body.sidebar-open { overflow: hidden; }
 
         /* ========== SIDEBAR ========== */
@@ -558,28 +555,74 @@
             cursor: pointer;
             border: none;
             transition: all 0.2s;
+            white-space: nowrap;
         }
         .btn-accept {
             background: var(--brand-primary);
             color: #fff;
         }
-        .btn-accept:hover {
+        .btn-accept:hover:not(:disabled) {
             background: var(--brand-primary-hover);
         }
-        .btn-donated {
-            background: #16a34a;
-            color: #fff;
+        .btn-accept:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
         }
-        .btn-donated:hover {
-            background: #15803d;
-        }
-        .badge-donated {
-            background: #dcfce7;
-            color: #16a34a;
+        .badge-accepted {
+            background: #d1fae5;
+            color: #065f46;
             padding: 6px 12px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-pending {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease-out;
+            color: #fff;
+        }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        .toast.info { background: #3b82f6; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .availability-banner {
+            background: #fff8e1;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #92400e;
+            margin-bottom: 16px;
+            display: none;
         }
     </style>
 </head>
@@ -700,11 +743,16 @@
                     </div>
                 </div>
 
+                <div class="availability-banner" id="availabilityBanner">
+                    <i class="fa-solid fa-clock" style="margin-right:8px;"></i>
+                    <span id="availabilityBannerText">You are not eligible to donate yet. Next eligible date: </span>
+                </div>
+
                 <!-- Recent Direct Requests -->
                 <div class="requests-section">
                     <div class="requests-header">
-                        <h2>Recent Direct Requests</h2>
-                        <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">0 pending</span>
+                        <h2>Active Requests</h2>
+                        <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">0 active</span>
                     </div>
                     <div id="requestsList">
                         <p style="text-align:center; color:var(--text-sub); padding:20px;">Loading requests...</p>
@@ -714,14 +762,13 @@
         </main>
     </div>
 
-    <!-- ===== Firebase + App Script ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Your Firebase config (must match the one in index.html)
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
             authDomain: "blood-connect-608b2.firebaseapp.com",
@@ -732,12 +779,10 @@
             measurementId: "G-B23VQKDGY5"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ========== SIDEBAR TOGGLE & UI LOGIC ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -750,73 +795,50 @@
             sidebarOverlay.classList.add('active');
             document.body.classList.add('sidebar-open');
         }
-
         function closeSidebar() {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
             document.body.classList.remove('sidebar-open');
         }
-
         function isSidebarOpen() {
             return sidebar.classList.contains('active');
         }
 
-        menuToggle.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            isSidebarOpen() ? closeSidebar() : openSidebar();
-        });
-
-        topbarAvatarBtn.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            openSidebar();
-        });
-
+        menuToggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); isSidebarOpen() ? closeSidebar() : openSidebar(); });
+        topbarAvatarBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openSidebar(); });
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar(); });
 
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768 && isSidebarOpen()) {
-                closeSidebar();
-            }
-        });
-
-        // ========== SIGN OUT ==========
         logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.location.href = 'index.html';
-            } catch (error) {
-                alert('Sign out failed: ' + error.message);
-            }
+            try { await signOut(auth); window.location.href = 'index.html'; }
+            catch (error) { toast('Sign out failed: ' + error.message, 'error'); }
         });
 
-        // ========== DOM ELEMENTS ==========
         const bloodGroupDisplay = document.getElementById('bloodGroupDisplay');
         const totalDonationsDisplay = document.getElementById('totalDonationsDisplay');
         const lastDonationDisplay = document.getElementById('lastDonationDisplay');
         const emergencyToggle = document.getElementById('emergencyToggle');
         const requestsList = document.getElementById('requestsList');
         const requestCount = document.getElementById('requestCount');
+        const availabilityBanner = document.getElementById('availabilityBanner');
+        const availabilityBannerText = document.getElementById('availabilityBannerText');
+        const toastContainer = document.getElementById('toastContainer');
 
-        // ========== USER & DATA STATE ==========
-        let currentUser = null;
-        let donorDocRef = null;
-        let requestsUnsubscribe = null;
-
-        // Helper to get avatar color from name (same as index page)
-        function getAvatarColor(name) {
-            const colors = [
-                '#e11d48', '#2563eb', '#16a34a', '#9333ea',
-                '#ea580c', '#0891b2', '#dc2626', '#7c3aed',
-                '#0d9488', '#ca8a04', '#4f46e5', '#be123c'
-            ];
-            let hash = 0;
-            for (let i = 0; i < (name || '?').length; i++) {
-                hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
-            }
-            return colors[Math.abs(hash) % colors.length];
+        function toast(message, type = 'info') {
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.textContent = message;
+            toastContainer.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }, 3000);
         }
 
+        function getAvatarColor(name) {
+            const colors = ['#e11d48', '#2563eb', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#dc2626', '#7c3aed', '#0d9488', '#ca8a04', '#4f46e5', '#be123c'];
+            let hash = 0;
+            for (let i = 0; i < (name || '?').length; i++) { hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0; }
+            return colors[Math.abs(hash) % colors.length];
+        }
         function getInitials(name) {
             if (!name) return '?';
             const parts = name.trim().split(/\s+/);
@@ -824,19 +846,51 @@
             return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
         }
 
-        // ========== UPDATE UI WITH DONOR DATA ==========
+        let currentUser = null;
+        let donorDocRef = null;
+        let requestsUnsubscribe = null;
+        let donorDataCache = null;
+
+        function isEligibleToDonate(lastDonationStr) {
+            if (!lastDonationStr || lastDonationStr === 'Never') return true;
+            const lastDate = new Date(lastDonationStr);
+            if (isNaN(lastDate.getTime())) return true;
+            const sixMonthsAgo = new Date();
+            sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+            return lastDate <= sixMonthsAgo;
+        }
+
+        function getNextEligibleDate(lastDonationStr) {
+            if (!lastDonationStr || lastDonationStr === 'Never') return null;
+            const lastDate = new Date(lastDonationStr);
+            if (isNaN(lastDate.getTime())) return null;
+            const nextEligible = new Date(lastDate);
+            nextEligible.setMonth(nextEligible.getMonth() + 6);
+            return nextEligible;
+        }
+
         function updateDonorUI(donorData) {
+            donorDataCache = donorData;
             const bloodGroup = donorData.bloodType || donorData.bloodGroup || '?';
             const totalDonations = donorData.totalDonations || 0;
             const lastDonation = donorData.lastDonation || 'Never';
-            const emergencyAvailable = donorData.emergencyAvailable !== false; // default true
+            const emergencyAvailable = donorData.emergencyAvailable !== false;
 
             bloodGroupDisplay.textContent = bloodGroup;
             totalDonationsDisplay.textContent = totalDonations;
             lastDonationDisplay.textContent = lastDonation;
             emergencyToggle.checked = emergencyAvailable;
 
-            // Update sidebar user info
+            const eligible = isEligibleToDonate(lastDonation);
+            if (!eligible) {
+                const nextDate = getNextEligibleDate(lastDonation);
+                const formattedDate = nextDate ? nextDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '6 months from last donation';
+                availabilityBanner.style.display = 'block';
+                availabilityBannerText.textContent = 'You are not eligible to donate yet. Next eligible date: ' + formattedDate;
+            } else {
+                availabilityBanner.style.display = 'none';
+            }
+
             const name = donorData.name || currentUser.displayName || 'User';
             const email = currentUser.email || donorData.email || 'No email';
             document.getElementById('dd-name').textContent = name;
@@ -844,18 +898,15 @@
             document.getElementById('dd-avatar-text').textContent = getInitials(name);
             document.getElementById('mobile-topbar-avatar-text').textContent = getInitials(name);
 
-            // Set avatar color
             const color = getAvatarColor(name);
             document.querySelector('.avatar-circle').style.backgroundColor = color;
             document.querySelector('.mobile-topbar-avatar').style.backgroundColor = color;
 
-            // If user has photo, show it
             if (currentUser.photoURL) {
                 const avatarImg = document.getElementById('dd-avatar');
                 avatarImg.src = currentUser.photoURL;
                 avatarImg.style.display = 'block';
                 document.getElementById('dd-avatar-text').style.display = 'none';
-
                 const mobileAvatarImg = document.getElementById('mobile-topbar-avatar-img');
                 mobileAvatarImg.src = currentUser.photoURL;
                 mobileAvatarImg.style.display = 'block';
@@ -863,24 +914,28 @@
             }
         }
 
-        // ========== RENDER REQUESTS ==========
         function renderRequests(requests) {
-            const pendingCount = requests.filter(r => r.status === 'pending').length;
-            requestCount.textContent = pendingCount + ' pending';
+            const activeRequests = requests.filter(r => r.status === 'pending' || r.status === 'accepted');
+            const pendingCount = activeRequests.filter(r => r.status === 'pending').length;
+            const acceptedCount = activeRequests.filter(r => r.status === 'accepted').length;
+            requestCount.textContent = `${pendingCount} pending • ${acceptedCount} accepted`;
 
-            if (requests.length === 0) {
-                requestsList.innerHTML = '<p style="text-align:center; color:var(--text-sub); padding:20px;">No requests at the moment.</p>';
+            if (activeRequests.length === 0) {
+                requestsList.innerHTML = '<p style="text-align:center; color:var(--text-sub); padding:20px;">No active requests at the moment.</p>';
                 return;
             }
 
-            requestsList.innerHTML = requests.map(req => {
+            const eligible = donorDataCache ? isEligibleToDonate(donorDataCache.lastDonation) : true;
+
+            requestsList.innerHTML = activeRequests.map(req => {
                 let actionHTML = '';
                 if (req.status === 'pending') {
-                    actionHTML = `<button class="btn btn-accept" data-id="${req.id}" data-action="accept">Accept</button>`;
+                    actionHTML = `<button class="btn btn-accept" data-id="${req.id}" data-action="accept" ${!eligible ? 'disabled' : ''}>Accept</button>`;
+                    if (!eligible) {
+                        actionHTML += '<span style="font-size:12px;color:#dc2626;">Not eligible</span>';
+                    }
                 } else if (req.status === 'accepted') {
-                    actionHTML = `<button class="btn btn-donated" data-id="${req.id}" data-action="donated">Mark as Donated</button>`;
-                } else if (req.status === 'donated') {
-                    actionHTML = `<span class="badge-donated">Donated</span>`;
+                    actionHTML = `<span class="badge-accepted">Accepted — Awaiting donation</span>`;
                 }
 
                 return `
@@ -897,44 +952,38 @@
             }).join('');
         }
 
-        // ========== LOAD DONOR DATA & REQUESTS ==========
         async function loadDonorDashboard(user) {
             try {
-                // Reference to donor document in Firestore
                 donorDocRef = doc(db, 'donors', user.uid);
                 const donorSnap = await getDoc(donorDocRef);
-
                 if (!donorSnap.exists()) {
-                    // No donor profile found
                     alert('No donor profile found. Please register as a donor first.');
                     window.location.href = 'register-donor.html';
                     return;
                 }
-
                 const donorData = donorSnap.data();
                 updateDonorUI(donorData);
 
-                // Set up real-time listener for requests where donorId = user.uid
-                const requestsQuery = query(
-                    collection(db, 'requests'),
-                    where('donorId', '==', user.uid)
-                );
-
+                const requestsQuery = query(collection(db, 'requests'), where('donorId', '==', user.uid));
                 requestsUnsubscribe = onSnapshot(requestsQuery, (snapshot) => {
                     const requests = [];
-                    snapshot.forEach((docSnap) => {
-                        requests.push({ id: docSnap.id, ...docSnap.data() });
-                    });
-                    // Sort by status (pending first) then by creation date (if available)
+                    snapshot.forEach((docSnap) => { requests.push({ id: docSnap.id, ...docSnap.data() }); });
                     requests.sort((a, b) => {
-                        if (a.status === 'pending' && b.status !== 'pending') return -1;
-                        if (a.status !== 'pending' && b.status === 'pending') return 1;
-                        return 0;
+                        const order = { 'pending': 0, 'accepted': 1, 'donated': 2 };
+                        return (order[a.status] || 3) - (order[b.status] || 3);
                     });
                     renderRequests(requests);
                 }, (error) => {
                     console.error('Error listening to requests:', error);
                     requestsList.innerHTML = '<p style="text-align:center; color:red;">Error loading requests.</p>';
+                });
+
+                // Real-time listener on donor document to catch donation updates from requester
+                onSnapshot(donorDocRef, (snap) => {
+                    if (snap.exists()) {
+                        const updatedData = snap.data();
+                        updateDonorUI(updatedData);
+                    }
                 });
 
             } catch (error) {
@@ -943,69 +992,45 @@
             }
         }
 
-        // ========== HANDLE REQUEST ACTIONS ==========
         requestsList.addEventListener('click', async (e) => {
             const button = e.target.closest('button[data-action]');
-            if (!button) return;
+            if (!button || button.disabled) return;
             const requestId = button.dataset.id;
             const action = button.dataset.action;
 
-            try {
-                const requestRef = doc(db, 'requests', requestId);
-                if (action === 'accept') {
-                    await updateDoc(requestRef, { status: 'accepted' });
-                } else if (action === 'donated') {
-                    // Update request status and increment donor's total donations
-                    await updateDoc(requestRef, { status: 'donated' });
-
-                    // Update donor stats
-                    const donorSnap = await getDoc(donorDocRef);
-                    if (donorSnap.exists()) {
-                        const donorData = donorSnap.data();
-                        const totalDonations = (donorData.totalDonations || 0) + 1;
-                        const today = new Date();
-                        const options = { month: 'short', day: 'numeric', year: 'numeric' };
-                        const lastDonation = today.toLocaleDateString('en-US', options);
-                        await updateDoc(donorDocRef, {
-                            totalDonations: totalDonations,
-                            lastDonation: lastDonation
-                        });
-                    }
+            if (action === 'accept') {
+                try {
+                    const requestRef = doc(db, 'requests', requestId);
+                    await updateDoc(requestRef, { status: 'accepted', acceptedAt: new Date().toISOString() });
+                    toast('Request accepted! The requester will now see your contact details.', 'success');
+                } catch (error) {
+                    console.error('Error accepting request:', error);
+                    toast('Failed to accept request: ' + error.message, 'error');
                 }
-                // The onSnapshot listener will automatically update the UI
-            } catch (error) {
-                console.error('Error updating request:', error);
-                alert('Failed to update request: ' + error.message);
             }
         });
 
-        // ========== EMERGENCY TOGGLE ==========
         emergencyToggle.addEventListener('change', async () => {
             if (!donorDocRef) return;
             try {
-                await updateDoc(donorDocRef, {
-                    emergencyAvailable: emergencyToggle.checked
-                });
+                await updateDoc(donorDocRef, { emergencyAvailable: emergencyToggle.checked });
+                toast('Emergency availability updated.', 'success');
             } catch (error) {
                 console.error('Error updating availability:', error);
-                alert('Failed to update availability: ' + error.message);
-                // Revert toggle if update fails
+                toast('Failed to update availability: ' + error.message, 'error');
                 emergencyToggle.checked = !emergencyToggle.checked;
             }
         });
 
-        // ========== AUTH STATE WATCHER ==========
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 loadDonorDashboard(user);
             } else {
-                // User not logged in, redirect to index
                 window.location.href = 'index.html';
             }
         });
 
-        // Clean up listener when page unloads (optional)
         window.addEventListener('beforeunload', () => {
             if (requestsUnsubscribe) requestsUnsubscribe();
         });
