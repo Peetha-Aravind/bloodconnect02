@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Requests — BloodConnect Donor</title>
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: DM Sans + Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
@@ -46,7 +44,6 @@
             width: 100%;
             -webkit-font-smoothing: antialiased;
         }
-
         body.sidebar-open { overflow: hidden; }
 
         /* ========== SIDEBAR ========== */
@@ -459,8 +456,6 @@
         }
         .status-badge.pending { background: #fef3c7; color: #d97706; }
         .status-badge.accepted { background: #d1fae5; color: #065f46; }
-        .status-badge.donated { background: #dcfce7; color: #16a34a; }
-        .status-badge.rejected { background: #fee2e2; color: #dc2626; }
         .btn {
             padding: 10px 16px;
             border-radius: 8px;
@@ -476,12 +471,6 @@
         .btn:hover:not(:disabled) {
             background-color: var(--brand-primary-hover);
             transform: translateY(-1px);
-        }
-        .btn.mark-donated {
-            background-color: #16a34a;
-        }
-        .btn.mark-donated:hover:not(:disabled) {
-            background-color: #15803d;
         }
         .btn:disabled {
             background-color: #e2e8f0;
@@ -521,10 +510,8 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -545,62 +532,25 @@
         </div>
 
         <ul class="sidebar-menu">
-            <li>
-                <a href="donor-dashboard.html" class="nav-link">
-                    <i class="fa-solid fa-border-all"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-request.html" class="nav-link active">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>My requests</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-donation.html" class="nav-link">
-                    <i class="fa-regular fa-heart"></i>
-                    <span>My Donation</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-profile.html" class="nav-link">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Profile & Location</span>
-                </a>
-            </li>
+            <li><a href="donor-dashboard.html" class="nav-link"><i class="fa-solid fa-border-all"></i><span>Dashboard</span></a></li>
+            <li><a href="donor-request.html" class="nav-link active"><i class="fa-solid fa-triangle-exclamation"></i><span>My requests</span></a></li>
+            <li><a href="donor-donation.html" class="nav-link"><i class="fa-regular fa-heart"></i><span>My Donation</span></a></li>
+            <li><a href="donor-profile.html" class="nav-link"><i class="fa-solid fa-location-dot"></i><span>Profile & Location</span></a></li>
         </ul>
 
         <div class="sidebar-footer">
-            <div class="footer-badge">
-                <i class="fa-regular fa-envelope"></i>
-                <span id="dd-email">Loading...</span>
-            </div>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Sign Out</span>
-            </button>
+            <div class="footer-badge"><i class="fa-regular fa-envelope"></i><span id="dd-email">Loading...</span></div>
+            <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Sign Out</span></button>
         </div>
     </aside>
 
-    <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
     <div class="wrapper">
         <header class="topbar">
             <div class="topbar-left-section">
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="topbar-title desktop-title">
-                    <h2>My Requests</h2>
-                    <p>View and manage incoming blood requests.</p>
-                </div>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
+                <div class="topbar-title desktop-title"><h2>My Requests</h2><p>View and manage incoming blood requests.</p></div>
             </div>
-
-            <div class="mobile-brand">
-                <i class="fa-solid fa-heart-pulse"></i>
-                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
-            </div>
-
+            <div class="mobile-brand"><i class="fa-solid fa-heart-pulse"></i><span>Blood<span style="color:var(--brand-primary);">Connect</span></span></div>
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
                     <span id="mobile-topbar-avatar-text">A</span>
@@ -609,7 +559,6 @@
             </div>
         </header>
 
-        <!-- ===== MAIN CONTENT ===== -->
         <main class="content-inner">
             <div id="requestsList" class="requests-list">
                 <p style="text-align:center; color:var(--text-sub);">Loading your requests...</p>
@@ -620,12 +569,10 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script type="module">
-        // Import Firebase modules (same as donor-dashboard.html)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Your Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
             authDomain: "blood-connect-608b2.firebaseapp.com",
@@ -636,12 +583,10 @@
             measurementId: "G-B23VQKDGY5"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ========== SIDEBAR TOGGLE ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -663,42 +608,25 @@
             return sidebar.classList.contains('active');
         }
 
-        menuToggle.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            isSidebarOpen() ? closeSidebar() : openSidebar();
-        });
-        topbarAvatarBtn.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            openSidebar();
-        });
+        menuToggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); isSidebarOpen() ? closeSidebar() : openSidebar(); });
+        topbarAvatarBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openSidebar(); });
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar();
-        });
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar(); });
 
-        // ========== SIGN OUT ==========
         logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.location.href = 'index.html';
-            } catch (error) {
-                toast('Sign out failed: ' + error.message, 'error');
-            }
+            try { await signOut(auth); window.location.href = 'index.html'; }
+            catch (error) { toast('Sign out failed: ' + error.message, 'error'); }
         });
 
-        // ========== UTILITIES ==========
+        const toastContainer = document.getElementById('toastContainer');
+
         function toast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
             el.className = `toast ${type}`;
             el.textContent = message;
-            container.appendChild(el);
-            setTimeout(() => {
-                el.style.opacity = '0';
-                el.style.transition = 'opacity 0.3s';
-                setTimeout(() => el.remove(), 300);
-            }, 3000);
+            toastContainer.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }, 3000);
         }
 
         function getBloodTypeStyle(bloodType) {
@@ -717,37 +645,34 @@
 
         function renderRequests(requests) {
             const listDiv = document.getElementById('requestsList');
-            if (requests.length === 0) {
-                listDiv.innerHTML = `<div class="empty-state">No blood requests sent to you yet.</div>`;
+            // Filter only active requests (pending or accepted)
+            const activeRequests = requests.filter(req => req.status === 'pending' || req.status === 'accepted');
+            if (activeRequests.length === 0) {
+                listDiv.innerHTML = `<div class="empty-state">No active blood requests sent to you.</div>`;
                 return;
             }
 
-            // Sort: pending first, then accepted, then donated
-            requests.sort((a, b) => {
-                const order = { 'pending': 0, 'accepted': 1, 'donated': 2 };
-                return (order[a.status] || 3) - (order[b.status] || 3);
+            // Sort: pending first, then accepted
+            activeRequests.sort((a, b) => {
+                return (a.status === 'pending' ? 0 : 1) - (b.status === 'pending' ? 0 : 1);
             });
 
-            listDiv.innerHTML = requests.map(req => {
-                const bloodStyle = getBloodTypeStyle(req.bloodGroup || req.donorBloodType || '');
+            listDiv.innerHTML = activeRequests.map(req => {
+                const bloodStyle = getBloodTypeStyle(req.bloodGroup || '');
                 const status = req.status || 'pending';
                 let actionHTML = '';
 
                 if (status === 'pending') {
                     actionHTML = `<button class="btn accept" data-id="${req.id}" data-action="accept">Accept Request</button>`;
                 } else if (status === 'accepted') {
-                    actionHTML = `<button class="btn mark-donated" data-id="${req.id}" data-action="mark-donated">✅ Mark as Donated</button>`;
-                } else if (status === 'donated') {
-                    actionHTML = `<span class="status-badge donated">Donated</span>`;
-                } else if (status === 'rejected') {
-                    actionHTML = `<span class="status-badge rejected">Declined</span>`;
+                    actionHTML = `<span class="status-badge accepted">Accepted — Awaiting donation</span>`;
                 }
 
                 return `
                     <div class="request-card" data-id="${req.id}">
                         <div class="request-info">
                             <div class="requester-name">${req.requesterName || 'Unknown Requester'}</div>
-                            <span class="blood-type" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${req.bloodGroup || req.donorBloodType || '?'}</span>
+                            <span class="blood-type" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${req.bloodGroup || '?'}</span>
                             <div class="location">📍 ${req.location || 'Unknown location'}</div>
                         </div>
                         <div class="request-actions">
@@ -761,41 +686,11 @@
         async function acceptRequest(requestId) {
             try {
                 const requestRef = doc(db, 'requests', requestId);
-                await updateDoc(requestRef, { status: 'accepted' });
-                toast('Request accepted! You can now mark it as donated.', 'success');
+                await updateDoc(requestRef, { status: 'accepted', acceptedAt: new Date().toISOString() });
+                toast('Request accepted! The requester will now see your contact details.', 'success');
             } catch (error) {
                 console.error('Error accepting request:', error);
                 toast('Failed to accept request: ' + error.message, 'error');
-            }
-        }
-
-        async function markAsDonated(requestId) {
-            try {
-                const requestRef = doc(db, 'requests', requestId);
-                await updateDoc(requestRef, { status: 'donated' });
-
-                // Update donor stats
-                const user = auth.currentUser;
-                if (user) {
-                    const donorRef = doc(db, 'donors', user.uid);
-                    const donorSnap = await getDoc(donorRef);
-                    if (donorSnap.exists()) {
-                        const donorData = donorSnap.data();
-                        const totalDonations = (donorData.totalDonations || 0) + 1;
-                        const today = new Date();
-                        const options = { month: 'short', day: 'numeric', year: 'numeric' };
-                        const lastDonation = today.toLocaleDateString('en-US', options);
-                        await updateDoc(donorRef, {
-                            totalDonations: totalDonations,
-                            lastDonation: lastDonation
-                        });
-                    }
-                }
-
-                toast('Donation marked as completed! 🩸', 'success');
-            } catch (error) {
-                console.error('Error marking as donated:', error);
-                toast('Failed to mark as donated: ' + error.message, 'error');
             }
         }
 
@@ -806,15 +701,10 @@
                 const action = btn.dataset.action;
                 if (action === 'accept') {
                     acceptRequest(requestId);
-                } else if (action === 'mark-donated') {
-                    if (confirm('Confirm that you have donated blood for this request?')) {
-                        markAsDonated(requestId);
-                    }
                 }
             }
         });
 
-        // ========== AUTH & DATA LOADING ==========
         let unsubscribe = null;
 
         function loadRequests(userId) {
