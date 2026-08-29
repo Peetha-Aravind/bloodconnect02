@@ -587,14 +587,11 @@
         .slidebar-google-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
         .slidebar-google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        /* ========== SEARCH CONTAINER ========== */
+        /* ========== MAIN CONTENT (no outer card) ========== */
         .search-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: calc(var(--nav-height) + 40px) auto 40px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 0 10px;
         }
         .badge {
             display: inline-block;
@@ -611,6 +608,7 @@
             font-size: 3.5rem;
             letter-spacing: 2px;
             margin-bottom: 5px;
+            color: var(--text-dark);
         }
         p.sub { color: var(--text-gray); margin-bottom: 30px; }
         .search-form {
@@ -620,7 +618,7 @@
             margin-bottom: 30px;
         }
         .form-group { flex: 1; min-width: 180px; }
-        label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+        label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: var(--text-dark); }
         select, input {
             width: 100%;
             padding: 12px 16px;
@@ -671,12 +669,12 @@
             margin-top: 20px;
         }
         .donor-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.92);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: var(--card-shadow);
             text-align: center;
-            border: 1px solid #f1f5f9;
+            border: 1px solid rgba(255, 255, 255, 0.9);
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
@@ -698,7 +696,7 @@
             letter-spacing: 1px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .donor-name { font-weight: 700; margin-bottom: 5px; font-size: 16px; }
+        .donor-name { font-weight: 700; margin-bottom: 5px; font-size: 16px; color: var(--text-dark); }
         .blood-type {
             display: inline-block;
             padding: 4px 14px;
@@ -734,7 +732,7 @@
         .status-badge.rejected { background: #fee2e2; color: #dc2626; }
         .empty-state {
             text-align: center; padding: 40px; color: var(--text-gray);
-            background: #f8fafc; border-radius: 12px; border: 1px dashed #e2e8f0;
+            background: rgba(255, 255, 255, 0.7); border-radius: 12px; border: 1px dashed #e2e8f0;
             margin-top: 10px;
         }
         .loading-overlay {
@@ -777,12 +775,6 @@
             from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        .donor-info-row {
-            display: flex; align-items: center; justify-content: center;
-            gap: 6px; font-size: 13px; color: var(--text-gray); margin-bottom: 2px;
-        }
-        .donor-info-row svg { flex-shrink: 0; }
-        .card-spacer { flex: 1; }
         .nav-links {
             display: flex;
             justify-content: space-between;
@@ -836,7 +828,7 @@
         <div class="mobile-slidebar-footer" id="mobileSlidebarFooter"></div>
     </div>
 
-    <!-- ========== SEARCH CONTAINER ========== -->
+    <!-- ========== SEARCH CONTENT ========== -->
     <div class="search-container">
         <div class="badge">🔍 Find Blood</div>
         <h1>FIND <span style="color:var(--primary)">DONORS</span></h1>
@@ -890,7 +882,6 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
             authDomain: "blood-connect-608b2.firebaseapp.com",
@@ -948,13 +939,11 @@
             loadingOverlay.style.display = 'none';
         }
 
-        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) navbar.classList.add('scrolled');
             else navbar.classList.remove('scrolled');
         });
 
-        // Dropdown handling
         document.addEventListener('click', (e) => {
             if (dropdownOpen && !navbar.contains(e.target)) closeDropdown();
         });
@@ -971,7 +960,6 @@
             if (chevron) chevron.classList.toggle('open', dropdownOpen);
         }
 
-        // Mobile slidebar
         function openMobileSlidebar() {
             mobileOverlay.classList.add('active');
             mobileSlidebar.classList.add('active');
@@ -989,7 +977,6 @@
             if (e.key === 'Escape') { closeDropdown(); closeMobileSlidebar(); }
         });
 
-        // Auth overlay
         function showAuthOverlay(message) {
             const existing = document.querySelector('.auth-overlay');
             if (existing) existing.remove();
@@ -1032,7 +1019,6 @@
             }
         }
 
-        // Helper functions for avatar
         function getAvatarColor(name) {
             const colors = ['#e11d48','#2563eb','#16a34a','#9333ea','#ea580c','#0891b2','#dc2626','#7c3aed','#0d9488','#ca8a04','#4f46e5','#be123c'];
             let hash = 0;
@@ -1046,7 +1032,6 @@
             return (parts[0].charAt(0)+parts[parts.length-1].charAt(0)).toUpperCase();
         }
 
-        // Render navbar profile
         function renderNavProfile(user, userData) {
             if (!user) {
                 navProfile.innerHTML = `
@@ -1209,7 +1194,6 @@
             }
         }
 
-        // Donors logic
         function getBloodTypeStyle(bloodType) {
             const styles = {
                 'O-': { bg: '#dc2626', color: '#fff' },
@@ -1231,7 +1215,7 @@
             snapshot.forEach(doc => {
                 const data = doc.data();
                 data.id = doc.id;
-                if (currentUser && data.id === currentUser.uid) return; // Exclude own profile
+                if (currentUser && data.id === currentUser.uid) return;
                 donors.push(data);
                 if (data.city && data.city.trim()) {
                     cities.add(data.city.trim());
@@ -1418,7 +1402,6 @@
             }
         }
 
-        // Auth state
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (!user) {
@@ -1445,7 +1428,6 @@
             loadData();
         });
 
-        // Search button
         document.getElementById('searchBtn').addEventListener('click', () => {
             const bloodType = document.getElementById('searchBloodType').value;
             const location = document.getElementById('searchLocation').value;
@@ -1453,7 +1435,6 @@
             renderAllDonors(filtered);
         });
 
-        // Refresh on focus
         window.addEventListener('focus', () => {
             if (currentUser) loadData();
         });
