@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Donation — BloodConnect Donor</title>
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: DM Sans + Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
@@ -46,7 +44,6 @@
             width: 100%;
             -webkit-font-smoothing: antialiased;
         }
-
         body.sidebar-open { overflow: hidden; }
 
         /* ========== SIDEBAR ========== */
@@ -494,10 +491,8 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>BLOOD<span>CONNECT</span></h2>
@@ -518,62 +513,25 @@
         </div>
 
         <ul class="sidebar-menu">
-            <li>
-                <a href="donor-dashboard.html" class="nav-link">
-                    <i class="fa-solid fa-border-all"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-request.html" class="nav-link">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>My requests</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-donation.html" class="nav-link active">
-                    <i class="fa-regular fa-heart"></i>
-                    <span>My Donation</span>
-                </a>
-            </li>
-            <li>
-                <a href="donor-profile.html" class="nav-link">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Profile & Location</span>
-                </a>
-            </li>
+            <li><a href="donor-dashboard.html" class="nav-link"><i class="fa-solid fa-border-all"></i><span>Dashboard</span></a></li>
+            <li><a href="donor-request.html" class="nav-link"><i class="fa-solid fa-triangle-exclamation"></i><span>My requests</span></a></li>
+            <li><a href="donor-donation.html" class="nav-link active"><i class="fa-regular fa-heart"></i><span>My Donation</span></a></li>
+            <li><a href="donor-profile.html" class="nav-link"><i class="fa-solid fa-location-dot"></i><span>Profile & Location</span></a></li>
         </ul>
 
         <div class="sidebar-footer">
-            <div class="footer-badge">
-                <i class="fa-regular fa-envelope"></i>
-                <span id="dd-email">Loading...</span>
-            </div>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Sign Out</span>
-            </button>
+            <div class="footer-badge"><i class="fa-regular fa-envelope"></i><span id="dd-email">Loading...</span></div>
+            <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Sign Out</span></button>
         </div>
     </aside>
 
-    <!-- ===== MAIN WRAPPER & TOPBAR ===== -->
     <div class="wrapper">
         <header class="topbar">
             <div class="topbar-left-section">
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="topbar-title desktop-title">
-                    <h2>My Donation</h2>
-                    <p>Your complete donation history.</p>
-                </div>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
+                <div class="topbar-title desktop-title"><h2>My Donation</h2><p>Your complete donation history.</p></div>
             </div>
-
-            <div class="mobile-brand">
-                <i class="fa-solid fa-heart-pulse"></i>
-                <span>Blood<span style="color:var(--brand-primary);">Connect</span></span>
-            </div>
-
+            <div class="mobile-brand"><i class="fa-solid fa-heart-pulse"></i><span>Blood<span style="color:var(--brand-primary);">Connect</span></span></div>
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
                     <span id="mobile-topbar-avatar-text">A</span>
@@ -582,7 +540,6 @@
             </div>
         </header>
 
-        <!-- ===== MAIN CONTENT ===== -->
         <main class="content-inner">
             <div id="donationList" class="donation-list">
                 <p style="text-align:center; color:var(--text-sub);">Loading your donation history...</p>
@@ -593,12 +550,10 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script type="module">
-        // Import Firebase modules (same as previous donor pages)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Your Firebase config (same as previous pages)
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
             authDomain: "blood-connect-608b2.firebaseapp.com",
@@ -609,12 +564,10 @@
             measurementId: "G-B23VQKDGY5"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ========== SIDEBAR TOGGLE ==========
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuToggle = document.getElementById('menuToggle');
@@ -636,42 +589,25 @@
             return sidebar.classList.contains('active');
         }
 
-        menuToggle.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            isSidebarOpen() ? closeSidebar() : openSidebar();
-        });
-        topbarAvatarBtn.addEventListener('click', (e) => {
-            e.preventDefault(); e.stopPropagation();
-            openSidebar();
-        });
+        menuToggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); isSidebarOpen() ? closeSidebar() : openSidebar(); });
+        topbarAvatarBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openSidebar(); });
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar();
-        });
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768 && isSidebarOpen()) closeSidebar(); });
 
-        // ========== SIGN OUT ==========
         logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.location.href = 'index.html';
-            } catch (error) {
-                toast('Sign out failed: ' + error.message, 'error');
-            }
+            try { await signOut(auth); window.location.href = 'index.html'; }
+            catch (error) { toast('Sign out failed: ' + error.message, 'error'); }
         });
 
-        // ========== UTILITIES ==========
+        const toastContainer = document.getElementById('toastContainer');
+
         function toast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
             el.className = `toast ${type}`;
             el.textContent = message;
-            container.appendChild(el);
-            setTimeout(() => {
-                el.style.opacity = '0';
-                el.style.transition = 'opacity 0.3s';
-                setTimeout(() => el.remove(), 300);
-            }, 3000);
+            toastContainer.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }, 3000);
         }
 
         function getBloodTypeStyle(bloodType) {
@@ -697,14 +633,14 @@
 
             // Sort by date descending (most recent first)
             donations.sort((a, b) => {
-                const dateA = a.date ? new Date(a.date) : new Date(0);
-                const dateB = b.date ? new Date(b.date) : new Date(0);
+                const dateA = a.donatedAt ? new Date(a.donatedAt) : new Date(0);
+                const dateB = b.donatedAt ? new Date(b.donatedAt) : new Date(0);
                 return dateB - dateA;
             });
 
             listDiv.innerHTML = donations.map(donation => {
                 const bloodStyle = getBloodTypeStyle(donation.bloodGroup || '');
-                const dateStr = donation.date ? new Date(donation.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown date';
+                const dateStr = donation.donatedAt ? new Date(donation.donatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown date';
                 const location = donation.location || 'Unknown location';
 
                 return `
@@ -713,6 +649,7 @@
                             <div class="donation-date">${dateStr}</div>
                             <span class="blood-type" style="background:${bloodStyle.bg}; color:${bloodStyle.color};">${donation.bloodGroup || '?'}</span>
                             <div class="location">📍 ${location}</div>
+                            <div style="font-size:13px;color:var(--text-sub);margin-top:4px;">Donated to: ${donation.requesterName || 'Unknown'}</div>
                         </div>
                         <div class="badge badge-completed">Completed</div>
                     </div>
@@ -720,12 +657,10 @@
             }).join('');
         }
 
-        // ========== AUTH & DATA LOADING ==========
         let unsubscribe = null;
 
         function loadDonations(userId) {
-            // Assuming donations are stored in a 'donations' collection with donorId field
-            const q = query(collection(db, 'donations'), where('donorId', '==', userId));
+            const q = query(collection(db, 'requests'), where('donorId', '==', userId), where('status', '==', 'donated'));
             unsubscribe = onSnapshot(q, (snapshot) => {
                 const donations = [];
                 snapshot.forEach(doc => {
