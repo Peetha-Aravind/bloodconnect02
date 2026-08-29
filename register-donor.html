@@ -424,7 +424,7 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 10px; /* will be increased in mobile */
         }
         .mobile-slidebar-footer {
             padding: 16px 18px 20px;
@@ -591,26 +591,12 @@
         .slidebar-google-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
         .slidebar-google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        /* ========== REGISTRATION FORM ========== */
-        .form-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
+        /* ========== FORM STYLES (no outer card) ========== */
+        .form-wrapper {
             max-width: 480px;
-            border: 1px solid #e2e8f0;
-            margin-top: calc(var(--nav-height) + 40px);
-        }
-        .badge {
-            display: inline-block;
-            background: #ffe4e6;
-            color: var(--primary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 20px;
+            width: 100%;
+            margin: calc(var(--nav-height) + 40px) auto 40px;
+            padding: 0 20px;
         }
         h1 {
             font-family: 'Bebas Neue', sans-serif;
@@ -636,18 +622,24 @@
             font-size: 15px;
             font-family: inherit;
             transition: border 0.2s;
+            background: rgba(255,255,255,0.9);
         }
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(225,29,72,0.1);
         }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            width: 100%;
+            flex: 1;
             padding: 14px;
             border-radius: 8px;
             font-weight: 600;
@@ -655,13 +647,25 @@
             border: none;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-primary {
             background-color: var(--primary);
             color: #fff;
             box-shadow: 0 4px 15px rgba(225,29,72,0.3);
         }
-        .btn:hover {
+        .btn-primary:hover {
             background-color: var(--primary-hover);
             transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-gray);
+            border: 2px solid #e2e8f0;
+        }
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
         }
         .back-link {
             display: inline-block;
@@ -714,12 +718,28 @@
             .signin-btn { padding: 8px 14px; font-size: 12px; gap: 5px; }
             .signin-btn svg { width: 16px; height: 16px; }
             .profile-dropdown { display: none; }
-            .form-card { margin-top: calc(var(--nav-height) + 20px); padding: 30px 20px; }
+            .form-wrapper { margin-top: calc(var(--nav-height) + 20px); padding: 0 15px; }
             h1 { font-size: 2.2rem; }
-            .mobile-slidebar-body { padding: 16px 12px; gap: 8px; }
-            .slidebar-user-info { padding: 16px 16px; gap: 14px; margin-bottom: 12px; }
-            .slidebar-nav-item { padding: 14px 16px; gap: 14px; font-size: 15px; margin-bottom: 4px; }
-            .mobile-slidebar-footer { padding: 14px 16px 18px; gap: 10px; }
+            /* Mobile left menu breathing space increased by 20% */
+            .mobile-slidebar-body {
+                padding: 20px 16px;
+                gap: 12px;
+            }
+            .slidebar-user-info {
+                padding: 16px 16px;
+                gap: 14px;
+                margin-bottom: 12px;
+            }
+            .slidebar-nav-item {
+                padding: 16px 18px;
+                gap: 16px;
+                font-size: 15px;
+                margin-bottom: 8px;
+            }
+            .mobile-slidebar-footer {
+                padding: 14px 16px 18px;
+                gap: 12px;
+            }
         }
     </style>
 </head>
@@ -762,9 +782,8 @@
         <div class="mobile-slidebar-footer" id="mobileSlidebarFooter"></div>
     </div>
 
-    <!-- ========== REGISTRATION FORM ========== -->
-    <div class="form-card">
-        <div class="badge">🩸 Donor Registration</div>
+    <!-- ========== REGISTRATION FORM (no outer card) ========== -->
+    <div class="form-wrapper">
         <h1>BECOME A <span style="color:var(--primary)">DONOR</span></h1>
         <p class="sub">Fill in your details to join the life-saving network.</p>
 
@@ -799,7 +818,10 @@
                 <label for="age">Age (optional)</label>
                 <input type="number" id="age" min="18" max="65" placeholder="Age">
             </div>
-            <button type="submit" class="btn">Register as Donor</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button type="submit" class="btn btn-primary">Register as Donor</button>
+            </div>
         </form>
         <a href="index.html" class="back-link">← Back to Home</a>
     </div>
@@ -817,7 +839,6 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
             authDomain: "blood-connect-608b2.firebaseapp.com",
@@ -1165,6 +1186,11 @@
             if (user.displayName) {
                 document.getElementById('name').value = user.displayName;
             }
+        });
+
+        // Cancel button
+        document.getElementById('cancelBtn')?.addEventListener('click', () => {
+            window.location.href = 'index.html';
         });
 
         // Form submission
