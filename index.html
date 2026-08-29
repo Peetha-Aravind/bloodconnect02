@@ -1586,6 +1586,10 @@
                 const donorsSnapshot = await getDocs(collection(db, 'donors'));
                 const donors = [];
                 donorsSnapshot.forEach((docSnap) => {
+                    // Exclude the current logged-in donor from the list
+                    if (currentUser && docSnap.id === currentUser.uid) {
+                        return; // skip this donor
+                    }
                     donors.push({ id: docSnap.id, ...docSnap.data() });
                 });
 
