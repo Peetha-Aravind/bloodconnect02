@@ -930,7 +930,7 @@
 
         <div class="nav-links">
             <a href="index.html">← Back to Home</a>
-            <a href="donor-request.html">My Requests →</a>
+            <a href="donor-dashboard.html">My Requests →</a>
         </div>
     </div>
 
@@ -1422,7 +1422,7 @@
                 requestStatusMap.set(donor.id, 'pending');
                 toast('Request sent successfully! Redirecting...', 'success');
                 setTimeout(() => {
-                    window.location.href = 'donor-request.html';
+                    window.location.href = 'donor-dashboard.html';
                 }, 1500);
 
             } catch (err) {
