@@ -798,6 +798,63 @@
             .slidebar-user-info { padding: 16px 16px; gap: 14px; margin-bottom: 12px; }
             .slidebar-nav-item { padding: 14px 16px; gap: 14px; font-size: 15px; margin-bottom: 4px; }
             .mobile-slidebar-footer { padding: 14px 16px 18px; gap: 10px; }
+            
+            /* Mobile search form: stack selects and button right aligned */
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-form .btn {
+                align-self: flex-end; /* Button on the right */
+                width: auto;
+                margin-top: 10px;
+            }
+            .form-group {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+            /* Mobile donor cards: 2 columns */
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .donor-card {
+                padding: 15px 10px;
+            }
+            .donor-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .donor-name {
+                font-size: 14px;
+            }
+            .blood-type {
+                font-size: 12px;
+                padding: 3px 10px;
+                margin-bottom: 6px;
+            }
+            .donor-info-row {
+                font-size: 12px;
+                gap: 4px;
+            }
+            .phone-hidden, .phone-visible {
+                font-size: 11px;
+                padding: 6px;
+                margin-top: 6px;
+            }
+            .btn-request {
+                font-size: 12px;
+                padding: 8px 10px;
+                margin-top: 8px;
+            }
+            .status-badge {
+                font-size: 9px;
+                top: 8px;
+                right: 8px;
+                padding: 3px 8px;
+            }
         }
     </style>
 </head>
@@ -1143,6 +1200,7 @@
                     </div>
                 `;
 
+                // Mobile slidebar: My Requests removed, more breathing space
                 mobileSlidebarBody.innerHTML = `
                     <div class="slidebar-user-info">
                         ${photoURL ?
@@ -1155,15 +1213,11 @@
                             <div class="slidebar-user-role">${roleLabel}</div>
                         </div>
                     </div>
-                    <a href="${dashboardLink}" class="slidebar-nav-item">
+                    <a href="${dashboardLink}" class="slidebar-nav-item" style="margin-bottom: 12px;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                         Dashboard
                     </a>
-                    <a href="donor-request.html" class="slidebar-nav-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-                        My Requests
-                    </a>
-                    <a href="donor-donation.html" class="slidebar-nav-item">
+                    <a href="donor-donation.html" class="slidebar-nav-item" style="margin-bottom: 12px;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                         My Donation
                     </a>
@@ -1203,6 +1257,7 @@
             }
         }
 
+        // (Rest of the JavaScript remains unchanged)
         function getBloodTypeStyle(bloodType) {
             const styles = {
                 'O-': { bg: '#dc2626', color: '#fff' },
