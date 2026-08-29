@@ -32,10 +32,7 @@
         }
         .bg-art {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('blood.jpg');
             background-size: cover;
             background-position: center;
@@ -43,10 +40,7 @@
         }
         .bg-grid {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-glass);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -119,8 +113,7 @@
             animation: pulse-drop 2.5s ease-in-out infinite;
         }
         @keyframes pulse-drop {
-            0%,
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
             50% { transform: scale(1.06); }
         }
         .nav-logo-text {
@@ -243,11 +236,8 @@
             background: linear-gradient(135deg, #fff1f2, #fff);
             border-bottom: 1px solid #f1f5f9;
         }
-        .dropdown-header .dropdown-avatar { width: 44px;
-            height: 44px;
-            font-size: 17px; }
-        .dropdown-header .dropdown-info { flex: 1;
-            min-width: 0; }
+        .dropdown-header .dropdown-avatar { width: 44px; height: 44px; font-size: 17px; }
+        .dropdown-header .dropdown-info { flex: 1; min-width: 0; }
         .dropdown-header .dropdown-name {
             font-weight: 700;
             font-size: 15px;
@@ -303,12 +293,9 @@
             stroke-width: 2;
             flex-shrink: 0;
         }
-        .dropdown-item.signout-item { color: var(--primary);
-            font-weight: 600; }
+        .dropdown-item.signout-item { color: var(--primary); font-weight: 600; }
         .dropdown-item.signout-item svg { stroke: var(--primary); }
-        .dropdown-divider { height: 1px;
-            background: #f1f5f9;
-            margin: 6px 0; }
+        .dropdown-divider { height: 1px; background: #f1f5f9; margin: 6px 0; }
 
         .dropdown-signed-out {
             padding: 20px;
@@ -366,33 +353,24 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-        .google-signin-btn svg { width: 20px;
-            height: 20px;
-            flex-shrink: 0; }
+        .google-signin-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 
         /* ========== MOBILE SLIDE BAR ========== */
         .mobile-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.45);
             z-index: 1050;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(2px);
         }
-        .mobile-overlay.active { opacity: 1;
-            visibility: visible; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-slidebar {
             position: fixed;
-            top: 0;
-            left: -320px;
-            width: 290px;
-            max-width: 85vw;
+            top: 0; left: -320px;
+            width: 290px; max-width: 85vw;
             height: 100%;
             background: #fff;
             z-index: 1060;
@@ -423,8 +401,7 @@
             background: #f1f5f9;
             border: none;
             cursor: pointer;
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -434,8 +411,7 @@
         }
         .mobile-close-btn:hover { background: #ffe4e6; }
         .mobile-close-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 18px; height: 18px;
             stroke: var(--text-dark);
             fill: none;
             stroke-width: 2.5;
@@ -473,11 +449,9 @@
             transition: all 0.2s;
             word-break: break-all;
         }
-        .slidebar-email-link:hover { border-color: #cbd5e1;
-            background: #f8fafc; }
+        .slidebar-email-link:hover { border-color: #cbd5e1; background: #f8fafc; }
         .slidebar-email-link svg {
-            width: 16px;
-            height: 16px;
+            width: 16px; height: 16px;
             stroke: var(--primary);
             fill: none;
             stroke-width: 2;
@@ -503,8 +477,7 @@
         }
         .mobile-slidebar-footer .logout-btn:hover { background: #fff1f2; }
         .mobile-slidebar-footer .logout-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 18px; height: 18px;
             stroke: var(--primary);
             fill: none;
             stroke-width: 2;
@@ -522,8 +495,7 @@
             flex-shrink: 0;
         }
         .slidebar-user-info .slidebar-avatar {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #ffe4e6;
@@ -572,8 +544,7 @@
         }
         .slidebar-nav-item:hover { background: #f8fafc; }
         .slidebar-nav-item svg {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             stroke: #64748b;
             fill: none;
             stroke-width: 2;
@@ -584,8 +555,7 @@
             padding: 20px 10px;
         }
         .slidebar-signin-prompt .prompt-icon {
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             border-radius: 50%;
             background: #ffe4e6;
             display: flex;
@@ -594,18 +564,13 @@
             margin: 0 auto 14px;
         }
         .slidebar-signin-prompt .prompt-icon svg {
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             stroke: var(--primary);
             fill: none;
             stroke-width: 2;
         }
-        .slidebar-signin-prompt h4 { font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 6px; }
-        .slidebar-signin-prompt p { font-size: 13px;
-            color: var(--text-gray);
-            margin-bottom: 16px; }
+        .slidebar-signin-prompt h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .slidebar-signin-prompt p { font-size: 13px; color: var(--text-gray); margin-bottom: 16px; }
         .slidebar-google-btn {
             display: flex;
             align-items: center;
@@ -623,23 +588,38 @@
             color: var(--text-dark);
             transition: all 0.2s;
         }
-        .slidebar-google-btn:hover { border-color: #cbd5e1;
-            background: #f8fafc; }
-        .slidebar-google-btn svg { width: 18px;
-            height: 18px;
-            flex-shrink: 0; }
+        .slidebar-google-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .slidebar-google-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
         /* ========== REGISTRATION FORM ========== */
         .form-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             border-radius: 20px;
-            padding: 32px 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 480px;
             border: 1px solid #e2e8f0;
             margin-top: calc(var(--nav-height) + 40px);
         }
+        .badge {
+            display: inline-block;
+            background: #ffe4e6;
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        p.sub { color: var(--text-gray); margin-bottom: 30px; }
         .form-group { margin-bottom: 20px; }
         label {
             display: block;
@@ -648,8 +628,7 @@
             margin-bottom: 6px;
             color: var(--text-dark);
         }
-        input,
-        select {
+        input, select {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid #e2e8f0;
@@ -658,23 +637,17 @@
             font-family: inherit;
             transition: border 0.2s;
         }
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
+            box-shadow: 0 0 0 3px rgba(225,29,72,0.1);
         }
         .btn {
-            flex: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            width: 100%;
             padding: 14px;
             border-radius: 8px;
             font-weight: 600;
@@ -684,45 +657,24 @@
             transition: all 0.2s;
             background-color: var(--primary);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
-            font-family: 'DM Sans', sans-serif;
-            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(225,29,72,0.3);
         }
         .btn:hover {
             background-color: var(--primary-hover);
             transform: translateY(-2px);
         }
-        .btn-cancel {
-            flex: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background-color: #fff;
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
             color: var(--text-gray);
-            border: 1px solid #e2e8f0;
-            font-family: 'DM Sans', sans-serif;
-            white-space: nowrap;
+            text-decoration: none;
+            font-size: 14px;
         }
-        .btn-cancel:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-            color: var(--text-dark);
-            transform: translateY(-2px);
-        }
+        .back-link:hover { color: var(--primary); }
         .loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
@@ -733,13 +685,12 @@
             background: white;
             padding: 20px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
         }
         .spinner {
             display: inline-block;
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border: 3px solid #fecdd3;
             border-top-color: var(--primary);
             border-radius: 50%;
@@ -751,55 +702,24 @@
         @media (max-width: 768px) {
             :root { --nav-height: 58px; }
             .hamburger-btn { display: flex; }
-            .nav-container { padding: 0 12px;
-                gap: 8px; }
-            .nav-logo { position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                gap: 6px; }
-            .nav-logo-icon { width: 30px;
-                height: 30px; }
-            .nav-logo-text { font-size: 21px;
-                letter-spacing: 0.8px; }
+            .nav-container { padding: 0 12px; gap: 8px; }
+            .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); gap: 6px; }
+            .nav-logo-icon { width: 30px; height: 30px; }
+            .nav-logo-text { font-size: 21px; letter-spacing: 0.8px; }
             .nav-profile { margin-left: auto; }
-            .profile-btn { padding: 4px 8px;
-                gap: 6px; }
-            .profile-btn .profile-avatar { width: 34px;
-                height: 34px;
-                font-size: 14px; }
+            .profile-btn { padding: 4px 8px; gap: 6px; }
+            .profile-btn .profile-avatar { width: 34px; height: 34px; font-size: 14px; }
             .profile-btn .profile-name,
             .profile-btn .profile-chevron { display: none; }
-            .signin-btn { padding: 8px 14px;
-                font-size: 12px;
-                gap: 5px; }
-            .signin-btn svg { width: 16px;
-                height: 16px; }
+            .signin-btn { padding: 8px 14px; font-size: 12px; gap: 5px; }
+            .signin-btn svg { width: 16px; height: 16px; }
             .profile-dropdown { display: none; }
-            .form-card { margin-top: calc(var(--nav-height) + 16px);
-                padding: 24px 18px;
-                border-radius: 16px; }
-            .btn-group { gap: 8px; }
-            .btn,
-            .btn-cancel { padding: 12px 10px;
-                font-size: 13px; }
-            .mobile-slidebar-body { padding: 16px 12px;
-                gap: 8px; }
-            .slidebar-user-info { padding: 16px 16px;
-                gap: 14px;
-                margin-bottom: 12px; }
-            .slidebar-nav-item { padding: 14px 16px;
-                gap: 14px;
-                font-size: 15px;
-                margin-bottom: 4px; }
-            .mobile-slidebar-footer { padding: 14px 16px 18px;
-                gap: 10px; }
-        }
-        @media (max-width: 380px) {
-            .btn-group { flex-direction: row;
-                gap: 6px; }
-            .btn,
-            .btn-cancel { font-size: 12px;
-                padding: 10px 6px; }
+            .form-card { margin-top: calc(var(--nav-height) + 20px); padding: 30px 20px; }
+            h1 { font-size: 2.2rem; }
+            .mobile-slidebar-body { padding: 16px 12px; gap: 8px; }
+            .slidebar-user-info { padding: 16px 16px; gap: 14px; margin-bottom: 12px; }
+            .slidebar-nav-item { padding: 14px 16px; gap: 14px; font-size: 15px; margin-bottom: 4px; }
+            .mobile-slidebar-footer { padding: 14px 16px 18px; gap: 10px; }
         }
     </style>
 </head>
@@ -844,6 +764,10 @@
 
     <!-- ========== REGISTRATION FORM ========== -->
     <div class="form-card">
+        <div class="badge">🩸 Donor Registration</div>
+        <h1>BECOME A <span style="color:var(--primary)">DONOR</span></h1>
+        <p class="sub">Fill in your details to join the life-saving network.</p>
+
         <form id="donorForm">
             <div class="form-group">
                 <label for="name">Full Name</label>
@@ -875,11 +799,9 @@
                 <label for="age">Age (optional)</label>
                 <input type="number" id="age" min="18" max="65" placeholder="Age">
             </div>
-            <div class="btn-group">
-                <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
-                <button type="submit" class="btn">Register as Donor</button>
-            </div>
+            <button type="submit" class="btn">Register as Donor</button>
         </form>
+        <a href="index.html" class="back-link">← Back to Home</a>
     </div>
 
     <!-- Loading overlay -->
@@ -943,16 +865,13 @@
             el.style.cssText = `padding: 14px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); animation: slideIn 0.3s ease-out; color: #fff; background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};`;
             el.textContent = message;
             container.appendChild(el);
-            setTimeout(() => { el.style.opacity = '0';
-                el.style.transition = 'opacity 0.3s';
-                setTimeout(() => el.remove(), 300); }, 3000);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }, 3000);
         }
 
         function showLoading(msg) {
             loadingMsg.textContent = msg;
             loadingOverlay.style.display = 'flex';
         }
-
         function hideLoading() {
             loadingOverlay.style.display = 'none';
         }
@@ -967,14 +886,12 @@
         document.addEventListener('click', (e) => {
             if (dropdownOpen && !navbar.contains(e.target)) closeDropdown();
         });
-
         function closeDropdown() {
             dropdownOpen = false;
             profileDropdown.classList.remove('active');
             const chevron = document.querySelector('.profile-chevron');
             if (chevron) chevron.classList.remove('open');
         }
-
         function toggleDropdown() {
             dropdownOpen = !dropdownOpen;
             profileDropdown.classList.toggle('active', dropdownOpen);
@@ -988,7 +905,6 @@
             mobileSlidebar.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
         function closeMobileSlidebar() {
             mobileOverlay.classList.remove('active');
             mobileSlidebar.classList.remove('active');
@@ -998,8 +914,7 @@
         mobileCloseBtn.addEventListener('click', closeMobileSlidebar);
         mobileOverlay.addEventListener('click', closeMobileSlidebar);
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closeDropdown();
-                closeMobileSlidebar(); }
+            if (e.key === 'Escape') { closeDropdown(); closeMobileSlidebar(); }
         });
 
         // Auth overlay
@@ -1019,7 +934,6 @@
             document.body.appendChild(overlay);
             return overlay;
         }
-
         function removeAuthOverlay(overlay) {
             if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
         }
@@ -1048,17 +962,16 @@
 
         // Helper functions for avatar
         function getAvatarColor(name) {
-            const colors = ['#e11d48', '#2563eb', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#dc2626', '#7c3aed', '#0d9488', '#ca8a04', '#4f46e5', '#be123c'];
+            const colors = ['#e11d48','#2563eb','#16a34a','#9333ea','#ea580c','#0891b2','#dc2626','#7c3aed','#0d9488','#ca8a04','#4f46e5','#be123c'];
             let hash = 0;
-            for (let i = 0; i < (name || '?').length; i++) hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
-            return colors[Math.abs(hash) % colors.length];
+            for (let i=0; i<(name||'?').length; i++) hash = ((hash<<5)-hash+name.charCodeAt(i))|0;
+            return colors[Math.abs(hash)%colors.length];
         }
-
         function getInitials(name) {
             if (!name) return '?';
             const parts = name.trim().split(/\s+/);
-            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+            if (parts.length===1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0)+parts[parts.length-1].charAt(0)).toUpperCase();
         }
 
         // Render navbar profile
@@ -1109,10 +1022,8 @@
                 `;
                 mobileSlidebarFooter.innerHTML = '';
 
-                document.getElementById('navSignInBtn')?.addEventListener('click', (e) => { e.stopPropagation();
-                    triggerGoogleAuth(); });
-                document.getElementById('googleSignInBtn')?.addEventListener('click', (e) => { e.stopPropagation();
-                    triggerGoogleAuth(); });
+                document.getElementById('navSignInBtn')?.addEventListener('click', (e) => { e.stopPropagation(); triggerGoogleAuth(); });
+                document.getElementById('googleSignInBtn')?.addEventListener('click', (e) => { e.stopPropagation(); triggerGoogleAuth(); });
                 document.getElementById('mobileGoogleSignInBtn')?.addEventListener('click', triggerGoogleAuth);
             } else {
                 const isDonor = userData?.role === 'donor' || userData?.donorId;
@@ -1213,14 +1124,12 @@
                     e.stopPropagation();
                     closeDropdown();
                     const overlay = showAuthOverlay('Signing out...');
-                    try { await signOut(auth); } catch (err) { toast('Sign out failed: ' + err.message, 'error'); } finally { removeAuthOverlay(
-                            overlay); }
+                    try { await signOut(auth); } catch (err) { toast('Sign out failed: ' + err.message, 'error'); } finally { removeAuthOverlay(overlay); }
                 });
                 document.getElementById('mobileLogoutBtn')?.addEventListener('click', async () => {
                     closeMobileSlidebar();
                     const overlay = showAuthOverlay('Signing out...');
-                    try { await signOut(auth); } catch (err) { toast('Sign out failed: ' + err.message, 'error'); } finally { removeAuthOverlay(
-                            overlay); }
+                    try { await signOut(auth); } catch (err) { toast('Sign out failed: ' + err.message, 'error'); } finally { removeAuthOverlay(overlay); }
                 });
             }
         }
