@@ -72,12 +72,19 @@
             flex-shrink: 0;
         }
 
+        .sidebar-brand a {
+            display: flex;
+            align-items: center;
+            gap: 0; /* ensure no gap */
+        }
+
         .sidebar-brand h2 {
             font-size: 18px;
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #1a1a1a;
             text-transform: uppercase;
+            margin: 0;
         }
 
         .sidebar-brand h2 span { color: var(--brand-primary); }
@@ -313,13 +320,15 @@
         .mobile-brand {
             display: none;
             align-items: center;
-            gap: 10px;
-            font-size: 19px;
-            font-weight: 700;
-            color: #0f172a;
+            gap: 0; /* no gap */
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            cursor: pointer;
         }
 
-        .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
         .mobile-brand span { color: var(--brand-primary); }
 
         .mobile-topbar-avatar {
@@ -394,7 +403,7 @@
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
-                pointer-events: none;
+                pointer-events: auto; /* clickable */
             }
 
             .mobile-topbar-avatar { display: flex; }
@@ -495,7 +504,10 @@
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <h2>BLOOD<span>CONNECT</span></h2>
+            <!-- Clickable brand (desktop) -->
+            <a href="index.html" title="BloodConnect Home">
+                <h2>BLOOD<span>CONNECT</span></h2>
+            </a>
             <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Menu">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -530,7 +542,10 @@
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
                 <div class="topbar-title desktop-title"><h2>My Donation</h2><p>Your complete donation history.</p></div>
             </div>
-            <div class="mobile-brand"><i class="fa-solid fa-heart-pulse"></i><span>Blood<span style="color:var(--brand-primary);">Connect</span></span></div>
+            <!-- Mobile brand link (no gap, clickable) -->
+            <a class="mobile-brand" href="index.html" title="BloodConnect Home">
+                BLOOD<span>CONNECT</span>
+            </a>
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
                     <span id="mobile-topbar-avatar-text">A</span>
