@@ -314,12 +314,12 @@
             display: none;
             align-items: center;
             gap: 10px;
-            font-size: 19px;
-            font-weight: 700;
-            color: #0f172a;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            text-transform: uppercase;
         }
-
-        .mobile-brand i { color: var(--brand-primary); font-size: 22px; }
         .mobile-brand span { color: var(--brand-primary); }
 
         .mobile-topbar-avatar {
@@ -697,7 +697,10 @@
                 </div>
             </div>
 
-          <h2>BLOOD<span>CONNECT</span></h2>
+            <!-- Updated mobile brand: matches sidebar brand styling -->
+            <div class="mobile-brand">
+                BLOOD<span>CONNECT</span>
+            </div>
 
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
