@@ -25,7 +25,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* changed from center to avoid extra gap */
+            justify-content: flex-start;
             padding: 0 20px;
             position: relative;
             overflow-x: hidden;
@@ -33,7 +33,7 @@
         .bg-art {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('blood.jpg');
+            background-image: url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
             z-index: -2;
@@ -600,7 +600,7 @@
         }
         h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 3.5rem; /* match find blood page */
+            font-size: 3.5rem;
             letter-spacing: 2px;
             line-height: 1;
             margin-bottom: 10px;
@@ -719,12 +719,12 @@
             .signin-btn svg { width: 16px; height: 16px; }
             .profile-dropdown { display: none; }
             .form-wrapper {
-                margin-top: calc(var(--nav-height) + 10px); /* reduced gap */
+                margin-top: calc(var(--nav-height) + 10px);
                 padding: 0 15px;
             }
-            h1 { font-size: 3.5rem; } /* same size as find blood */
+            h1 { font-size: 3.5rem; }
             .mobile-slidebar-body {
-                padding: 20px 16px; /* increased breathing space */
+                padding: 20px 16px;
                 gap: 12px;
             }
             .slidebar-user-info {
@@ -784,7 +784,7 @@
         <div class="mobile-slidebar-footer" id="mobileSlidebarFooter"></div>
     </div>
 
-    <!-- ========== REGISTRATION FORM (no outer card) ========== -->
+    <!-- ========== REGISTRATION FORM ========== -->
     <div class="form-wrapper">
         <h1>BECOME A <span style="color:var(--primary)">DONOR</span></h1>
         <p class="sub">Fill in your details to join the life-saving network.</p>
