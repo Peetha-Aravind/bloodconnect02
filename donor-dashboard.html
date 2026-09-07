@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BloodConnect — My Requests</title>
+    <title>BloodConnect — Dashboard</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -415,70 +415,191 @@
             .sidebar-overlay { display: none !important; }
         }
 
-        /* ========== REQUESTS LIST ========== */
-        .requests-list {
+        /* ========== DASHBOARD CONTENT ========== */
+        .dashboard-content {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 28px;
         }
-        .request-card {
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+
+        .stat-box {
             background: #ffffff;
             border-radius: var(--radius-xl);
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            border: 1px solid #f1f5f9;
+            text-align: center;
+            transition: transform 0.2s ease;
         }
-        .request-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
+
+        .stat-box:hover {
+            transform: translateY(-3px);
         }
-        .donor-avatar-small {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
             font-weight: 700;
-            font-size: 16px;
-            color: #fff;
-            flex-shrink: 0;
-        }
-        .donor-info {
-            flex: 1;
-        }
-        .donor-name {
-            font-weight: 700;
-            font-size: 16px;
             color: #0f172a;
         }
-        .donor-meta {
+
+        .stat-value.blood-group {
+            color: var(--brand-primary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: var(--brand-primary);
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* ========== MY REQUESTS SECTION ========== */
+        .requests-section {
+            background: #fff;
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .requests-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .requests-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .request-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .request-card:last-child {
+            border-bottom: none;
+        }
+
+        .request-info {
+            flex: 1;
+        }
+        .request-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .request-info p {
             font-size: 13px;
             color: var(--text-sub);
             margin-top: 2px;
         }
-        .status-badge {
+
+        .request-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-accept {
+            background: var(--brand-primary);
+            color: #fff;
+        }
+        .btn-accept:hover:not(:disabled) {
+            background: var(--brand-primary-hover);
+        }
+        .btn-accept:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .badge-accepted {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
             font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .status-badge.pending {
+        .badge-pending {
             background: #fef3c7;
             color: #d97706;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .status-badge.accepted {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .status-badge.rejected {
-            background: #fee2e2;
-            color: #dc2626;
-        }
+
         .donor-phone-box {
             margin-top: 12px;
             padding: 12px;
@@ -491,11 +612,7 @@
             align-items: center;
             gap: 8px;
         }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-sub);
-        }
+
         .toast-container {
             position: fixed;
             top: 20px;
@@ -521,6 +638,16 @@
             from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .availability-banner {
+            background: #fff8e1;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #92400e;
+            margin-bottom: 16px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -545,7 +672,7 @@
             </div>
             <div class="info">
                 <h4 id="dd-name">Loading...</h4>
-                <p>REQUESTER</p>
+                <p>MEMBER</p>
             </div>
         </div>
 
@@ -553,7 +680,7 @@
             <li>
                 <a href="donor-dashboard.html" class="nav-link active">
                     <i class="fa-solid fa-border-all"></i>
-                    <span>My Requests</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li>
@@ -590,12 +717,11 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title desktop-title">
-                    <h2>My Requests</h2>
-                    <p>Track your blood requests and donors.</p>
+                    <h2>Dashboard</h2>
+                    <p>Overview of your activity.</p>
                 </div>
             </div>
 
-            <!-- Mobile brand link (no gap, clickable) -->
             <a class="mobile-brand" href="index.html" title="BloodConnect Home">
                 BLOOD<span>CONNECT</span>
             </a>
@@ -608,10 +734,49 @@
             </div>
         </header>
 
-        <!-- ===== MAIN CONTENT ===== -->
-        <main class="content-inner">
-            <div id="requestsList" class="requests-list">
-                <p style="text-align:center; color:var(--text-sub);">Loading your requests...</p>
+        <!-- ===== DASHBOARD MAIN CONTENT ===== -->
+        <main class="content-inner" id="mainContent">
+            <div class="dashboard-content">
+                <!-- Stats Row (4 boxes) -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-label">Blood Group</div>
+                        <div class="stat-value blood-group" id="bloodGroupDisplay">--</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Total Donations</div>
+                        <div class="stat-value" id="totalDonationsDisplay">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Last Donation</div>
+                        <div class="stat-value" id="lastDonationDisplay" style="font-size: 20px;">Never</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Emergency Availability</div>
+                        <div class="stat-value" style="display: flex; justify-content: center;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="emergencyToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="availability-banner" id="availabilityBanner">
+                    <i class="fa-solid fa-clock" style="margin-right:8px;"></i>
+                    <span id="availabilityBannerText">You are not eligible to donate yet. Next eligible date: </span>
+                </div>
+
+                <!-- My Sent Requests -->
+                <div class="requests-section">
+                    <div class="requests-header">
+                        <h2>My Requests</h2>
+                        <span style="font-size: 13px; color: var(--text-sub);" id="requestCount">0 requests</span>
+                    </div>
+                    <div id="requestsList">
+                        <p style="text-align:center; color:var(--text-sub); padding:20px;">Loading your requests...</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -621,7 +786,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, query, where, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDJOcJ1yRV-CVO92Okpvg8YXR3h6u6CN7Q",
@@ -669,6 +834,14 @@
             catch (error) { toast('Sign out failed: ' + error.message, 'error'); }
         });
 
+        const bloodGroupDisplay = document.getElementById('bloodGroupDisplay');
+        const totalDonationsDisplay = document.getElementById('totalDonationsDisplay');
+        const lastDonationDisplay = document.getElementById('lastDonationDisplay');
+        const emergencyToggle = document.getElementById('emergencyToggle');
+        const requestsList = document.getElementById('requestsList');
+        const requestCount = document.getElementById('requestCount');
+        const availabilityBanner = document.getElementById('availabilityBanner');
+        const availabilityBannerText = document.getElementById('availabilityBannerText');
         const toastContainer = document.getElementById('toastContainer');
 
         function toast(message, type = 'info') {
@@ -694,7 +867,50 @@
 
         let currentUser = null;
         let requestsUnsubscribe = null;
+        let donorDocRef = null;
+        let donorDataCache = null;
         let donorCache = new Map(); // donorId -> donorData
+
+        function isEligibleToDonate(lastDonationStr) {
+            if (!lastDonationStr || lastDonationStr === 'Never') return true;
+            const lastDate = new Date(lastDonationStr);
+            if (isNaN(lastDate.getTime())) return true;
+            const sixMonthsAgo = new Date();
+            sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+            return lastDate <= sixMonthsAgo;
+        }
+
+        function getNextEligibleDate(lastDonationStr) {
+            if (!lastDonationStr || lastDonationStr === 'Never') return null;
+            const lastDate = new Date(lastDonationStr);
+            if (isNaN(lastDate.getTime())) return null;
+            const nextEligible = new Date(lastDate);
+            nextEligible.setMonth(nextEligible.getMonth() + 6);
+            return nextEligible;
+        }
+
+        function updateDonorUI(donorData) {
+            donorDataCache = donorData;
+            const bloodGroup = donorData?.bloodType || donorData?.bloodGroup || '--';
+            const totalDonations = donorData?.totalDonations || 0;
+            const lastDonation = donorData?.lastDonation || 'Never';
+            const emergencyAvailable = donorData?.emergencyAvailable !== false;
+
+            bloodGroupDisplay.textContent = bloodGroup;
+            totalDonationsDisplay.textContent = totalDonations;
+            lastDonationDisplay.textContent = lastDonation;
+            emergencyToggle.checked = emergencyAvailable;
+
+            const eligible = isEligibleToDonate(lastDonation);
+            if (!eligible) {
+                const nextDate = getNextEligibleDate(lastDonation);
+                const formattedDate = nextDate ? nextDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '6 months from last donation';
+                availabilityBanner.style.display = 'block';
+                availabilityBannerText.textContent = 'You are not eligible to donate yet. Next eligible date: ' + formattedDate;
+            } else {
+                availabilityBanner.style.display = 'none';
+            }
+        }
 
         async function fetchDonorData(donorId) {
             if (donorCache.has(donorId)) return donorCache.get(donorId);
@@ -712,9 +928,12 @@
         }
 
         function renderRequests(requests) {
-            const listDiv = document.getElementById('requestsList');
+            const pendingCount = requests.filter(r => r.status === 'pending').length;
+            const acceptedCount = requests.filter(r => r.status === 'accepted').length;
+            requestCount.textContent = `${requests.length} total • ${pendingCount} pending • ${acceptedCount} accepted`;
+
             if (requests.length === 0) {
-                listDiv.innerHTML = `<div class="empty-state">You haven't sent any requests yet.</div>`;
+                requestsList.innerHTML = '<p style="text-align:center; color:var(--text-sub); padding:20px;">You have not sent any requests yet.</p>';
                 return;
             }
 
@@ -725,12 +944,11 @@
                 return dateB - dateA;
             });
 
-            // Render each request with donor details
             Promise.all(requests.map(async (req) => {
                 const donor = await fetchDonorData(req.donorId);
                 return { req, donor };
             })).then(items => {
-                listDiv.innerHTML = items.map(({ req, donor }) => {
+                requestsList.innerHTML = items.map(({ req, donor }) => {
                     const donorName = donor?.name || req.donorName || 'Unknown Donor';
                     const bloodType = donor?.bloodType || req.donorBloodType || '?';
                     const city = donor?.city || req.donorCity || 'Unknown';
@@ -749,26 +967,50 @@
                     }
 
                     return `
-                        <div class="request-card">
-                            <div class="request-header">
-                                <div class="donor-avatar-small" style="background:${avatarColor}; color:#fff;">${initials}</div>
-                                <div class="donor-info">
-                                    <div class="donor-name">${donorName}</div>
-                                    <div class="donor-meta">
-                                        ${bloodType} • ${city}
-                                    </div>
+                        <div class="request-card" data-id="${req.id}">
+                            <div style="display:flex; align-items:center; gap:12px; width:100%;">
+                                <div class="donor-avatar-small" style="background:${avatarColor}; color:#fff; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">${initials}</div>
+                                <div class="request-info" style="flex:1;">
+                                    <h4>${donorName}</h4>
+                                    <p>${bloodType} • ${city}</p>
+                                    ${phoneBox}
                                 </div>
-                                <span class="status-badge ${statusClass}">${statusText}</span>
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <span class="badge-pending" style="display:${req.status==='pending'?'inline-block':'none'}">Pending</span>
+                                    <span class="badge-accepted" style="display:${req.status==='accepted'?'inline-block':'none'}">Accepted</span>
+                                </div>
                             </div>
-                            ${phoneBox}
                         </div>
                     `;
                 }).join('');
             });
         }
 
-        function loadUserRequests(userId) {
-            const q = query(collection(db, 'requests'), where('requesterId', '==', userId));
+        async function loadDashboard(user) {
+            // Attempt to load donor data (if exists) to populate stats
+            try {
+                donorDocRef = doc(db, 'donors', user.uid);
+                const donorSnap = await getDoc(donorDocRef);
+                if (donorSnap.exists()) {
+                    updateDonorUI(donorSnap.data());
+                    // Listen for real-time donor updates
+                    onSnapshot(donorDocRef, (snap) => {
+                        if (snap.exists()) updateDonorUI(snap.data());
+                    });
+                } else {
+                    // No donor profile, just set defaults
+                    bloodGroupDisplay.textContent = '--';
+                    totalDonationsDisplay.textContent = '0';
+                    lastDonationDisplay.textContent = 'Never';
+                    emergencyToggle.checked = true;
+                    availabilityBanner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading donor data:', error);
+            }
+
+            // Load sent requests (requester)
+            const q = query(collection(db, 'requests'), where('requesterId', '==', user.uid));
             requestsUnsubscribe = onSnapshot(q, (snapshot) => {
                 const requests = [];
                 snapshot.forEach(doc => {
@@ -777,10 +1019,22 @@
                 renderRequests(requests);
             }, (error) => {
                 console.error('Error fetching requests:', error);
-                toast('Failed to load requests: ' + error.message, 'error');
-                document.getElementById('requestsList').innerHTML = `<div class="empty-state">Error loading requests.</div>`;
+                requestsList.innerHTML = '<p style="text-align:center; color:red;">Error loading requests.</p>';
             });
         }
+
+        // Emergency toggle remains functional (only updates donor doc if it exists)
+        emergencyToggle.addEventListener('change', async () => {
+            if (!donorDocRef) return;
+            try {
+                await updateDoc(donorDocRef, { emergencyAvailable: emergencyToggle.checked });
+                toast('Emergency availability updated.', 'success');
+            } catch (error) {
+                console.error('Error updating availability:', error);
+                toast('Failed to update availability: ' + error.message, 'error');
+                emergencyToggle.checked = !emergencyToggle.checked;
+            }
+        });
 
         function updateUserUI(user) {
             const name = user.displayName || user.email || 'User';
@@ -810,7 +1064,7 @@
             }
             currentUser = user;
             updateUserUI(user);
-            loadUserRequests(user.uid);
+            loadDashboard(user);
         });
 
         window.addEventListener('beforeunload', () => {
