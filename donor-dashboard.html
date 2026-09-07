@@ -72,12 +72,19 @@
             flex-shrink: 0;
         }
 
+        .sidebar-brand a {
+            display: flex;
+            align-items: center;
+            gap: 0; /* ensure no gap */
+        }
+
         .sidebar-brand h2 {
             font-size: 18px;
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #1a1a1a;
             text-transform: uppercase;
+            margin: 0; /* reset margin */
         }
 
         .sidebar-brand h2 span { color: var(--brand-primary); }
@@ -310,15 +317,17 @@
             font-size: 18px;
         }
 
+        /* Mobile brand link */
         .mobile-brand {
             display: none;
             align-items: center;
-            gap: 10px;
+            gap: 0;  /* ← Removed gap to eliminate space between BLOOD and CONNECT */
             font-size: 18px;
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #1a1a1a;
             text-transform: uppercase;
+            cursor: pointer;
         }
         .mobile-brand span { color: var(--brand-primary); }
 
@@ -394,7 +403,7 @@
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
-                pointer-events: none;
+                pointer-events: auto; /* make clickable */
             }
 
             .mobile-topbar-avatar { display: flex; }
@@ -633,7 +642,10 @@
     <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <h2>BLOOD<span>CONNECT</span></h2>
+            <!-- Make brand clickable (desktop sidebar) -->
+            <a href="index.html" title="BloodConnect Home">
+                <h2>BLOOD<span>CONNECT</span></h2>
+            </a>
             <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Menu">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -697,10 +709,10 @@
                 </div>
             </div>
 
-            <!-- Updated mobile brand: matches sidebar brand styling -->
-            <div class="mobile-brand">
+            <!-- Mobile brand link (no gap, clickable) -->
+            <a class="mobile-brand" href="index.html" title="BloodConnect Home">
                 BLOOD<span>CONNECT</span>
-            </div>
+            </a>
 
             <div class="topbar-right-section">
                 <button class="mobile-topbar-avatar" id="mobileTopbarAvatarBtn" aria-label="Open Sidebar Menu">
